@@ -1,2 +1,2 @@
 # cs3240-s15-team09
-changing the README nbn6sn
+throw-away private repo for lab 6 CS3240 -- Additional conflict
