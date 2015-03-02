@@ -8,5 +8,24 @@ branch conflict new branch1
 
 
 
-WASH CHANGED TO 
+WASH CHANGED TO
 banches are merged yay!
+
+
+-- Joe:
+
+from django.conf.urls import patterns, include, url
+from django.contrib import admin
+
+urlpatterns = patterns('',
+    # Examples:
+    # url(r'^$', 'lab6.views.home', name='home'),
+    # url(r'^blog/', include('blog.urls')),
+<<<<<<< HEAD
+    # TODO: Add additional URLs
+=======
+    # Lots of URLs to be added
+>>>>>>> Master commit
+
+    url(r'^admin/', include(admin.site.urls)),
+)
