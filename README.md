@@ -6,3 +6,4 @@ branches are merged yay!
 
 We will not support Python 2.
 
+from master changing the README
