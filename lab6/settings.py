@@ -69,7 +69,7 @@ DATABASES = {
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'EST'
-#Eastern Standard Time
+#Eastern Standard Time - time zone
 
 USE_I18N = True
 
