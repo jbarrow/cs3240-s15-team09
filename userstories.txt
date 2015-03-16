@@ -1,0 +1,6 @@
+A reader is a user of the system who can search for bulletins by field, and read any of the unencrypted information in the search results.  To read encrypted data, a reader must somehow be given info to decrypt the data by the reporter who created it.  Download and decryption of encrypted files will be handled by a stand-alone program to run on the local user’s maachine
+
+
+As a reader I want to search for documents by field so I can read the information in the unencrypted search results. 
+
+As a reader I want to download encrypted files and recrypt them with a key from the reporter so I can decrypt and read them on my local machine. 
