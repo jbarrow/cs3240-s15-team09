@@ -4,3 +4,28 @@ A reader is a user of the system who can search for bulletins by field, and read
 As a reader I want to search for documents by field so I can read the information in the unencrypted search results. 
 
 As a reader I want to download encrypted files and recrypt them with a key from the reporter so I can decrypt and read them on my local machine. 
+
+
+QUESTIONS FOR CUSTOMER
+
+Should witnesses always, optional, or never be anonymous? ie, should you have the option to hide who you are from the public
+
+Would athorities always be able to identify the person who posts a tip?
+
+Do you need to have an account to view reports?
+
+Should there be a way for users to contact/message each other directly?
+
+Is there a specific key algorithm you want to use for encryption?
+
+What fields should admin users have edit permissions for when dealing with other users accounts. 
+
+What user data should be required when submitting a report?
+
+What is a system? The user who creates the system is by default the administrator, but they can add and change that if they want. The system may never have fewer than 1 administrators. 
+
+What information (title/date/time/description/etc) is required to submit a report?
+
+is there a size limit on file transfer? Are we using any sort of file compression for storage/transmission. 
+
+
