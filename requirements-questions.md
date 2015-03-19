@@ -14,3 +14,11 @@
 * Is there additional information you need to supply if you want to be an admin?
 * Can you search for named groups and request to be a part of the group? How should this be handled?
 * Can named groups have certain privileges? If so, what kind of privileges can they have? How are those privileges requested, if  that can be done?
+* Is there a specific key algorithm you want to use for encryption?
+* Should there be a way for users to contact/message each other directly?
+* What information (title/date/time/description/etc) is required to submit a report?
+* is there a size limit on file transfer? Are we using any sort of file compression for storage/transmission. 
+* What is a system? The user who creates the system is by default the administrator, but they can add and change that if they want. The system may never have fewer than 1 administrators. 
+* What user data should be required when submitting a report?
+* Do you need to have an account to view reports?
+
