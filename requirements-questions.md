@@ -13,4 +13,4 @@
 * How do you designate administrators and how does the administrator pass on the responsiblity of administrator if they no longer want to be an admin? 
 * Is there additional information you need to supply if you want to be an admin?
 * Can you search for named groups and request to be a part of the group? How should this be handled?
-* 
+* Can named groups have certain privileges? If so, what kind of privileges can they have? How are those privileges requested, if  that can be done?
