@@ -22,7 +22,8 @@
 * What user data should be required when submitting a report?
 * Do you need to have an account to view reports?
     *  yes.
-#NEW QUESTIONS
+
+# NEW QUESTIONS
 * should multiple folders have duplicates of the same report? Or can you only move reports between folders?
    * report copying is allowed, so duplicates are allowed. Would need to keep track of all duplicates if the user wants to delete a report 
 * What is the relationship between a system and an admin? Is the admin the group manager for all of the groups in the system, or is an admin kind of like a super-user in that they do account management, but users can create their own groups? If not, would users have the ability to request group formation from the admin?
