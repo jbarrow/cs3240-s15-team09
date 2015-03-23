@@ -69,11 +69,7 @@ DATABASES = {
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'EST'
-<<<<<<< HEAD
 #Eastern Standard Time - time zone!
-=======
-#Eastern Standard Time - time zone
->>>>>>> modelfix
 
 USE_I18N = True
 
