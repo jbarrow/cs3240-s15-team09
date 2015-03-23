@@ -48,9 +48,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'lab6.urls'
+ROOT_URLCONF = 'secure_witness.urls'
 
-WSGI_APPLICATION = 'lab6.wsgi.application'
+WSGI_APPLICATION = 'secure_witness.wsgi.application'
 
 
 # Database
