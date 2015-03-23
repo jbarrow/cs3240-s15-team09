@@ -1,11 +1,4 @@
-# cs3240-s15-team09
-throw-away private repo for lab 6 CS3240 -- Additional conflict
-
-changing the README.md
-branches are merged yay!
-
-We will not support Python 2.
-
-from master changing the README
-changing for the branch section
+# cs3240-s15-team09 - SECUREWITNESS project
+# Sprint Zero demo:
+- https://github.com/nynguyen/sprint_zero_demo (files and forms)
 
