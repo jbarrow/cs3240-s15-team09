@@ -33,16 +33,17 @@ class Tag(models.Model):
 class Report(models.Model):
 
     author = models.ForeignKey(User)
-    title = models.CharField(max_length=128)
+    short_description = models.CharField(max_length=128)
     location = models.CharField(max_length=500, blank=True)
-    time = models.DateTimeField(blank=True)
+    detailed_description = models.TextField()
+    date_of_incident = models.DateField(blank=True)
     private = models.BooleanField(default=False)
-    #time_created = models.DateTimeField.auto_now_add();
-    #time_last_modified = models.DateTimeField.auto_now();
+    time_created = models.TimeField(auto_now_add = True);
+    time_last_modified = models.DateTimeField(auto_now = True);
 
 
     def __str__(self):
-        return self.title
+        return self.short_description
 
 class File(models.Model):
     title = models.CharField(max_length=128, unique=True)
@@ -52,7 +53,7 @@ class File(models.Model):
 class ReportForm(ModelForm):
     class Meta:
         model = Report
-        fields = ['author', 'title', 'location', 'time','private']
+        fields = ['author', 'short_description', 'detailed_description', 'location', 'date_of_incident','private']
 
 class FileForm(ModelForm):
     class Meta:
