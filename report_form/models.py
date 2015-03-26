@@ -4,7 +4,13 @@ from django.db import models
 class Group(models.Model):
     name = models.CharField(max_length=128, unique=True)
 
-    def __str__(self):  #For Python 2, use __str__ on Python 3
+    def __str__(self):
+        return self.name
+
+class Folder(models.Model):
+    name = models.CharField(max_length=128, unique=True)
+
+    def __str__(self):
         return self.name
 
 class User(models.Model):
@@ -12,28 +18,34 @@ class User(models.Model):
     email = models.EmailField(max_length=128, unique=True)
     group = models.ManyToManyField(Group)
 
-    def __str__(self):  #For Python 2, use __str__ on Python 3
+    def __str__(self):
         return self.name
 
 class Tag(models.Model):
     name = models.CharField(max_length=128, unique=True)
 
-    def __str__(self):  #For Python 2, use __str__ on Python 3
+    def __str__(self):
         return self.name
 
-class File(models.Model):
-    title = models.CharField(max_length=128, unique=True)
-    file = models.FileField()
-    group = models.ForeignKey(Report)
+
 
 class Report(models.Model):
+
     author = models.ForeignKey(User)
     title = models.CharField(max_length=128)
-    file_path = models.FilePathField()
+    location = models.CharField(max_length=500)
+    time = models.DateTimeField()
+    #time_created = models.DateTimeField.auto_now_add();
+    #time_last_modified = models.DateTimeField.auto_now();
+
 
     def __str__(self):
         return self.title
 
+class File(models.Model):
+    title = models.CharField(max_length=128, unique=True)
+    file = models.FileField()
+    report = models.ForeignKey(Report)
 
 # class InputForm(models.Model):
 # 	name = models.CharField(label = 'Username:', max_length=100)
