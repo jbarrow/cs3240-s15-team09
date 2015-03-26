@@ -34,8 +34,8 @@ class Report(models.Model):
 
     author = models.ForeignKey(User)
     title = models.CharField(max_length=128)
-    location = models.CharField(max_length=500)
-    time = models.DateTimeField()
+    location = models.CharField(max_length=500, blank=True)
+    time = models.DateTimeField(blank=True)
     private = models.BooleanField(default=False)
     #time_created = models.DateTimeField.auto_now_add();
     #time_last_modified = models.DateTimeField.auto_now();
