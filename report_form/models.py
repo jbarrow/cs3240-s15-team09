@@ -36,6 +36,7 @@ class Report(models.Model):
     title = models.CharField(max_length=128)
     location = models.CharField(max_length=500)
     time = models.DateTimeField()
+    # would we want to specify the length of time?
     #time_created = models.DateTimeField.auto_now_add();
     #time_last_modified = models.DateTimeField.auto_now();
 
@@ -45,7 +46,7 @@ class Report(models.Model):
 
 class File(models.Model):
     title = models.CharField(max_length=128, unique=True)
-    file = models.FileField()
+    file = models.FileField(upload_to='input/%Y/%m/%d')
     report = models.ForeignKey(Report)
 
 class ReportForm(ModelForm):
