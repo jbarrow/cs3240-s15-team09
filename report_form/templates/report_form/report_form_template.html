@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Report Form submission</title>
+	</head>
+	<body>
+		<form action = "{% url "submission" %}" method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+			{{ input_report_form.as_p }}
+			<!--{{ input_file_form.as_p }} -->
+			<input type="file" name="file" multiple />
+			<p> <input type="submit" value="Submit Report" /></p>
+		</form>
+	</body>
+</html>

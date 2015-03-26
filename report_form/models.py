@@ -1,4 +1,5 @@
 from django.db import models
+from django.forms import ModelForm
 
 
 class Group(models.Model):
@@ -46,6 +47,16 @@ class File(models.Model):
     title = models.CharField(max_length=128, unique=True)
     file = models.FileField()
     report = models.ForeignKey(Report)
+
+class ReportForm(ModelForm):
+    class Meta:
+        model = Report
+        fields = ['author', 'title', 'location', 'time']
+
+class FileForm(ModelForm):
+    class Meta:
+        model = File
+        fields = ['file']
 
 # class InputForm(models.Model):
 # 	name = models.CharField(label = 'Username:', max_length=100)
