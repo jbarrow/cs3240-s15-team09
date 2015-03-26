@@ -13,7 +13,7 @@ def submission(request):
 	if request.method == 'POST':
 		input_report_form = ReportForm(request.POST)
 		input_file_form = FileForm(request.POST, request.FILES)
-		if form.is_valid():
+		if input_report_form.is_valid():
 			return HttpResponseRedirect(reverse('report_form.views.submission'))
 	else:
 		input_report_form = ReportForm()

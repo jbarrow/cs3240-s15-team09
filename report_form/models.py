@@ -36,6 +36,7 @@ class Report(models.Model):
     title = models.CharField(max_length=128)
     location = models.CharField(max_length=500)
     time = models.DateTimeField()
+    private = models.BooleanField(default=False)
     #time_created = models.DateTimeField.auto_now_add();
     #time_last_modified = models.DateTimeField.auto_now();
 
@@ -51,7 +52,7 @@ class File(models.Model):
 class ReportForm(ModelForm):
     class Meta:
         model = Report
-        fields = ['author', 'title', 'location', 'time']
+        fields = ['author', 'title', 'location', 'time','private']
 
 class FileForm(ModelForm):
     class Meta:
