@@ -17,6 +17,7 @@ def submission(request):
 	if request.method == 'POST':
 		input_report_form = ReportForm(request.POST)
 		input_file_form = FileForm(request.POST, request.FILES)
+<<<<<<< HEAD
 		if input_report_form.is_valid(): # change this
 			# need to do the linking here
 			# need to figure out how to do the multiple files
@@ -32,3 +33,12 @@ def submission(request):
 		input_file_form = FileForm()
 
 	return render(request, 'report_form/report_form_template.html', {'input_file_form' : input_file_form, 'input_report_form' : input_report_form})
+=======
+		if input_report_form.is_valid():
+			return HttpResponseRedirect(reverse('report_form.views.submission'))
+	else:
+		input_report_form = ReportForm()
+		input_file_form = FileForm()
+		
+	return render(request, 'report_form/report_form_template.html', {'input_file_form' : input_file_form, 'input_report_form' : input_report_form})
+>>>>>>> 3007d40f9755a1a9b327718ed91cab1168cfaba2
