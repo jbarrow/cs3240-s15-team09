@@ -1,7 +1,6 @@
 from django.db import models
 from django.forms import ModelForm
 
-
 class Group(models.Model):
     name = models.CharField(max_length=128, unique=True)
 
