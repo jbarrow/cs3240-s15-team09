@@ -15,5 +15,6 @@ urlpatterns = patterns('',
     url(r'^accounts/register/$', 'secure_witness.views.register'),
     url(r'^accounts/profile/$', 'secure_witness.views.profile'),
     url(r'^report_form/', include('report_form.urls')),
+    url(r'^groups/', include('group_form.urls')),
     url(r'^$', RedirectView.as_view(url='report_form/in-dev')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
