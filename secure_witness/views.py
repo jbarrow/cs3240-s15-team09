@@ -3,6 +3,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from secure_witness.forms import UserForm, UserProfileForm
 
+def profile(request):
+    return render_to_response('profile.html')
+
 def register(request):
     context = RequestContext(request)
 
@@ -35,6 +38,6 @@ def register(request):
         user_form = UserForm()
         profile_form = UserProfileForm()
 
-    return render_to_response('register.html',
+    return render_to_response('registration/register.html',
         {'user_form': user_form, 'profile_form': profile_form, 'registered': registered},
         context)
