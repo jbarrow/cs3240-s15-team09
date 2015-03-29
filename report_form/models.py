@@ -31,11 +31,12 @@ class Tag(models.Model):
 
 class Report(models.Model):
 
-    author = models.ForeignKey(User)
-    short_description = models.CharField(max_length=128)
+    #author = models.ForeignKey(User)
+    author = models.CharField(max_length=128)
+    short_description = models.CharField(max_length=750)
     location = models.CharField(max_length=500, blank=True)
     detailed_description = models.TextField()
-    date_of_incident = models.DateField(blank=True)
+    date_of_incident = models.DateField(blank=True, null=True)
     private = models.BooleanField(default=False)
     time_created = models.TimeField(auto_now_add = True);
     time_last_modified = models.DateTimeField(auto_now = True);
@@ -45,7 +46,7 @@ class Report(models.Model):
         return self.short_description
 
 class File(models.Model):
-    title = models.CharField(max_length=128, unique=True)
+    title = models.CharField(max_length=128) #used to be unique = true... but I was having some errors
     file = models.FileField(upload_to='input/%Y/%m/%d')
     report = models.ForeignKey(Report)
 
@@ -60,11 +61,11 @@ class FileForm(ModelForm):
         fields = ['file']
 
 # class InputForm(models.Model):
-# 	name = models.CharField(label = 'Username:', max_length=100)
-# 	location = models.CharField(label = 'Location of Incident:', max_length=500, required=False)
-# 	time = models.DateTimeField(label = 'Time of Incident:', required=False, input_formats = ['%m/%d/%Y', '%m/%d/%y'], help_text='format is like: 12/20/2014')
-# 	desc = models.CharField(label= 'Incident Description:', widget=forms.Textarea)
-# 	privacy = models.BooleanField(label = 'Is this a private report?')
-# 	alt_privacy = models.ChoiceField(label = 'Select privacy setting', choices=(('Private', 'PRIVATE'), ('Public','PUBLIC'),), required=False)
-# 	input = models.FileField(label = 'Select a file to upload')
-# 	next_one = models.FileField(label = 'input a second file')
+#   name = models.CharField(label = 'Username:', max_length=100)
+#   location = models.CharField(label = 'Location of Incident:', max_length=500, required=False)
+#   time = models.DateTimeField(label = 'Time of Incident:', required=False, input_formats = ['%m/%d/%Y', '%m/%d/%y'], help_text='format is like: 12/20/2014')
+#   desc = models.CharField(label= 'Incident Description:', widget=forms.Textarea)
+#   privacy = models.BooleanField(label = 'Is this a private report?')
+#   alt_privacy = models.ChoiceField(label = 'Select privacy setting', choices=(('Private', 'PRIVATE'), ('Public','PUBLIC'),), required=False)
+#   input = models.FileField(label = 'Select a file to upload')
+#   next_one = models.FileField(label = 'input a second file')

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Form submitted</title>
+		<h1>REPORT SUBMITTED - THANK YOU</h1>
+		{% if submission %}
+			<p>Username= {{ submission.author }} </p>
+			<p>Description= {{ submission.short_description }} </p>
+		{% else %}
+			<p> Form invalid </p>
+		{% endif %}
+
+		{% if files %}
+			<ul>
+			{% for inputfile in files %}
+				<li>{{ inputfile.title }}</li>
+				<!-- <li><a href= "{{ inputfile.url }}">{{ inputfile.title }}</a></li> IN-DEV -->
+			{% endfor %}
+			</ul
+		{% else %}
+				<p> No files yet uploaded </p>
+		{% endif %}
+	</head>
+</html>
