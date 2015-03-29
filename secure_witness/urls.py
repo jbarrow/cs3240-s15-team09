@@ -13,6 +13,7 @@ urlpatterns = patterns('',
     url(r'^accounts/login/$', 'django.contrib.auth.views.login'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
     url(r'^accounts/register/$', 'secure_witness.views.register'),
+    url(r'^accounts/profile/$', 'secure_witness.views.profile'),
     url(r'^report_form/', include('report_form.urls')),
     url(r'^$', RedirectView.as_view(url='report_form/in-dev')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
