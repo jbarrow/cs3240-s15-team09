@@ -11,7 +11,7 @@ from group_form.forms import add_user_group_form
 
 def user_added(request):
 	# want to echo back form fields here for confirmation
-    
+
     return render(request, 'group_form/add_user_template.html', {'add_user' : add_user})
 
 
