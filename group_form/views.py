@@ -17,11 +17,12 @@ def user_added(request):
 
 def add_user(request):
     context = RequestContext(request)
-
+    current_user = request.user
     # A HTTP POST?
     if request.method == 'POST':
         form = add_user_group_form(request.POST)
-
+        current_userprofile = UserProfile.objects.filter(user = current_user)
+        form.group = UserProfile.groups
         # Have we been provided with a valid form?
         if form.is_valid():
             # Save the new category to the database.
