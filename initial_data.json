@@ -1,0 +1,13 @@
+[
+{
+    "fields": {
+        "admin": true,
+        "name": "Secure Witness",
+        "user": [
+            "switness"
+        ]
+    },
+    "model": "secure_witness.userprofile",
+    "pk": 1
+}
+]
