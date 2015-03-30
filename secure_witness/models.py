@@ -6,6 +6,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, primary_key=True)
     name = models.CharField(max_length=128)
     groups = models.ManyToManyField(Group)
+    admin = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.user.username
