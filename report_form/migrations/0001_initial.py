@@ -7,15 +7,16 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('secure_witness', '__first__'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='File',
             fields=[
-                ('id', models.AutoField(serialize=False, auto_created=True, verbose_name='ID', primary_key=True)),
-                ('title', models.CharField(max_length=128, unique=True)),
-                ('file', models.FileField(upload_to='')),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
+                ('title', models.CharField(max_length=128)),
+                ('file', models.FileField(upload_to='input/%Y/%m/%d')),
             ],
             options={
             },
@@ -24,17 +25,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Folder',
             fields=[
-                ('id', models.AutoField(serialize=False, auto_created=True, verbose_name='ID', primary_key=True)),
-                ('name', models.CharField(max_length=128, unique=True)),
-            ],
-            options={
-            },
-            bases=(models.Model,),
-        ),
-        migrations.CreateModel(
-            name='Group',
-            fields=[
-                ('id', models.AutoField(serialize=False, auto_created=True, verbose_name='ID', primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
                 ('name', models.CharField(max_length=128, unique=True)),
             ],
             options={
@@ -44,10 +35,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Report',
             fields=[
-                ('id', models.AutoField(serialize=False, auto_created=True, verbose_name='ID', primary_key=True)),
-                ('title', models.CharField(max_length=128)),
-                ('location', models.CharField(max_length=500)),
-                ('time', models.DateTimeField()),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
+                ('short_description', models.CharField(max_length=750)),
+                ('location', models.CharField(max_length=500, blank=True)),
+                ('detailed_description', models.TextField()),
+                ('date_of_incident', models.DateField(null=True, blank=True)),
+                ('private', models.BooleanField(default=False)),
+                ('time_created', models.TimeField(auto_now_add=True)),
+                ('time_last_modified', models.DateTimeField(auto_now=True)),
+                ('author', models.ForeignKey(to='secure_witness.UserProfile')),
             ],
             options={
             },
@@ -56,30 +52,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Tag',
             fields=[
-                ('id', models.AutoField(serialize=False, auto_created=True, verbose_name='ID', primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
                 ('name', models.CharField(max_length=128, unique=True)),
             ],
             options={
             },
             bases=(models.Model,),
-        ),
-        migrations.CreateModel(
-            name='User',
-            fields=[
-                ('id', models.AutoField(serialize=False, auto_created=True, verbose_name='ID', primary_key=True)),
-                ('name', models.CharField(max_length=128, unique=True)),
-                ('email', models.EmailField(max_length=128, unique=True)),
-                ('group', models.ManyToManyField(to='report_form.Group')),
-            ],
-            options={
-            },
-            bases=(models.Model,),
-        ),
-        migrations.AddField(
-            model_name='report',
-            name='author',
-            field=models.ForeignKey(to='report_form.User'),
-            preserve_default=True,
         ),
         migrations.AddField(
             model_name='file',

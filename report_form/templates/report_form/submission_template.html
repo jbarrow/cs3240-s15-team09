@@ -5,7 +5,7 @@
 		<title>Form submitted</title>
 		<h1>REPORT SUBMITTED - THANK YOU</h1>
 		{% if submission %}
-			<p>Username= {{ submission.author }} </p>
+			<p>Username= {{ submission.author.user.username }} </p>
 			<p>Description= {{ submission.short_description }} </p>
 		{% else %}
 			<p> Form invalid </p>
@@ -15,7 +15,7 @@
 			<ul>
 			{% for inputfile in files %}
 				<li>{{ inputfile.title }}</li>
-				<!-- <li><a href= "{{ inputfile.url }}">{{ inputfile.title }}</a></li> IN-DEV -->
+				<li><a href= "{{ inputfile.file.url }}">{{ inputfile.title }}</a></li>
 			{% endfor %}
 			</ul
 		{% else %}

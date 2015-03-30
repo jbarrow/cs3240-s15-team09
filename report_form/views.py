@@ -2,10 +2,12 @@ from django.shortcuts import render
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
-from django.views.generic import FormView, DetailView, ListView
 
-from report_form.models import Report, User, File, FileForm, ReportForm
+from report_form.models import Report, File
 from report_form.forms import report_input_form
+from secure_witness.models import UserProfile
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 def incomplete_landing(request):
 	return HttpResponse("Report form not yet available.")
@@ -18,7 +20,7 @@ def submitted(request):
 	#return HttpResponse("Thanks.")
 	return render(request, 'report_form/submission_template.html', {'submission' : submission, 'files' : files})
 
-
+@login_required
 def submission(request):
 	if request.method == 'POST':
 		input_report_form = report_input_form(request.POST)
@@ -30,8 +32,10 @@ def submission(request):
 			# though we could append two forms together, though that is not great
 
 			# how would having non-required fields work?
+			current_user = request.user
+			profile = UserProfile.objects.filter(user=current_user)
 			report_input = Report()
-			report_input.author = request.POST['author']
+			report_input.author = profile[0]
 			report_input.short_description = request.POST['short_description']
 			report_input.location = request.POST.get('location','')
 			report_input.detailed_description = request.POST['detailed_description']
