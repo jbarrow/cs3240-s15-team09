@@ -16,9 +16,9 @@ http://localhost/phpmyadmin
 
 In PHPMyAdmin, create a new database "secure_witness" (sans quotes).
 
-Then, in the root directory of secure_witness in a terminal, run:
+Then, install the python library mysql client, using ```pip install mysqlclient```.
 
-```python manage.py syncdb```
+Finally, in the root directory of secure_witness in a terminal, run: ```python manage.py syncdb```
 
 And set up a new superuser.
 
