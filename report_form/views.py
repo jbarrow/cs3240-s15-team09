@@ -30,23 +30,20 @@ def detail(request, report_id):
 def edit(request, report_id):
 	report = get_object_or_404(Report, pk=report_id)
 	files = File.objects.filter(report=report)
-	data = {#'author': report.author,
-			'short_description': report.short_description,
-			'location' : report.location,
-			'detailed_description' : report.detailed_description,
-			'date_of_incident' : report.date_of_incident,
-			'private': report.private,
-			#'time_created': report.time_created,
-			#'time_last_modified': report.time_last_modified
-			}
-	f = report_input_form(initial=data)
-	f.has_changed()
+	if request.method == 'POST':
+		f = ReportForm(request.POST, instance=report)
+		if f.is_valid():
+			f.save()
+			return HttpResponseRedirect(reverse('report_form.views.detail', report.id))
+	else:
+		print("is invalid")
+		f = ReportForm(instance=report)
 	return render(request, 'report_form/report_form_template.html', {'input_report_form' : f})
 
 
 def submitted(request):
 	# want to echo back form fields here for confirmation
-	submission = Report.objects.latest('id')
+	submission = Report.objects.latest('id') # this is probably not going to work later
 	last_id = submission.id
 	files = File.objects.filter(report=submission)
 	return render(request, 'report_form/submission_template.html', {'submission' : submission, 'files' : files})
@@ -54,7 +51,7 @@ def submitted(request):
 @login_required
 def submission(request):
 	if request.method == 'POST':
-		input_report_form = report_input_form(request.POST)
+		input_report_form = ReportForm(request.POST)
 		#input_file_form = FileForm(request.POST, request.FILES)
 		if input_report_form.is_valid(): # change this
 			# need to do the linking here
@@ -80,7 +77,7 @@ def submission(request):
 
 			return HttpResponseRedirect(reverse('report_form.views.submitted'))
 	else:
-		input_report_form = report_input_form()
-		#input_file_form = FileForm()
+		input_report_form = ReportForm()
+		print("has failed in creation")
 
 	return render(request, 'report_form/report_form_template.html', {'input_report_form' : input_report_form})
