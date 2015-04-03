@@ -44,7 +44,7 @@ def edit(request, report_id):
 	else:
 		print(request.method)
 		f = ReportForm(instance=report)
-	return render(request, 'report_form/edit.html', {'input_report_form' : f, 'report': report})
+	return render(request, 'report_form/edit.html', {'input_report_form' : f, 'report': report, 'files': files})
 
 
 def submitted(request):
@@ -66,6 +66,8 @@ def submission(request):
 			# though we could append two forms together, though that is not great
 
 			# how would having non-required fields work?
+
+			# some of these fields are not really necessary anymore // need to look into it
 			current_user = request.user
 			profile = UserProfile.objects.filter(user=current_user)
 			report_input = Report()

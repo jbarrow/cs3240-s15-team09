@@ -6,11 +6,11 @@
 		<h1>Reports Submitted</h1>
 		{% if my_reports %}
 			{% for indiv in my_reports %}
-			<p>Description= {{ indiv.short_description }} </p>
+			<p>Description= {{ indiv.short_description }}</p>
 			<a href= "{% url 'detail' indiv.id  %}">
-			<p>view report here</p></a>
+			<button>view submitted report</button></a>
 			<a href= "{% url 'edit' indiv.id  %}">
-			<p>edit report here</p></a>
+			<button type="button">edit report</button></a>
 			{% endfor %}
 		{% else %}
 			<p> no reports yet submitted </p>
