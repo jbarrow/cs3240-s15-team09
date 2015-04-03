@@ -40,7 +40,7 @@ class File(models.Model):
 class ReportForm(ModelForm):
     class Meta:
         model = Report
-        fields = ['author', 'short_description', 'detailed_description', 'location', 'date_of_incident','private']
+        fields = ['short_description', 'detailed_description', 'location', 'date_of_incident','private']
 
 class FileForm(ModelForm):
     class Meta:

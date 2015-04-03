@@ -1,9 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 
-from report_form.models import Report, File
+from report_form.models import Report, File, ReportForm
 from report_form.forms import report_input_form
 from secure_witness.models import UserProfile
 from django.contrib.auth.models import User
@@ -12,18 +12,46 @@ from django.contrib.auth.decorators import login_required
 def incomplete_landing(request):
 	return HttpResponse("Report form not yet available.")
 
+@login_required
+def my_reports(request):
+	current_user = request.user
+	profile = UserProfile.objects.filter(user=current_user)
+	my_reports = Report.objects.filter(author=profile[0])
+	return render(request, 'report_form/display_list_reports.html', {'my_reports' : my_reports})
+
+
+@login_required
+def detail(request, report_id):
+	report = get_object_or_404(Report, pk=report_id)
+	files = File.objects.filter(report=report)
+	return render(request, 'report_form/detail.html', {'report': report, 'files': files})
+
+@login_required
+def edit(request, report_id):
+	report = get_object_or_404(Report, pk=report_id)
+	files = File.objects.filter(report=report)
+	if request.method == 'POST':
+		f = ReportForm(request.POST, instance=report)
+		if f.is_valid():
+			f.save()
+			return HttpResponseRedirect(reverse('report_form.views.detail', report.id))
+	else:
+		print("is invalid")
+		f = ReportForm(instance=report)
+	return render(request, 'report_form/report_form_template.html', {'input_report_form' : f})
+
+
 def submitted(request):
 	# want to echo back form fields here for confirmation
-	submission = Report.objects.latest('id')
+	submission = Report.objects.latest('id') # this is probably not going to work later
 	last_id = submission.id
 	files = File.objects.filter(report=submission)
-	#return HttpResponse("Thanks.")
 	return render(request, 'report_form/submission_template.html', {'submission' : submission, 'files' : files})
 
 @login_required
 def submission(request):
 	if request.method == 'POST':
-		input_report_form = report_input_form(request.POST)
+		input_report_form = ReportForm(request.POST)
 		#input_file_form = FileForm(request.POST, request.FILES)
 		if input_report_form.is_valid(): # change this
 			# need to do the linking here
@@ -49,7 +77,7 @@ def submission(request):
 
 			return HttpResponseRedirect(reverse('report_form.views.submitted'))
 	else:
-		input_report_form = report_input_form()
-		#input_file_form = FileForm()
+		input_report_form = ReportForm()
+		print("has failed in creation")
 
 	return render(request, 'report_form/report_form_template.html', {'input_report_form' : input_report_form})

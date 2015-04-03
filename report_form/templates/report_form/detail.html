@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Report Detail</title>
+		{% if report %}
+			<p>Author= {{ report.author.user.username }} </p>
+			<p>Description= {{ report.short_description }} </p>
+			{% if files %}
+				<ul>
+				{% for inputfile in files %}
+					<li><a href= "{{ inputfile.file.url }}">{{ inputfile.title }}</a></li>
+				{% endfor %}
+				</ul>
+			{% else %}
+				<p> No files yet uploaded </p>
+			{% endif %}
+			<p>Time Modified= {{report.time_last_modified}} </p>
+		{% else %}
+			<p> shouldn't be here </p>
+		{% endif %}
+	</head>
+</html>
