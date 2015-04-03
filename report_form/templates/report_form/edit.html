@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'report_form/style.css' %}"/>
+	<head>
+		<meta charset="utf-8">
+		<title>Report Form submission</title>
+	</head>
+	<body class="body">
+	  <div class="div">
+		<form class="form"  action = "{% url 'edit' report.id %}" method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+			{{ input_report_form.as_p }}
+			<!--{{ input_file_form.as_p }} -->
+			<input type="file" name="file" multiple />
+			<p> <input type="submit" value="Submit Report" /></p>
+		</form>
+		</div>
+	</body>
+</html>

@@ -34,11 +34,13 @@ def edit(request, report_id):
 		f = ReportForm(request.POST, instance=report)
 		if f.is_valid():
 			f.save()
-			return HttpResponseRedirect(reverse('report_form.views.detail', report.id))
+			return HttpResponseRedirect(reverse('report_form.views.detail', args=(report.id,)))
+		else:
+			return HttpResponse("Report form not yet available.")
 	else:
-		print("is invalid")
+		print(request.method)
 		f = ReportForm(instance=report)
-	return render(request, 'report_form/report_form_template.html', {'input_report_form' : f})
+	return render(request, 'report_form/edit.html', {'input_report_form' : f, 'report': report})
 
 
 def submitted(request):
