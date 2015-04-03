@@ -1,0 +1,184 @@
+BLACK HOLE COMPUTERS - the laws of physics as computer programs. 
+The universe as a computer.
+
+- all physical systems are computers because they register and process information
+- every electron, elementary particle stores information (data bits)
+- transformation of data = bits are transformed
+- getting data to a black hole is not a problem, getting information out
+is impossible
+- Hawking: black holes do have an output - hawking radiation, but the
+energy released does not carry useful information that can reconstruct
+what entered the black hole
+
+apparent loss of information? Law of quantum say that the amount of 
+info is conserved. What if the output radiation is not random --> processed
+matter of what falls in? Probably.
+
+The universe also registers and computes information
+information theory to explain laws of thermodynamics
+entropy = proportional to the number of bits registered by positions and
+velocities of molecules in a substance
+qubits = bits that make up the universe with more information than regular bits
+
+THE UNIVERSE IS A GIANT QUANTUM COMPUTER
+
+*When Gigahertz is too slow*
+maxim of quantum mechanics = nature is discrete
+each particle has a spin = one of two directions, therefore a bit
+flipping the spin is a simple computation
+discrete time = minimum amount of time to flip a bit
+Heisenburg uncertainty = trade offs in measuring physical quantities
+the amount of time to flip a bit depends on the amount of energy that we put in
+amount of energy is inversely proportional to time required
+- allows us to think about the computational limits of the universe
+- matter = its battery is itself - matter converted to energy
+- all of the energy is used for computation, slowing down as energy degrades
+
+existence = storing information
+if information escapes from a black hole, it can compute
+size(memory space) proportional to (computation rate)^2
+discrete atoms of space/time may be larger than expected - laws of physics
+limit the power of computers and precision of measurement
+
+WHAT'S A COMPUTER?
+- physical objects can solve a broad class of math/logic though I/O may not 
+be present
+- natural computers - depends on particle spin
+ULTIMATE LAPTOP
+- data in: particle positions, spin, velocity
+- computation: particle interaction, collision
+- out: particles leaving - measure their properties
+BLACK HOLE
+- in: data and instructions are encoded in matter and pulled in
+- compute: descent, particles interact
+- out: black hole radiation, carries computation output
+
+entropy proportional, energy/temperature
+ultimate = all of the particles encode info
+- information in the microscopic motions and positions
+
+particles = variables
+interactions = ops
+asynchronous - bit can flip super fast, system too fast to have a central clock
+work in parallel - all independent threads, communication between threads is slower
+matter converted completely to energy
+
+NANOTECH TO XENNOTECH
+-black hole = computer compressed to smallest possible size
+size(black hole) = Schwartzchild radius
+- shrinking a computer does not change its energy content
+- speed of computation is proportional to the matter it contains
+- memory = number of particles and the volume
+- gravity dominates = interconnection of particles - capable of storing less information
+- much less memory than uncompressed
+- black hole is faster
+- time to flip a bit = time to move from one side of hole to other
+- very serial
+- prepare the input data = black hole can execute any program
+- except that once the data enters it is gone
+- particles fall - perform computation for finite time before reaching center
+- output: Hawking radiation - peak wavelength of radiation equals hole radius
+- capture the radiation and convert to HR
+- rate at which black holes radiate is inversely proportional to size
+- BLACK HOLES - TRANSIENT CONGREGATION OF MATTER - PERFORMS COMPUTATION
+AT MAXIMUM RATE
+
+ultimate laptop = parallel
+	* communication slower than computation
+black hole - serial (single processor)
+	* commuication as fast as computation
+
+ESCAPE PLAN
+- does hawking radiation really encode meaningful information?
+- matter cannot leave, but information can
+- escape hatch is entanglement? - properties of systems are correlated across space-time
+	* teleportation
+ENTANGLEMENT
+- entangle particles
+- measurement on one of the particles jointly with matter with information
+- measurement erases some of the info on original particle
+- information is teleported to other entangled particle
+- information decoded using measuremente results as a key
+
+BLACK HOLE
+- entangled photons at the event horizon
+- one particle falls into singularity, other emitted
+- annihilation of one = measurement
+- information is transferred to the second one as output Hawking radiation
+- don't need the result of measurement to decode information
+- annihilation has only one outcome - calculation outcome and decode
+- final singularity has a unique state
+
+ESCAPE VIA WEIRD QUANTUM PHENOMENA
+- black holes are composite bodies make up of branes (string theory)
+- info in: waves in the branes, which can leak out
+- black hole = fuzzy ball of strings
+	* radiation = information carried
+
+Hawking model:
+- pairs of particles materialize at event horizon
+- one annihilated, other flies out
+- spins are random
+
+HOROWITZ-MALDACENA
+- outgoing particle = raw mass and information
+- mechanical entanglement
+
+CYBERSPACETIME
+- small scales = spacetime is bubbly and foamy
+- max amount of information that can be input depends on smallness of the bits
+- are these foamy cells larger? No fixed size?
+- how to map the geometry of spacetime?
+- like satellites = satellite sends a signal and see how long it takes to arrive
+- precision depends on how fast the clocks tick
+- energy increases more slowly than the volume does
+- measurements are useful when measuring apparatus is on the verge of becoming a black hole
+
+number of bits in a memory is proportional to square of computational rate
+- link between information and special relativity
+
+HOLOGRAPHICAL PRINCIPLE
+- our three-D universe is actually 2-D?
+- maximum amount of information a space can store is governed by surface area, not volume
+- holographic principle seems to follow from fundamental quantum limits to measurement precision
+
+42
+- computation: black holes, spacetime foam, universe and infinity
+- how many operations occurred since the creation of our universe?
+- the universe must have performed the maximum  number of computations allowed by laws of physics
+matter can embody teh most information when it is energy, massless particles
+( like phones, neutrinos )
+universe computation is more like an ultimate laptop because it would be paralle
+
+DARK ENERGY
+- the number of bits that the universe can store approx equal to # computations/operations
+- universe is close to the critical density
+- if more dense, collapse into a black hole
+- universe nearly meets criteria for maxing out the number of computations that it can perform
+- the maximum number of computations at the universe can perform ~the number of operations that could
+be performed up to that moment
+
+REGULAR MATTER VS. DARK ENERGY
+- ordinary : huge number of operations
+- dark: overwhelming majority have had only time to flip once over the
+course of cosmic history
+- dark matter has not done a lot of computation
+- supplying missing mass and accelerating its expansion = simple tasks
+
+WHAT IS THE UNIVERSE COMPUTING?
+- THE UNIVERSE IS COMPUTING ITSELF
+- computing quantum fields, chemicals, bacteria, humans, stars
+- computing its own spacetime geometry
+- COMPUTATION IS EXISTENCE
+- universal computation = conceptual interconnections of fundamental physics
+	* quantum information
+
+dark energy = slower, more memory than normal matter
+
+measurement uncertainty = varies with the size of the object being measured, larger an object is, the 
+fuzzier its structure - measurement imprecision is independent of the objecct
+your choice of what to measure = affects fine-scale structure of spacetime
+
+
+
+

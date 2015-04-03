@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>My Reports</title>
+		<h1>Reports Submitted</h1>
+		{% if my_reports %}
+			{% for indiv in my_reports %}
+			<p>Description= {{ indiv.short_description }} </p>
+			<a href= "{% url 'detail' indiv.id  %}">
+			<p>submitted report</p></a>
+			{% endfor %}
+		{% else %}
+			<p> no reports yet submitted </p>
+		{% endif %}
+	</head>
+</html>

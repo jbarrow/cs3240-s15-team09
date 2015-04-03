@@ -1,0 +1,107 @@
+asynchronous chips - let each chip run as fast as it can!
+
+synchronous computers = crystal oscillator that sets the rhythm of the machine
+- every action of the computer takes place in tiny steps
+- all actions are according to the clock's timing signals
+- clock distribution system delivers timing signals from crystal oscillator to various circuits
+- output of any circuit from one step can serve as input to another circuit on the next step
+
+timing is now more difficult
+- transistors are so quick that they can process data faster than it takes to transmit the clock signal 
+across the chip
+- keeping the rhythm identical costs power
+
+what if each circuit can operate at it's own pace instead of a central clock?
+but common timing makes the design process much easier
+but some asynchronous chips are in mass production now!
+
+HOW CLOCKLESS SYSTEMS WORK
+- local coordination to ensure an orderly flow of data
+	* Rendevous, Arbiter
+* faster speeds, lower power consumption, less radio interference
+
+WHY ASYNCHRONY?
+- synchronous = clock's rhythm must be slow enough to accommodate the slowest
+action of in the chip's circuit
+- A: each part takes as much or as little time as it needs, not waiting 
+for the lowest common denominator
+- actions can start as soon as the prerequisite actions are done
+- dependent on the average action time, not the slowest
+- best when slow actions occur infrequently because there will be need for coordination
+- reduction of power consumption = circuits that deliver timing take up a good chunk of the 
+chip's area
+- clock is always running, so it is always consuming power
+- idle parts of the chip will consume negligible power, good for battery life and reduce the need for 
+cooling, heat sinks
+- less radio interference - clocks broadcast a strong radio signal at the frequency and its harmonics
+	* signals can interfere with cell phones and etc. at the same frequency
+	* asynchronous signals radiate broadly so less at a particular frequency
+- be a bridge between computers at different clock frequencies
+	* computing clusters = link slower machines with faster machines
+- circuits don't need a common rhythm, more freedom to choose parts
+- replacing any part with a faster version will improve the speed of the entire system
+
+LOCAL COOPERATION
+the bucket brigade pipeline
+each stage performs one action of the instruction's execution
+clocked pipeline executes the actions in a rhythm independent of the operations performed or number size
+A: duration of each action may depend on the action performed, size of the numbers, the memory access
+coordination circuits = exchange completion signals to ensure that sequential actions at each stage only begin when 
+they have the data that they need
+
+RENDEZVOUS CIRCUIT
+- coordinate data flow without a central clock
+- controlled by Muller-C elements, allow data to pass only when the preceding stage is full
+and the following stage is empty
+- two input wires, and one output wire
+
+Muller-C element makes inputs originally differ - all stages empty from start
+move data down the pipeline by briefly making the data latch transparent
+
+RENDEZVOUS CONT
+- when the last of two or more signals has arrived at a stage
+- need to wait until all of the concurrent actions have completed
+inA inB out
+T   T   T
+F   F   F
+otherwise, the input was the same as it used to be
+inputs do not change until the output responds
+used to control the flow of data
+
+ARBITER
+- decides which "car" may pass through next
+- given one request it permits the corresponding action, delay the second until the first is finished
+- more than one request at once, decision
+- request acccess to shared memory at same time - requests into a sequence
+- but no way to build an Arbiter that reaches a decision within a fixed time limit
+- with close calls they can take longer than usual (up to 2x)
+- we need to know how to break the tie in close calls ,or we end up deliberating forever
+- two states corresponding to two choices
+	- each request pushes circuit to a specific stable state
+	- if requests happen at the same time = in a metastable state
+- noticing the metastability: but too many hard choices
+	* go left, go right or notice a hard choice then go left
+- no way to eliminate meta-stability but Arbiter can ensure that delays are brief
+
+SPEED
+- "speed often comes from simplicity"
+- two opposing data flows - data from both flows interact at each of the stages, how do you make that happen?
+- at each stage, Arbiter only allows one element to pass
+- FLEET = computing elements = ship, FLEET moves data among the ships
+- steer data from one pipeline to another
+- like cars at a highway interchange
+- asynchronous queues = differences in arrival times compensation
+
+WHY IS IT HARD
+- pace may vary from time to time in any one system 
+- variance from system to system
+- concurrent actions may finish in a large number of possible sequences
+- state explosion problem
+- order out of the concurrent actions?
+- use disciplines to limit complexity = certain limitations on communication behavior of the circuits
+
+
+
+
+
+

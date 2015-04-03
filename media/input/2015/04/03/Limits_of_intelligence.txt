@@ -1,0 +1,147 @@
+THE LIMITS OF INTELLIGENCE - THE LAWS OF PHYSICS MAY PREVENT US FROM 
+EVOLVING INTO SOMETHING MORE POWERFUL
+
+Elephants = signals take more than 100 longer to travel between opposite
+sides of its brain - need to think more about what it is to do because
+reflexes are not a thing
+
+the laws of physics place tough constraints on our mental faculties
+- anatomic roadblocks to brain expansion? will we fit through the birth
+canal?
+
+- increase the number of neurons in the brain?
+- boost rate at which neurons exchange information?
+- but there are physical limits
+	* neurons and statistically noisy chemical exchanges
+	* information, noise, energy = thermodynamics
+do the laws of thermodynamics impose a limit on neuron based intelligence?
+but intelligence is really hard to define
+is there a limit to the evolution of neuron-based intelligence for all life?
+
+SUMMARY
+- human intelligence is close to its limit?
+- most of the tweaks that would make us smarter would hit the limits of the
+laws of physics
+- larger brains = energy hungry and slow
+= better wiring = consume energy and space
+- thinner wires = noisy communications
+- collective knowledge and technology may allow us to expand our mind outside of our body
+
+BRAIN SIZE VS. INTELLIGENCE
+- mathematical laws related to body mass and brain mass
+larger brain = more neurons, more complexity
+but brains seem to expand with body size, so it is used for more trivialities
+	* monitor more nerves, larger retinas, more muscles
+Dubois = estimation of animal intelligencce based on the size of their skulls
+	* relation between body size and brain size
+	* mammalian brains expand more slowly than their bodies
+	* ENCEPHALIZATION QUOTIENT = species' brain mass with what is predicted based on body mass
+		- brain is about 3/4 power of body mass
+		- what is the deviation from that estimate?
+		- humans : 7.5 larger than prediction
+		- dolphins: 5.3
+ - intelligence may depend on amount of neural reserves that is left over after a brain's menial chores
+- greater number of neural pathways that any one signal can travel means that the signal carries more information
+- law of diminishing returns to increasing intelligence by adding brain cells
+- size = energy consumption
+- brain = 2% mass, expends 20% of calories
+
+STAYING IN TOUCH
+- communication networks
+- cortex = communications take up 80% of consumption
+- size increases, neuronal connectivity becomes more challenging - design principles of the brain and how the principles are maintained
+across brains of different sizes
+- axon bundles = nerves
+- diameter of axons, size and density of nerve cells, number of synapses per cell
+- as brains expand: 
+	* average size of nerve cells increase	
+		- allows neurons to connect to more as the number of neurons increase
+		- but larger cells pack together less densely - distance increases and required axon length increases too
+		- axons also need to be thicker to maintain speed
+		- longer times to travel if all things were equal
+	* divided into larger and larger number of distinct areas
+		- specialized function
+		- specialized function on either sides of the brain
+		- specialization may compensate for the connectivity problem
+			- impossible for neurons to be big enough to stay well connected
+		- segregate like-functioned neurons into modules
+		- fewer long distance connections between modules
+		- reduce number of interhemispheric communication
+	* basically tradeoffs = bigger brains need more changes to sustain the longer distances between cells
+	* improve one, screw up another
+		- expand the corpus callosum?
+		- push the hemispheres apart so that the gains are neutralized
+- neurons do get larger as brain size increases but not quite enough to stay well connected
+- thicker axons not thick enough to make up for delays
+- 2x axon width = 2x energy expenditure, increased velocity of only 40%
+- axons (white) grow faster than gray matter (nucleus)
+	* more volume is towards wiring instead of computational units
+
+PRIMATES
+- workarounds for the larger brain = not used for increased computational power issue
+- primates = cortical neurons enlarge very little as the brain increases in size
+- a few do, but the ones that do keep things well connected
+- neurons still pack together as densely
+- doubling in mass will mean that the number of neurons roughly double, whereas in other mammals, it would only be 60%
+- huge differences - if we used the same scaling laws, then would have 45 kg brain to deal with
+* smaller densely packed neurons *
+	- predicting intelligence by behavioral complexity
+	- only tight correlation with intelligence is the # of neurons in the cortex + speed of neuronal activity
+		- speed decreases with distance between neurons
+		- increases with myelination
+	- faster communications as the cells are packed more tightly
+- larger neurons and brains can be inefficient - larger distance, slower nerve velocity
+
+people with the quickest lines of communication between their neurons = brightest, most intelligent
+- shorter paths between brain areas is correlated with higher IQ
+- compare working memory to estimate how fast communication flows between brain areas
+- most direct communication and fastest "neural chatter" = best working memory
+- brains are larger = savev space and energy by limiting the number of direct connections
+- rare, nonstop connections are what makes us smarter
+
+INTELLIGENCE DESIGN
+- communication between neurons, between brain areas is a bottleneck?
+- smaller neurons, closer together 
+- axons that carry signals faster over longer distances without getting thicker?
+- THE MOTHER OF ALL LIMITATIONS = proteins than are used to generate electrical pulses are unreliable
+- ion channels can be flipped open or closed, so the signals are not always reliable
+- ion channel flutters on and off randomly- by changing the voltage, you just change the likelihood that it opens
+
+TRADEOFFS
+- spring on the channel loose, then noise switches it
+- spring is stronger, then you need to input more work
+- neurons save energy by using hair-trigger ion channels
+- reliable only if you use a large number of channels to vote if the impulse came through
+- reduce the size of the neurons, reduce the number of channels that are available - increase noise
+
+axons to 150 - 200 nm = impossibly noisy
+- so few ion channels that accidentally opening one channel can cause axon to deliver the signal mistakenly
+- cortical gray matter neurons are working with axons that are close to the physical limit
+
+information, energy, noise
+transistors at 22 nm <-- hard to dope silicon uniformly
+at 10 nm <--- single random absence/presence of boron atom can cause unpredictable behavior
+
+engineers can scrap the current design, but evolution cannot 
+circuits that underlie vision, smell, navigation, etc. have the same basic arrangement
+- some physiological solution has reached maturity
+- optimal neural blueprint?
+
+BEES
+- have humans reached the physical limits of brain complexity?
+- more like a law of diminishing returns...
+-- only so many neurons, only so many neuronal connections, only so many electrical impulses per second
+- energy consumption, dissipation of heat, time
+
+SO HOW DO WE GET SMARTER?
+- collective intelligence, like honeybees and hive sisters
+- social interaction = pool our intelligence with others
+- Internet as the expansion of intelligence outside of our bodies
+- maybe the Internet makes you stupid, because we have reduced the need for evolving individual smarts
+
+physics of thought
+- smaller components, more power and become faster
+- axons allow neurons to form networks
+- signals and action potentials = open ion channels that let the ions through
+- enough ions cross a channel, change the voltage, causing other channels to open
+- thinner axons, consume less energy

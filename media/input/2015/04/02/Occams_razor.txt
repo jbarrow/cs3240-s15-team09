@@ -1,0 +1,166 @@
+OCCAM'S RAZOR
+THE LAW OF PARSIMONY - if two theories have the same predictive
+power, then choose the one that makes the fewest assumptions
+- more complicated, may make better predictions, but fewer assumptions -- better
+
+this applies to a particular context = the facets of simplicity may
+work in different directions - simpler description, hypothesis, etc.
+There may be tradeoffs
+
+Solomonoff's theory of inductive inference = formalized razor
+- shorter computable theories have more weight when calculating prob of
+next observation
+
+- guiding the dev. of theoretical models
+- preference for simplicity 
+- simplicity in scientific method = falsifiability criterion
+- simpler theories are preferable to complex ones because they are
+more easily tested
+
+"entities must not be multiplied beyond necessity"
+
+Aristotle = superior ceteris paribus [all things equal] of the demonstration
+that derives from fewer postulates or hypotheses
+
+"a plurality is not to be posited without necessity"
+Numquam ponenda est pluralitas sine necessitate
+
+- choose fewer because it produces knowleddge with fewer premises,
+makes us know quickly
+
+razor = shaving away unnecessary assumptions or cutting apart two similar conclusions
+
+Russell modification = "Whenever possible, substitute constructions out 
+of known entities for inferences to unknown entities"
+
+Solomonoff = computable probability distribution
+
+Layperson = simplest explanation is usually correct
+
+* aesthetics = nature is simple and simpler hypotheses are more likely to be true
+* empirical = excessively complex models are affected by statistical noise, simpler models may capture underlying structure better, better predictors
+
+TESTING THE RAZOR
+- all other things being equal, simpler explanations are generally better
+than complex ones
+- or simpler hypotheses are generally better than complex ones
+- simpler hypotheses are generally mathematically rigourous and empirically verifiable
+- only add complexity if it is necessary
+- prevents the addition of ad hoc hypotheses where we just 
+add justifications, making the hypothesis unfalsifiable
+- each true explanation may have an infinite number of false and more complex
+or false and simpler alternatives
+- endless supply of elaborating explanations is possible - ruled out (not really)
+	* but cut by Occam's Razor
+
+- simpler theories are easier to understand
+- heuristic maxim for choosing among models
+- are we just forced to use Occam's Razor, just because it seems to be a
+good candidate for a first principle?
+
+MATH
+- all assumptions introduce possibility for error, if assumption
+does not improve the accuracy, then the only thing it does is to 
+increase the probability that the theory is wrong
+- quantify the degree that a proposition unnecessarily accommodates possible observable data
+- hypothesis with fewer adjustable parameters will have enhanced posterior probability - predictions are sharp
+
+- choose simpler for:
+* aesthetics
+* falsability criterion = simpler because better testable 
+* more informative, less information required to answer a question
+* but why should simplicity be considered when thinking about plausibility
+	- simplicity considerations should not count unless they reflect something more fundamental
+* if choice of theory cannot be determined by data, then we must have 
+some criterion - the "principle of simplicity is a fundamental synthetic a priori truth"
+* Occam's Razor = unnecessary elements in a symbolism mean nothing - signs with no purpose are logically meaningless
+
+APPLICATIONS
+- guide for development of models instead of arbiter 
+- parsimony
+- heuristic = not always right
+= "everything should be kept as simple as possible but no simpler"
+- parsimony is a epistemological, metaphysical, heuristic preference not a principle of logic
+- accept the simplest possible theoretical exp. for existing data
+- but simplest explanation can be ruled out as new data becomes available
+- parsimony = in the context, cannot generalize parsimony
+- there is little empirical evidence that the world is simple or that simple accounts are more likely to be true
+- conservative tool = cut out crazy constructions
+
+THREE AXIOMS, SCIENTIFIC METHOD
+- realism (existence of an objective reality)
+- existence of natural law
+- constancy of natural law
+- never been objectively falsified
+- Occam's razor support axioms but don't prove
+
+A single instance of Occam's Razor favoring a wrong theory falsifies the razor as a general principle
+- hence it is a heuristic
+- parsimonious approach does not guarantee a correct conclusion
+- science does not demand arbitration or selection between models that make the same testable hypotheses
+
+likelihood methods = parsimony - hypotheses requiring a few differing parameters as the null hypothesis
+	- complex hypotheses must predict data much better before simple hypotheses are rejected
+	- information theory is similar
+
+"very rash to use simplicity and elegance as a guide in bio" <-- ongoing natural selection and random
+
+Medicine = diagnostic parsimony = when diagnosing look for the fewest possible causes that will account for all
+symptoms
+- Hickam's dictum = "patients can have as many diseases as they damn well please"
+- but can have multiple symptoms rather than a single rarer disease
+	* because higher loss function - better to test and pursue all reasonable theories
+- diagnostic parsimony and counterbalance Hickam's dicum = any set of symptoms could be indicative of a range of diseases
+- testing and modification benefits from estimates
+- never accept/reject based on one disease seeming more likely (purely on that, other factors, okay)
+
+RELIGION
+- explanation has no sufficient basis unless it is in harmony with religion, reason, experience <- Ockham
+- Aquinas uses Occam's Razor to construct an objection to the existence of God
+- most theologians base beliefs on grounds independent of reason, so Razor is irrelevant
+- sometimes use God as a useful or neccessary assumption
+- or that God would introduce unnecessary complexity
+Berkeley = all of reality could be explained in terms of the mind alone
+* Occam's Razor against materialism, matter is eliminable
+- Occam's Razor is inconclusive regarding duality
+
+PENAL ETHICS
+- parsimony to avoid excessive punishment
+* any punishment greater than is required to achieve its end is unjust
+* true parsimony means that punishment should be individualized to account for sensitivity of the individual
+	- but seems impractical
+
+PROBABILITY AND STAT
+- Razor from prob theory and apply it to stat inference
+- only can apply to models with the same explanatory power
+- Bayesian models
+- AI using Occam learning
+- change the form of the razor so that it can be used to compare models that don't fit data equally
+- with math = becomes more rigourous 
+- simplicity must be defined
+- is Occam's razor subjective or objective?
+
+OBJECTIVE?
+- minimum universal Turing machine = same length description across different formulations
+- natural Turing machine  of small size as bassis for excluding complex instruction set
+- program for universal -- hypothesis
+- representation of the evidence == program data
+- sum of log universal prob of model + log prob of data should be minimized
+- IDEAL DATA COMPRESSOR = scientific formulation generator
+- math theory of razor is Solomonoff's theory of optimal inductive inference?
+
+CONTROVERSY
+- is not the recommendation for any simplest theory
+- should be the last step to choose between theories that are already seen to be valid and equally supported by data
+- prioritize empirical testing as well
+- a theory can have more complex structure, but semantics can be simpler
+	* lots of complex words to explain some simple concept
+	* economy of grammar/vocab or practical expression
+
+ANTI-RAZORS
+- is it too extreme?
+- Chatton - if 3 things are not enough to verify an affirmative proposition about things, a fourth must be added
+- Leibniz - priniciple of plenitude = God created the most varied and populous of possible worlds
+- Kant = the variety of beings should not be rashly diminished
+- Menger = it is vain to do with fewer what requires more, not reduction to the point of inadequacy
+
