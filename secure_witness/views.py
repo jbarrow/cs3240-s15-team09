@@ -2,9 +2,13 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from secure_witness.forms import UserForm, UserProfileForm
+from secure_witness.models import UserProfile
 
 def profile(request):
-    return render_to_response('profile.html')
+    profile = UserProfile.objects.filter(user=request.user)
+    print(request.user)
+    print(profile[0].admin)
+    return render_to_response('profile.html', {'admin': profile[0].admin})
 
 def register(request):
     context = RequestContext(request)
