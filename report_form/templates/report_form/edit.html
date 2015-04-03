@@ -14,14 +14,14 @@
 			{% if files %}
 				<ul>
 				{% for inputfile in files %}
-					<li><a href= "{{ inputfile.file.url }}">{{ inputfile.title }}</a> <button type="button">delete file (unimplemented)</button></li>
+					<li><a href= "{{ inputfile.file.url }}">{{ inputfile.title }}</a> <input type="submit" name = "delete" value="delete" /></li>
 				{% endfor %}
 				</ul>
 			{% else %}
 				<p> No files yet uploaded </p>
 			{% endif %}
 			<input type="file" name="file" multiple />
-			<p> <input type="submit" value="Submit Report" /></p>
+			<p> <input type="submit" name= "submission" value="Submit Report" /></p>
 		</form>
 		</div>
 	</body>

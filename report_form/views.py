@@ -32,13 +32,16 @@ def edit(request, report_id):
 	files = File.objects.filter(report=report)
 	if request.method == 'POST':
 		f = ReportForm(request.POST, instance=report)
-		if f.is_valid():
+		if f.is_valid() and request.POST.get("submission"):
 			f.save()
 			for upfile in request.FILES.getlist("file"):
 				newfile = File(title = upfile.name, file=upfile, report=report)
 				newfile.save()
 
 			return HttpResponseRedirect(reverse('report_form.views.detail', args=(report.id,)))
+		
+		elif request.POST.get("delete"):
+			return HttpResponse("triggered a delete. Doesn't do anything.")
 		else:
 			return HttpResponse("Report form not yet available.")
 	else:
