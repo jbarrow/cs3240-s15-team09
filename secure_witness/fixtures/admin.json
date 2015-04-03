@@ -1,0 +1,16 @@
+[{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "username": "switness",
+    "password": "pbkdf2_sha256$15000$RhhNfNBtcIIK$PAYXxTCFk1QOYElbi8VDbnD73jma5F85lzj77BNrbgk="
+  }
+},
+{
+  "model": "secure_witness.userprofile",
+  "pk": 1,
+  "fields": {
+    "name": "Secure Witness",
+    "admin": "True"
+  }
+}]
