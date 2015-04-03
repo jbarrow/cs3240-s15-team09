@@ -40,9 +40,16 @@ def edit(request, report_id):
 
 			return HttpResponseRedirect(reverse('report_form.views.detail', args=(report.id,)))
 		
-		elif request.POST.get("delete"):
-			return HttpResponse("triggered a delete. Doesn't do anything.")
+		#elif request.POST.get("delete"):
+			#return HttpResponse("triggered a delete. Doesn't do anything.")
 		else:
+			for inputfile in files:
+				# delete here
+				#print(request.POST.get(inputfile.title))
+				if request.POST.get(inputfile.title):
+					inputfile.delete()
+					return HttpResponseRedirect(reverse('report_form.views.edit', args=(report.id,)))
+			
 			return HttpResponse("Report form not yet available.")
 	else:
 		print(request.method)
