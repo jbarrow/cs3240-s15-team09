@@ -3,6 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<title>Report Detail</title>
+		<h1>Report Detail for Report #{{report.id}}</h1>
 		{% if report %}
 			<p>Author= {{ report.author.user.username }} </p>
 			<p>Description= {{ report.short_description }} </p>

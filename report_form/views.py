@@ -34,6 +34,10 @@ def edit(request, report_id):
 		f = ReportForm(request.POST, instance=report)
 		if f.is_valid():
 			f.save()
+			for upfile in request.FILES.getlist("file"):
+				newfile = File(title = upfile.name, file=upfile, report=report)
+				newfile.save()
+
 			return HttpResponseRedirect(reverse('report_form.views.detail', args=(report.id,)))
 		else:
 			return HttpResponse("Report form not yet available.")

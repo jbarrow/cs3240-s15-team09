@@ -8,7 +8,9 @@
 			{% for indiv in my_reports %}
 			<p>Description= {{ indiv.short_description }} </p>
 			<a href= "{% url 'detail' indiv.id  %}">
-			<p>submitted report</p></a>
+			<p>view report here</p></a>
+			<a href= "{% url 'edit' indiv.id  %}">
+			<p>edit report here</p></a>
 			{% endfor %}
 		{% else %}
 			<p> no reports yet submitted </p>
