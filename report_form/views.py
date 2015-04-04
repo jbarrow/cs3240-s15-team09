@@ -13,11 +13,20 @@ def incomplete_landing(request):
 	return HttpResponse("Report form not yet available.")
 
 @login_required
-def my_reports(request):
+def my_reports(request, user_id):
 	current_user = request.user
 	profile = UserProfile.objects.filter(user=current_user)
 	my_reports = Report.objects.filter(author=profile[0])
-	return render(request, 'report_form/display_list_reports.html', {'my_reports' : my_reports})
+	if request.method == 'POST':
+		for indiv in my_reports:
+			if request.POST.get(str(indiv.id)):
+				report_files = File.objects.filter(report=indiv)
+				for indiv_file in report_files:
+					indiv_file.delete()
+				indiv.delete()
+				# want to delete only one at a time
+				return HttpResponseRedirect(reverse('report_form.views.my_reports', args=(current_user.id,)))
+	return render(request, 'report_form/display_list_reports.html', {'my_reports' : my_reports, 'profile': current_user})
 
 
 @login_required
@@ -39,14 +48,11 @@ def edit(request, report_id):
 				newfile.save()
 
 			return HttpResponseRedirect(reverse('report_form.views.detail', args=(report.id,)))
-		
-		#elif request.POST.get("delete"):
-			#return HttpResponse("triggered a delete. Doesn't do anything.")
 		else:
 			for inputfile in files:
 				# delete here
 				#print(request.POST.get(inputfile.title))
-				if request.POST.get(inputfile.title):
+				if request.POST.get(str(inputfile.id)):
 					inputfile.delete()
 					return HttpResponseRedirect(reverse('report_form.views.edit', args=(report.id,)))
 			

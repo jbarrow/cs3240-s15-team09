@@ -14,7 +14,7 @@
 			{% if files %}
 				<ul>
 				{% for inputfile in files %}
-					<li><a href= "{{ inputfile.file.url }}">{{ inputfile.title }}</a> <input type="submit" name = {{ inputfile.title }} value="delete" /></li>
+					<li><a href= "{{ inputfile.file.url }}">{{ inputfile.title }}</a> <input type="submit" name = {{ inputfile.id }} value="delete" /></li>
 				{% endfor %}
 				</ul>
 			{% else %}

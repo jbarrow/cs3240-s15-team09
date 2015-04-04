@@ -21,5 +21,7 @@
 		{% else %}
 				<p> No files yet uploaded </p>
 		{% endif %}
+		<a href= "{% url 'my_reports' submission.author.user.id  %}">
+		<button type="button">view my reports</button></a>
 	</head>
 </html>
