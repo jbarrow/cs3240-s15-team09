@@ -25,8 +25,8 @@ def my_reports(request, user_id):
 					indiv_file.delete()
 				indiv.delete()
 				# want to delete only one at a time
-				return HttpResponseRedirect(reverse('report_form.views.my_reports', args=(current_user.id,)))
-	return render(request, 'report_form/display_list_reports.html', {'my_reports' : my_reports, 'profile': current_user})
+				return HttpResponseRedirect(reverse('report_form.views.my_reports', args=(profile[0].user.id,)))
+	return render(request, 'report_form/display_list_reports.html', {'my_reports' : my_reports, 'profile': profile[0]})
 
 
 @login_required

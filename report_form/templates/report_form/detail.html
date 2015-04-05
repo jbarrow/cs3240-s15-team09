@@ -17,6 +17,8 @@
 				<p> No files yet uploaded </p>
 			{% endif %}
 			<p>Time Modified= {{report.time_last_modified}} </p>
+			<a href= "{% url 'my_reports' report.author.user.id  %}">
+		<button type="button">view my reports</button></a>
 		{% else %}
 			<p> shouldn't be here </p>
 		{% endif %}
