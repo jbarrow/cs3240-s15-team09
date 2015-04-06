@@ -8,7 +8,7 @@ def profile(request):
     profile = UserProfile.objects.filter(user=request.user)
     print(request.user)
     print(profile[0].admin)
-    return render_to_response('profile.html', {'admin': profile[0].admin})
+    return render_to_response('profile.html', {'admin': profile[0].admin, 'name': profile[0].name})
 
 def register(request):
     context = RequestContext(request)

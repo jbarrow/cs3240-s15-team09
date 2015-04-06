@@ -38,7 +38,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'report_form',
     'group_form',
-    'secure_witness'
+    'secure_witness',
+    'dashboard',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -100,3 +101,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+AUTH_PROFILE_MODULE = 'secure_witness.UserProfile'
