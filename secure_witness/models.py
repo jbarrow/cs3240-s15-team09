@@ -13,3 +13,7 @@ class UserProfile(models.Model):
         return self.user.username
 
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
+User.is_swadmin = property(lambda u: u.profile.admin)
+
+def is_swadmin(u):
+    return u.is_swadmin
