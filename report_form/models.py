@@ -19,7 +19,6 @@ class Tag(models.Model):
 class Report(models.Model):
 
     author = models.ForeignKey(UserProfile)
-    #author = models.CharField(max_length=128)
     short_description = models.CharField(max_length=750)
     location = models.CharField(max_length=500, blank=True)
     detailed_description = models.TextField()
@@ -27,7 +26,7 @@ class Report(models.Model):
     private = models.BooleanField(default=False)
     time_created = models.TimeField(auto_now_add = True);
     time_last_modified = models.DateTimeField(auto_now = True);
-
+    #folder = models.ForeignKey(Folder, blank=True, initial=some value);
 
     def __str__(self):
         return self.short_description
