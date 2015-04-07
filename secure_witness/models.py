@@ -12,7 +12,7 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
-User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
+User.profile = property(lambda u: UserProfile.objects.get(user=u)[0])
 User.is_swadmin = property(lambda u: u.profile.admin)
 
 def is_swadmin(u):
