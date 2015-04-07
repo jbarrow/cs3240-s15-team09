@@ -1,36 +1,18 @@
-{% load staticfiles %}
-<html>
-  <head>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" />
-  </head>
-  <body>
-    <nav class="navbar-inverse">
-      <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav">
-          <li><a href="#">Link </a></li>
-        </ul>
-      </div>
-    </nav><br />
+{% extends "base.html" %}
 
-    <div class="container row">
-      <div class="col-md-8">
-        {% block content %}
-        {% endblock %}
-      </div>
-      <div class="col-md-4">
-        <ul class="nav nav-pills nav-stacked">
-          <li class="active"><a href="#">Unsorted</a></li>
-          <li><a href="#">Diplomatic Cables</a></li>
-          <li><a href="#">NSA Files</a></li>
-          <li><a href="#" style="color: red;">+ New Folder</a></li>
-        </ul>
-      </div>
-    </div>
+{% block content %}
 
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
-  </body>
-</html>
+<div class="col-md-8">
+  {% block report_content %}
+  {% endblock %}
+</div>
+<div class="col-md-4">
+  <ul class="nav nav-pills nav-stacked">
+    <li class="active"><a href="#">Unsorted</a></li>
+    <li><a href="#">Diplomatic Cables</a></li>
+    <li><a href="#">NSA Files</a></li>
+    <li><a href="#" style="color: red;">+ New Folder</a></li>
+  </ul>
+</div>
+
+{% endblock %}
