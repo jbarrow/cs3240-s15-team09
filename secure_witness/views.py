@@ -1,14 +1,13 @@
 from django.shortcuts import render_to_response
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from secure_witness.forms import UserForm, UserProfileForm
-from secure_witness.models import UserProfile
+from secure_witness.models import UserProfile, is_swadmin
 
 def profile(request):
     profile = UserProfile.objects.filter(user=request.user)
-    print(request.user)
-    print(profile[0].admin)
-    return render_to_response('profile.html', {'admin': profile[0].admin})
+    return render_to_response('profile.html', {'admin': request.user.is_swadmin, 'name': profile[0].name})
 
 def register(request):
     context = RequestContext(request)
@@ -45,3 +44,9 @@ def register(request):
     return render_to_response('registration/register.html',
         {'user_form': user_form, 'profile_form': profile_form, 'registered': registered},
         context)
+
+@login_required
+@user_passes_test(is_swadmin)
+def admin_test(request):
+    print("ADMIN!")
+    return render_to_response('profile.html', {'admin': request.user.is_swadmin, 'name': request.user.profile.name})

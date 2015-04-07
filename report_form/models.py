@@ -1,6 +1,8 @@
 from django.db import models
 from django.forms import ModelForm
 from secure_witness.models import UserProfile
+from Crypto.PublicKey import RSA
+
 
 class Folder(models.Model):
     name = models.CharField(max_length=128, unique=True)

@@ -15,9 +15,19 @@
       </div>
     </nav><br />
 
-    <div class="container">
-      {% block content %}
-      {% endblock %}
+    <div class="container row">
+      <div class="col-md-8">
+        {% block content %}
+        {% endblock %}
+      </div>
+      <div class="col-md-4">
+        <ul class="nav nav-pills nav-stacked">
+          <li class="active"><a href="#">Unsorted</a></li>
+          <li><a href="#">Diplomatic Cables</a></li>
+          <li><a href="#">NSA Files</a></li>
+          <li><a href="#" style="color: red;">+ New Folder</a></li>
+        </ul>
+      </div>
     </div>
 
     <!-- Latest compiled and minified JavaScript -->
