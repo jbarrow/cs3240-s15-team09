@@ -8,3 +8,15 @@ from django.contrib.auth.decorators import user_passes_test, login_required
 def view_users(request):
     users = User.objects.all()
     return render(request, 'users.html', {'users': users})
+
+@login_required
+@user_passes_test(is_swadmin)
+def make_admin(request):
+    users = User.objects.all()
+    return render(request, 'users.html', {'users': users})
+
+@login_required
+@user_passes_test(is_swadmin)
+def suspend(request):
+    users = User.objects.all()
+    return render(request, 'users.html', {'users': users})

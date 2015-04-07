@@ -21,8 +21,20 @@
           <td>{{ user }}</td>
           <td>{{ user.profile.name }}</td>
           <td>{{ user.profile.admin }}</td>
-          <td><a href="/swadmin/makeadmin/{{ user.id }}">Make Admin</a></td>
-          <td><a href="/swadmin/suspend/{{ user.id }}">Suspend</a></td>
+          <td>
+            {% if user.profile.admin %}
+              Is Admin
+            {% else %}
+              <a href="/swadmin/users/admin/{{ user.id }}">Make Admin</a>
+            {% endif %}
+          </td>
+          <td>
+            {% if user.profile.admin %}
+              Can't Suspend
+            {% else %}
+              <a href="/swadmin/users/suspend/{{ user.id }}">Suspend</a>
+            {% endif %}
+          </td>
         </tr>
     {% endfor %}
     </tbody>
