@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'group_form',
     'secure_witness',
     'dashboard',
+    'swadmin',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -55,6 +56,7 @@ MIDDLEWARE_CLASSES = (
 
 TEMPLATE_DIRS = (
     'secure_witness/templates',
+    'swadmin/templates',
 )
 
 
