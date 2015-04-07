@@ -1,5 +1,17 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
+{% block title %}Home {% endblock %}
+
+{% block report_content %}
+{% endblock %}
+
+{% block content %}
+ <p>Welcome to Secure Witness!</p>
+
+You are {% if admin %} {% else %} not {% endif %} an admin.
+
+    Your name is {{ name }}
+{% endblock %}
+	
 <head lang="en">
     <meta charset="UTF-8">
     <title>Profile</title>
