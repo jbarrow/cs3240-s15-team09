@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="col-md-8">
+  {% block report_content %}
+  {% endblock %}
+</div>
+<div class="col-md-4">
+  <ul class="nav nav-pills nav-stacked">
+    <li class="active"><a href="#">Unsorted</a></li>
+    <li><a href="#">Diplomatic Cables</a></li>
+    <li><a href="#">NSA Files</a></li>
+    <li><a href="#" style="color: red;">+ New Folder</a></li>
+  </ul>
+</div>
+
+{% endblock %}
