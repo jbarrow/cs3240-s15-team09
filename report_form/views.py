@@ -105,3 +105,4 @@ def submission(request):
 		print("has failed in creation")
 
 	return render(request, 'report_form/report_form_template.html', {'input_report_form' : input_report_form})
+

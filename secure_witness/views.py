@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from secure_witness.forms import UserForm, UserProfileForm
 from secure_witness.models import UserProfile, is_swadmin
+from report_form.models import Folder
 
 def profile(request):
     profile = UserProfile.objects.filter(user=request.user)
@@ -29,12 +30,14 @@ def register(request):
 
             profile = profile_form.save(commit=False)
             profile.user = user
-
             profile.save()
 
             print("Save")
 
             registered = True
+
+            f = Folder(name = "unsorted", userprofile = profile)
+            f.save()
         else:
             print(user_form.errors, profile_form.errors)
     else:
