@@ -1,23 +1,14 @@
-{% extends "base.html" %}
-{% block title %}Home {% endblock %}
+{% extends "base_reports.html" %}
 
-{% block report_content %}
-{% endblock %}
+{% block title %}Profile Home {% endblock %}
 
 {% block content %}
- <p>Welcome to Secure Witness!</p>
+ <h1>Welcome to Secure Witness!</h1><br>
 
 You are {% if admin %} {% else %} not {% endif %} an admin.
 
-    Your name is {{ name }}
-{% endblock %}
-	
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>Profile</title>
-</head>
-<body>
-    {% for field in form %}
+    <div> <br><br>
+	{% for field in form %}
         {{ field.error }}
     {% endfor %}
 
@@ -25,7 +16,9 @@ You are {% if admin %} {% else %} not {% endif %} an admin.
     {{ form.as_ul }}
 
     <input type="submit" value="Update" />
+	</div>
 
-    </form>
-</body>
-</html>
+
+{% endblock %}
+
+	
