@@ -119,4 +119,3 @@ def download(request):
 	response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(request.GET.get('n'))
 	response['X-Sendfile'] = smart_str(request.GET.get('f'))
 	return response
-

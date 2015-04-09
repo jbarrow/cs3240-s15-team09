@@ -1,11 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>Profile</title>
-</head>
-<body>
-    {% for field in form %}
+{% extends "base_reports.html" %}
+
+{% block title %}Profile Home {% endblock %}
+
+{% block content %}
+ <h1>Welcome to Secure Witness!</h1><br>
+
+You are {% if admin %} {% else %} not {% endif %} an admin.
+
+    <div> <br><br>
+	{% for field in form %}
         {{ field.error }}
     {% endfor %}
 
@@ -13,7 +16,9 @@
     {{ form.as_ul }}
 
     <input type="submit" value="Update" />
+	</div>
 
-    </form>
-</body>
-</html>
+
+{% endblock %}
+
+	

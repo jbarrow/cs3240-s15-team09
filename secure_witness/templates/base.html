@@ -1,16 +1,26 @@
 {% load staticfiles %}
 <html>
   <head>
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css" />
+	  <title>{% block title %}Secure Witness{% endblock %}</title>
+	<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+
+
   </head>
   <body>
+
     <nav class="navbar-inverse">
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
-          <li><a href="#">Link </a></li>
+          <li><a href=>File Report </a></li>
+		  <li><a href=>View My Reports </a></li>
+			{% if user %}<li><a href="#">Log Out </a></li>{% else %}
+			<li><a href="#">Sign In </a></li>
+			<li><a href="#">Sign Up </a></li>
+			{% endif %}
         </ul>
       </div>
     </nav><br />

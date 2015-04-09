@@ -5,14 +5,15 @@ from Crypto.PublicKey import RSA
 
 class Folder(models.Model):
     name = models.CharField(max_length=128, unique=True)
+    userprofile = models.ForeignKey(UserProfile)
 
     def __str__(self):
         return self.name
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=128)
-    #report = models.ForeignKey(Report)
+    keyword = models.CharField(max_length=128)
+    report = models.ForeignKey(Report)
 
     def __str__(self):
         return self.name
@@ -28,7 +29,7 @@ class Report(models.Model):
     private = models.BooleanField(default=False)
     time_created = models.TimeField(auto_now_add = True);
     time_last_modified = models.DateTimeField(auto_now = True);
-    #folder = models.ForeignKey(Folder, blank=True, initial=some value);
+    folder = models.ForeignKey(Folder, blank=True)
 
     def __str__(self):
         return self.short_description
