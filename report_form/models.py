@@ -3,7 +3,6 @@ from django.forms import ModelForm
 from secure_witness.models import UserProfile
 from Crypto.PublicKey import RSA
 
-
 class Folder(models.Model):
     name = models.CharField(max_length=128, unique=True)
 
@@ -12,7 +11,8 @@ class Folder(models.Model):
 
 
 class Tag(models.Model):
-    name = models.CharField(max_length=128, unique=True)
+    name = models.CharField(max_length=128)
+    #report = models.ForeignKey(Report)
 
     def __str__(self):
         return self.name

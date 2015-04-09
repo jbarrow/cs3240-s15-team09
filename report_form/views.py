@@ -9,6 +9,9 @@ from secure_witness.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils.encoding import smart_str
+import datetime
+from django.utils import timezone
+
 
 def incomplete_landing(request):
 	return HttpResponse("Report form not yet available.")
@@ -92,7 +95,8 @@ def submission(request):
 			report_input.short_description = request.POST['short_description']
 			report_input.location = request.POST.get('location','')
 			report_input.detailed_description = request.POST['detailed_description']
-			report_input.date_of_incident = request.POST.get('date_of_incident', '2015-03-28')  
+			#report_input.date_of_incident = request.POST.get('date_of_incident', datetime.date.today())  
+			report_input.date_of_incident = datetime.date.today()
 			report_input.private = request.POST.get('private', False) #apply a value if it does not exist
 			report_input.save()
 
