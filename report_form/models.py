@@ -10,15 +10,6 @@ class Folder(models.Model):
     def __str__(self):
         return self.name
 
-
-class Tag(models.Model):
-    keyword = models.CharField(max_length=128)
-    report = models.ForeignKey(Report)
-
-    def __str__(self):
-        return self.name
-
-
 class Report(models.Model):
 
     author = models.ForeignKey(UserProfile)
@@ -29,7 +20,8 @@ class Report(models.Model):
     private = models.BooleanField(default=False)
     time_created = models.TimeField(auto_now_add = True);
     time_last_modified = models.DateTimeField(auto_now = True);
-    folder = models.ForeignKey(Folder, blank=True)
+    folder = models.ForeignKey(Folder, blank=True, null=True);
+    # don't actually allow this to be null, but we handle this on submission anyway
 
     def __str__(self):
         return self.short_description
@@ -39,10 +31,17 @@ class File(models.Model):
     file = models.FileField(upload_to='input/%Y/%m/%d')
     report = models.ForeignKey(Report)
 
+class Tag(models.Model):
+    keyword = models.CharField(max_length=128)
+    associated_report = models.ForeignKey(Report)
+
+    def __str__(self):
+        return self.name
+
 class ReportForm(ModelForm):
     class Meta:
         model = Report
-        fields = ['short_description', 'detailed_description', 'location', 'date_of_incident','private']
+        fields = ['short_description', 'detailed_description', 'location', 'date_of_incident','private', 'folder']
 
 class FileForm(ModelForm):
     class Meta:

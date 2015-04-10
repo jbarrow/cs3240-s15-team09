@@ -5,17 +5,25 @@
 		<title>Report Detail</title>
 		<h1>Report Detail for Report #{{report.id}}</h1>
 		{% if report %}
-			<p>Author= {{ report.author.user.username }} </p>
-			<p>Description= {{ report.short_description }} </p>
+			<p>Author = {{ report.author.user.username }} </p>
+			<p>Description = {{ report.short_description }} </p>
+			<p>Location = {{ report.location }} </p>
+			<p>Detailed Description = {{report.detailed_description}} </p>
+			<p>Date of Incident = {{report.date_of_incident}} </p>
+			<p>Folder = {{report.folder.name }} </p>
+			<p>This report is {% if report.private %} private{% else %} public{% endif %}. </p>
 			{% if files %}
 				<ul>
 				{% for inputfile in files %}
-					<li><a href= "/download?f={{ inputfile.file.url }}&n={{inputfile.title}}">{{ inputfile.title }}</a></li>
+					<li><a href= "{% url 'download' inputfile.id %}">{{ inputfile.title }}</a></li>
+					<!--<li><a href= "/report_form/download?f={{ inputfile.file.url }}&n={{inputfile.title}}">{{ inputfile.title }}</a></li>
+					<li><a href= "{{ inputfile.file.url }}">{{ inputfile.title }}</a></li> -->
 				{% endfor %}
 				</ul>
 			{% else %}
 				<p> No files yet uploaded </p>
 			{% endif %}
+			<p>Time Created = {{report.time_created}}</p>
 			<p>Time Modified= {{report.time_last_modified}} </p>
 			<a href= "{% url 'my_reports' report.author.user.id  %}">
 		<button type="button">view my reports</button></a>

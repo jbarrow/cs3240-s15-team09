@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='File',
             fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', primary_key=True, serialize=False)),
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
                 ('title', models.CharField(max_length=128)),
                 ('file', models.FileField(upload_to='input/%Y/%m/%d')),
             ],
@@ -25,8 +25,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Folder',
             fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=128, unique=True)),
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('name', models.CharField(unique=True, max_length=128)),
+                ('userprofile', models.ForeignKey(to='secure_witness.UserProfile')),
             ],
             options={
             },
@@ -35,15 +36,16 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Report',
             fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', primary_key=True, serialize=False)),
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
                 ('short_description', models.CharField(max_length=750)),
                 ('location', models.CharField(max_length=500, blank=True)),
                 ('detailed_description', models.TextField()),
-                ('date_of_incident', models.DateField(blank=True, null=True)),
+                ('date_of_incident', models.DateField(null=True, blank=True)),
                 ('private', models.BooleanField(default=False)),
                 ('time_created', models.TimeField(auto_now_add=True)),
                 ('time_last_modified', models.DateTimeField(auto_now=True)),
                 ('author', models.ForeignKey(to='secure_witness.UserProfile')),
+                ('folder', models.ForeignKey(to='report_form.Folder', blank=True)),
             ],
             options={
             },
@@ -52,8 +54,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Tag',
             fields=[
-                ('id', models.AutoField(auto_created=True, verbose_name='ID', primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=128, unique=True)),
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, serialize=False, auto_created=True)),
+                ('keyword', models.CharField(max_length=128)),
+                ('associated_report', models.ForeignKey(to='report_form.Report')),
             ],
             options={
             },
