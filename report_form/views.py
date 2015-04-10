@@ -3,7 +3,7 @@ from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 
-from report_form.models import Report, File, ReportForm, Folder
+from report_form.models import Report, File, ReportForm, Folder, TagForm, Tag
 from report_form.forms import report_input_form
 from secure_witness.models import UserProfile
 from django.contrib.auth.models import User
@@ -38,22 +38,32 @@ def my_reports(request, user_id):
 def detail(request, report_id):
 	report = get_object_or_404(Report, pk=report_id)
 	files = File.objects.filter(report=report)
-	return render(request, 'report_form/detail.html', {'report': report, 'files': files})
+	tags = Tag.objects.filter(associated_report=report)
+	return render(request, 'report_form/detail.html', {'report': report, 'files': files, 'tags': tags})
 
 @login_required
 def edit(request, report_id):
 	report = get_object_or_404(Report, pk=report_id)
 	files = File.objects.filter(report=report)
+	tags = Tag.objects.filter(associated_report=report)
 	if request.method == 'POST':
 		f = ReportForm(request.POST, instance=report)
-		if f.is_valid() and request.POST.get("submission"):
+		if f.is_valid():
 			f.save()
 			for upfile in request.FILES.getlist("file"):
 				newfile = File(title = upfile.name, file=upfile, report=report)
 				newfile.save()
-
-			return HttpResponseRedirect(reverse('report_form.views.detail', args=(report.id,)))
-		else:
+		t = TagForm()
+		if t.is_valid:
+			if request.POST['keyword'] != '':
+				new_tag = Tag(associated_report=report)
+				new_tag.keyword = request.POST['keyword']
+				new_tag.save()
+			if request.POST.get("submission"):	
+				return HttpResponseRedirect(reverse('report_form.views.detail', args=(report.id,)))
+			else:
+				return HttpResponseRedirect(reverse('report_form.views.edit', args=(report.id,)))
+		elif request.POST.get("delete"):
 			for inputfile in files:
 				# delete here
 				#print(request.POST.get(inputfile.title))
@@ -62,10 +72,14 @@ def edit(request, report_id):
 					return HttpResponseRedirect(reverse('report_form.views.edit', args=(report.id,)))
 			
 			return HttpResponse("Report form not yet available.")
+		else:
+			return HttpResponse("abnormal.")	
+
 	else:
 		print(request.method)
 		f = ReportForm(instance=report)
-	return render(request, 'report_form/edit.html', {'input_report_form' : f, 'report': report, 'files': files})
+		t = TagForm()
+	return render(request, 'report_form/edit.html', {'input_report_form' : f, 'report': report, 'files': files, 'input_tag_form': t, 'tags':tags})
 
 
 def submitted(request):
@@ -79,8 +93,9 @@ def submitted(request):
 def submission(request):
 	if request.method == 'POST':
 		input_report_form = ReportForm(request.POST)
+		input_tag_form = TagForm(request.POST)
 		#input_file_form = FileForm(request.POST, request.FILES)
-		if input_report_form.is_valid(): # change this
+		if input_report_form.is_valid():
 			# need to do the linking here
 			# need to figure out how to do the multiple files
 			# figure out how to do required/nonrequired fields with model forms
@@ -109,27 +124,33 @@ def submission(request):
 				newfile = File(title = upfile.name, file=upfile, report=report_input)
 				newfile.save()
 
-			return HttpResponseRedirect(reverse('report_form.views.detail', args=(report_input.id,)))
+			if input_tag_form.is_valid():
+				newTag = Tag(associated_report=report_input)
+				newTag.keyword = request.POST['keyword']
+			else:
+				print("invalid keyword")
+
+			if(request.POST.get("submission")):
+				return HttpResponseRedirect(reverse('report_form.views.detail', args=(report_input.id,)))
+			elif(request.POST.get("add_kword")):
+				return HttpResponseRedirect(reverse('report_form.views.edit', args=(report_input.id,)))
 		else:
 			return HttpResponse("form invalid.")
 	else:
 		input_report_form = ReportForm()
+		input_tag_form = TagForm()
 		print("has failed in creation")
 
-	return render(request, 'report_form/report_form_template.html', {'input_report_form' : input_report_form})
+	return render(request, 'report_form/report_form_template.html', {'input_report_form' : input_report_form, 'input_tag_form' : input_tag_form})
 
 @login_required
 def download(request, file_id):
 	# TODO: Verify that the user is only downloading allowed files (i.e. not
 	# server source files, etc.)
-	# chosen_files = File.objects.filter(title=smart_str(request.GET.get('n')))
-	# downloadable = chosen_files[0]
 	downloadable = get_object_or_404(File, pk=file_id)
 	path = downloadable.file.path
 	wrapper = FileWrapper(downloadable.file)
 	response = HttpResponse(wrapper, content_type='application/force-download')
 	response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(os.path.basename(path))
-	print(response['Content-Disposition'])
-	#response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(request.GET.get('n'))
-	#response['X-Sendfile'] = smart_str(request.GET.get('f'))
+	#print(response['Content-Disposition'])
 	return response

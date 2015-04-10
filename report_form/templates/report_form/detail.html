@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'report_form/style.css' %}"/>
 	<head>
 		<meta charset="utf-8">
 		<title>Report Detail</title>
@@ -12,6 +14,7 @@
 			<p>Date of Incident = {{report.date_of_incident}} </p>
 			<p>Folder = {{report.folder.name }} </p>
 			<p>This report is {% if report.private %} private{% else %} public{% endif %}. </p>
+			<p><b>Files </b></p>
 			{% if files %}
 				<ul>
 				{% for inputfile in files %}
@@ -22,6 +25,16 @@
 				</ul>
 			{% else %}
 				<p> No files yet uploaded </p>
+			{% endif %}
+			<p><b>Keywords </b></p>
+			{% if tags %}
+				<ul>
+				{% for input_tag in tags %}
+					<li>{{ input_tag.keyword }}</li>
+				{% endfor %}
+				</ul>
+			{% else %}	
+				<p> no keywords associated with this report </p>		
 			{% endif %}
 			<p>Time Created = {{report.time_created}}</p>
 			<p>Time Modified= {{report.time_last_modified}} </p>
