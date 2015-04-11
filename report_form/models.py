@@ -19,6 +19,7 @@ class Report(models.Model):
     detailed_description = models.TextField()
     date_of_incident = models.DateField(blank=True, null=True)
     private = models.BooleanField(default=False)
+    #time_created = models.DateTimeField(auto_now_add = True);
     time_created = models.TimeField(auto_now_add = True);
     time_last_modified = models.DateTimeField(auto_now = True);
     folder = models.ForeignKey(Folder, blank=True, null=True);

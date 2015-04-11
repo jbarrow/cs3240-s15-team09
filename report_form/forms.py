@@ -1,22 +1,19 @@
 from django import forms
 from report_form.models import Folder
 from django.forms import ModelForm
+from django.forms.extras.widgets import SelectDateWidget
 
 AUTHOR = 1
 SHORT_DESC = 2
 LOCATION = 3
 DETAILED_DESC = 4
-DOI = 5
-PRIVATE = 6
-KEYWORD = 7
+KEYWORD = 5
 
 SEARCH_CHOICES = (
     (AUTHOR, 'User ID'),
     (SHORT_DESC, 'Short Description'),
     (LOCATION, 'Location'),
     (DETAILED_DESC, 'Detailed Description'),
-    (DOI, "Date of Incident"),
-    (PRIVATE, "Private"),
     (KEYWORD, "Keyword"),
     )
 
@@ -35,6 +32,19 @@ class new_folder_form(ModelForm):
         model = Folder
         fields = ['name']
 
-class search_query(forms.Form):
+class multi_cat_search_query(forms.Form):
+    search_input = forms.CharField(label="Enter a search string ")
+    category = forms.MultipleChoiceField(label ="Search Category", widget=forms.CheckboxSelectMultiple, choices = SEARCH_CHOICES)
+
+class single_search_query(forms.Form):
     search_input = forms.CharField(label="Enter a search string ")
     category = forms.ChoiceField(label ="Search Category", choices = SEARCH_CHOICES)
+
+class multi_field_multi_cat_search(forms.Form):
+    s_author = forms.CharField(label="Username ")
+    s_short_desc = forms.CharField(label="Short Description ")
+    s_location = forms.CharField(label="Location ")
+    s_detailed_desc = forms.CharField(label="Detailed Description ")
+    s_keyword = forms.CharField(label="Keyword ")
+    s_date = forms.DateTimeField(label= "Date of Incident ", widget=SelectDateWidget)
+

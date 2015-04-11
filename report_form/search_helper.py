@@ -1,13 +1,12 @@
 from report_form.models import Report, Tag
 from secure_witness.models import UserProfile
 from django.contrib.auth.models import User
+
 AUTHOR = '1'
 SHORT_DESC = '2'
 LOCATION = '3'
 DETAILED_DESC = '4'
-DOI = '5'
-PRIVATE = '6'
-KEYWORD = '7'
+KEYWORD = '5'
 
 def simple_return(category, search_string):
 	# only for public reports
@@ -17,7 +16,7 @@ def simple_return(category, search_string):
 		if len(users) > 0:
 			profile = UserProfile.objects.filter(user=users[0])
 			if len(profile) > 0:
-				return Report.objects.filter(author=profile[0], private=False)
+				return Report.objects.filter(author=profile[0])
 			else:
 				return retSet
 		else:
@@ -28,19 +27,39 @@ def simple_return(category, search_string):
 		return Report.objects.filter(location=search_string)
 	elif category == DETAILED_DESC:
 		return Report.objects.filter(detailed_description=search_string)
-	elif category == DOI:
-		# more difficult
-		return retSet
 	elif category == KEYWORD:
-		# make private -- this would be more difficult
 		all_keywords = Tag.objects.filter(keyword=search_string)
 		for kword in all_keywords:
-			keywordSet = []
-			keywordSet.append(kword.associated_report)
-			for report in keywordSet:
-				if not report.private:
-					retSet.append(report)
+			retSet.append(kword.associated_report)
 		return retSet
 	else:
 		return retSet
 
+# need to add set union and intersection for complex search queries
+# also may want to have the ability to search multiple fields instead of just one
+
+
+def multi_cat_return(categories, search_string):
+	retSet = []
+	for cat in categories:
+		retSet = set.union(set(retSet), set(simple_return(cat, search_string)))
+	return retSet
+
+def string_parse(delimiter, search_string):
+	search_string = search_string.strip()
+	keywords = []
+	index = 0
+	prev_index = 0
+	while search_string.find(delimiter, index) != -1:
+		index = search_string.find(delimiter, prev_index)
+		if index != -1:
+			if prev_index == 0:
+				term = search_string[prev_index: index]
+			else:
+				term = search_string[prev_index+len(delimiter)-1:index]
+			prev_index = index+1
+		else:
+			term = search_string[prev_index+len(delimiter)-1:]
+			prev_index = index+1
+		keywords.append(term)
+	return keywords

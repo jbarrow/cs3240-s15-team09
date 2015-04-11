@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 
 from report_form.models import Report, File, ReportForm, Folder, TagForm, Tag
-from report_form.forms import report_input_form, search_query
+from report_form.forms import report_input_form, multi_cat_search_query, single_search_query
 from secure_witness.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -13,7 +13,7 @@ from datetime import date
 from django.utils import timezone
 from django.core.servers.basehttp import FileWrapper
 import os
-from report_form.search_helper import simple_return
+from report_form.search_helper import simple_return, multi_cat_return, string_parse
 
 def incomplete_landing(request):
 	return HttpResponse("Report form not yet available.")
@@ -154,11 +154,39 @@ def download(request, file_id):
 
 @login_required
 def simple_search(request):
+	results = []
+	public_only = True
 	if request.method == 'POST':
-		s = search_query(request.POST)
+		s = multi_cat_search_query(request.POST)
 		if s.is_valid():
-			print(simple_return(request.POST['category'], request.POST['search_input']))
+			query = request.POST['search_input']
+			# DON'T PAY ATTENTION TO ANY OF THIS...
+			q_set = []
+			ands = string_parse(" AND ", query)
+			ors = string_parse(" OR ", query)
+			if len(ands) == 0 and len(ors) == 0:
+				q_set.append(query)
+			elif len(ands) > len(ors):
+				ors = []
+				for term in ands:
+					y = string_parse(" OR ", term)
+					if len(y) != 0:
+						for x in element:
+							ors.append(x)
+			else:
+				ands = []
+				for term in ors:
+					y = string_parse(" AND ", term)
+					if len(y) != 0:
+						for x in element:
+							ands.append(x)
+
+			results = multi_cat_return(request.POST.getlist("category"), query)
+			public_only = True
+			return render(request, 'report_form/search_form.html', {'search_form' : s, 'results': results, 'public_only': public_only,
+			 'query_string': query, 'empty': False})
 	else:
-		s = search_query()
-		print("didn't post")
-	return render(request, 'report_form/search_form.html', {'search_form' : s})
+		s = multi_cat_search_query()
+
+	return render(request, 'report_form/search_form.html', {'search_form' : s, 'results': results, 'public_only': public_only,
+		'query_string': "", 'empty' : True})

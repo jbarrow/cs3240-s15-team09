@@ -11,7 +11,7 @@
 		<form class="form"  action = "{% url "submission" %}" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
 			{{ input_report_form.as_p }}
-			{{ date_input.as_p }}
+			<!--{{ date_input.as_p }} -->
 			<input type="file" name="file" multiple />
 			{{ input_tag_form.as_p }}
 			<p> <input type="submit" name= "add_kword" value="Add another keyword" /></p>

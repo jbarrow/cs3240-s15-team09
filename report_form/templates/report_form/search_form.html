@@ -12,7 +12,28 @@
 			{{ search_form.as_p }}
 			<p> <input type="submit" name= "submission" value="Search" /></p>
 				</form>
+
+		{% if not empty %}
+				<h1>Query Results for "{{query_string}}" </h1>
+		{% if results %}
+			{% for indiv in results %}
+				{% if public_only %}
+					{% if not indiv.private %}
+						<p>Description= {{ indiv.short_description }}
+						<a href= "{% url 'detail' indiv.id  %}">
+						<button type="button">view report</button></a> </p>
+					{% endif %}
+				{% else %}
+					<p>Description= {{ indiv.short_description }}
+					<a href= "{% url 'detail' indiv.id  %}">
+					<button type="button">view report</button></a></p>
+				{% endif %}
+			{% endfor %}
+		{% else %}
+			<p> no reports to show </p>
+		{% endif %}
+		{% endif %}
 			</div>
 		</body>
 	</head>
-</html>
+</html>/
