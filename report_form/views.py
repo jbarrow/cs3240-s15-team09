@@ -4,12 +4,12 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 
 from report_form.models import Report, File, ReportForm, Folder, TagForm, Tag
-from report_form.forms import report_input_form
+from report_form.forms import report_input_form, search_query
 from secure_witness.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.utils.encoding import smart_str
-import datetime
+from datetime import date
 from django.utils import timezone
 from django.core.servers.basehttp import FileWrapper
 import os
@@ -66,7 +66,6 @@ def edit(request, report_id):
 		elif request.POST.get("delete"):
 			for inputfile in files:
 				# delete here
-				#print(request.POST.get(inputfile.title))
 				if request.POST.get(str(inputfile.id)):
 					inputfile.delete()
 					return HttpResponseRedirect(reverse('report_form.views.edit', args=(report.id,)))
@@ -94,25 +93,22 @@ def submission(request):
 	if request.method == 'POST':
 		input_report_form = ReportForm(request.POST)
 		input_tag_form = TagForm(request.POST)
-		#input_file_form = FileForm(request.POST, request.FILES)
 		if input_report_form.is_valid():
-			# need to do the linking here
-			# need to figure out how to do the multiple files
-			# figure out how to do required/nonrequired fields with model forms
-			# though we could append two forms together, though that is not great
 			current_user = request.user
 			profile = UserProfile.objects.filter(user=current_user)
 			unsorted_folder = Folder.objects.get(userprofile=profile, name='unsorted')
 			report_input = Report()
 			report_input.author = profile[0]
 			report_input.short_description = request.POST['short_description']
-			report_input.location = request.POST.get('location','')
+			report_input.location = request.POST['location']
 			report_input.detailed_description = request.POST['detailed_description']
-			#if request.POST['date_of_incident'] == '':
-			#	report_input.date_of_incident = datetime.date.today()
-			#else:
-			#	print("need validity check here anyway")
-			#	report_input.date_of_incident = request.POST['date_of_incident']
+			year = request.POST['date_of_incident_year']
+			month = request.POST['date_of_incident_month']
+			day = request.POST['date_of_incident_day']
+			if year != '0' and month != '0' and day != '0':
+				report_input.date_of_incident = date(day= int(day), month=int(month), year=int(year))
+			else:
+				report_input.date_of_incident = None
 			folder_id = request.POST['folder']
 			if folder_id == '':
 				folder_id = unsorted_folder.id
@@ -154,3 +150,12 @@ def download(request, file_id):
 	response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(os.path.basename(path))
 	#print(response['Content-Disposition'])
 	return response
+
+@login_required
+def simple_search(request):
+	if request.method == 'POST':
+		s = search_query(request.POST)
+	else:
+		s = search_query()
+		print("didn't post")
+	return render(request, 'report_form/search_form.html', {'search_form' : s})

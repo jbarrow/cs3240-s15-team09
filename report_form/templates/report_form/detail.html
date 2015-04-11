@@ -9,7 +9,7 @@
 		{% if report %}
 			<p>Author = {{ report.author.user.username }} </p>
 			<p>Description = {{ report.short_description }} </p>
-			<p>Location = {{ report.location }} </p>
+			<p>Location = {% if report.location == '' %} None given {% else %} {{report.location}} {% endif %}</p>
 			<p>Detailed Description = {{report.detailed_description}} </p>
 			<p>Date of Incident = {{report.date_of_incident}} </p>
 			<p>Folder = {{report.folder.name }} </p>

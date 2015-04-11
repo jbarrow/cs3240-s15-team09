@@ -2,6 +2,7 @@ from django.db import models
 from django.forms import ModelForm
 from secure_witness.models import UserProfile
 from Crypto.PublicKey import RSA
+from django.forms.extras.widgets import SelectDateWidget
 
 class Folder(models.Model):
     name = models.CharField(max_length=128, unique=True)
@@ -41,8 +42,10 @@ class Tag(models.Model):
 class ReportForm(ModelForm):
     class Meta:
         model = Report
-        fields = ['short_description', 'detailed_description', 'location', 'date_of_incident','private', 'folder']
-
+        fields = ['short_description', 'detailed_description', 'location', 'date_of_incident', 'private', 'folder']
+        widgets = {
+        'date_of_incident' : SelectDateWidget,
+        }
 class FileForm(ModelForm):
     class Meta:
         model = File

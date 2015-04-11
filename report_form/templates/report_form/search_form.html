@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'report_form/style.css' %}"/>
+	<head>
+		<meta charset="utf-8">
+		<title>Simple Search</title>
+		<body class="body">
+	 		 <div class="div">
+				<form class="form"  action = "{% url "simple_search" %}" method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+			{{ search_form.as_p }}
+			<p> <input type="submit" name= "submission" value="Search" /></p>
+				</form>
+			</div>
+		</body>
+	</head>
+</html>
