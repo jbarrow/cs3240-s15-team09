@@ -6,9 +6,10 @@ from secure_witness.forms import UserForm, UserProfileForm
 from secure_witness.models import UserProfile, is_swadmin
 from report_form.models import Folder
 
+@login_required
 def profile(request):
-    profile = UserProfile.objects.filter(user=request.user)
-    return render_to_response('profile.html', {'admin': request.user.is_swadmin, 'name': profile[0].name})
+    profile = request.user.profile
+    return render_to_response('profile.html', {'admin': request.user.is_swadmin, 'name': profile.name})
 
 def register(request):
     context = RequestContext(request)
@@ -36,8 +37,8 @@ def register(request):
 
             registered = True
 
-            f = Folder(name = "unsorted", userprofile = profile)
-            f.save()
+            #f = Folder(name = "unsorted", userprofile = profile)
+            #f.save()
         else:
             print(user_form.errors, profile_form.errors)
     else:
