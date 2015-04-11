@@ -124,6 +124,7 @@ def submission(request):
 			if input_tag_form.is_valid():
 				newTag = Tag(associated_report=report_input)
 				newTag.keyword = request.POST['keyword']
+				newTag.save()
 			else:
 				print("invalid keyword")
 
@@ -131,8 +132,6 @@ def submission(request):
 				return HttpResponseRedirect(reverse('report_form.views.detail', args=(report_input.id,)))
 			elif(request.POST.get("add_kword")):
 				return HttpResponseRedirect(reverse('report_form.views.edit', args=(report_input.id,)))
-		else:
-			return HttpResponse("form invalid.")
 	else:
 		input_report_form = ReportForm()
 		input_tag_form = TagForm()
@@ -160,27 +159,6 @@ def simple_search(request):
 		s = multi_cat_search_query(request.POST)
 		if s.is_valid():
 			query = request.POST['search_input']
-			# DON'T PAY ATTENTION TO ANY OF THIS...
-			q_set = []
-			ands = string_parse(" AND ", query)
-			ors = string_parse(" OR ", query)
-			if len(ands) == 0 and len(ors) == 0:
-				q_set.append(query)
-			elif len(ands) > len(ors):
-				ors = []
-				for term in ands:
-					y = string_parse(" OR ", term)
-					if len(y) != 0:
-						for x in element:
-							ors.append(x)
-			else:
-				ands = []
-				for term in ors:
-					y = string_parse(" AND ", term)
-					if len(y) != 0:
-						for x in element:
-							ands.append(x)
-
 			results = multi_cat_return(request.POST.getlist("category"), query)
 			public_only = True
 			return render(request, 'report_form/search_form.html', {'search_form' : s, 'results': results, 'public_only': public_only,

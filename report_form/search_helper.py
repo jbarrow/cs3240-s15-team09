@@ -63,3 +63,33 @@ def string_parse(delimiter, search_string):
 			prev_index = index+1
 		keywords.append(term)
 	return keywords
+
+def non_hierarchical_parsing(query):
+	# DON'T PAY ATTENTION TO ANY OF THIS...
+	q_set = []
+	ands = string_parse(" AND ", query)
+	ors = string_parse(" OR ", query)
+	if len(ands) == 0 and len(ors) == 0:
+		q_set.append(query)
+	elif len(ands) > len(ors):
+		ors = []
+		for term in ands:
+			y = string_parse(" OR ", term)
+			if len(y) != 0:
+				for x in y:
+					ors.append(x)
+	else:
+		ands = []
+		for term in ors:
+			y = string_parse(" AND ", term)
+			if len(y) != 0:
+				for x in y:
+					ands.append(x)
+	print(ors)
+	print(ands)
+	print(q_set)
+
+#non_hierarchical_parsing("this AND that AND else OR if")
+
+# right now, I only can do AND XOR OR searches, and then multicategory searches, but not more
+# still need to implement advanced searches
