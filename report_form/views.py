@@ -13,6 +13,7 @@ from datetime import date
 from django.utils import timezone
 from django.core.servers.basehttp import FileWrapper
 import os
+from report_form.search_helper import simple_return
 
 def incomplete_landing(request):
 	return HttpResponse("Report form not yet available.")
@@ -155,6 +156,8 @@ def download(request, file_id):
 def simple_search(request):
 	if request.method == 'POST':
 		s = search_query(request.POST)
+		if s.is_valid():
+			print(simple_return(request.POST['category'], request.POST['search_input']))
 	else:
 		s = search_query()
 		print("didn't post")
