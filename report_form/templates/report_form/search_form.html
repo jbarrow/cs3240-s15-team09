@@ -9,6 +9,9 @@
 	 		 <div class="div">
 				<form class="form"  action = "{% url link %}" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
+
+			<h1>{% if link == 'simple_search' %}Simple Search{% else %}Advanced Search{% endif %}</h1>
+			
 			{{ search_form.as_p }}
 			<p> <input type="submit" name= "submission" value="Search" /></p>
 				</form>

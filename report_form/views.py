@@ -135,7 +135,6 @@ def submission(request):
 	else:
 		input_report_form = ReportForm()
 		input_tag_form = TagForm()
-		print("has failed in creation")
 
 	return render(request, 'report_form/report_form_template.html', {'input_report_form' : input_report_form, 'input_tag_form' : input_tag_form})
 
