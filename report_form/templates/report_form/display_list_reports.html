@@ -1,7 +1,8 @@
-<!DOCTYPE html>
-<html>
-{% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'report_form/style.css' %}"/>
+{% extends "base_reports.html" %}
+
+{% block title %}My Reports{% endblock %}
+
+{% block content %}
 	<head>
 		<meta charset="utf-8">
 		<title>My Reports</title>
@@ -26,4 +27,5 @@
 		</form>
 		</div>
 	</body>
-</html>
+
+{% endblock %}

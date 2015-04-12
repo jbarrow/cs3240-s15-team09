@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html>
-{% load staticfiles %}
-<link rel="stylesheet" type="text/css" href="{% static 'report_form/style.css' %}"/>
+{% extends "base_reports.html" %}
+
+{% block title %}Report Detail{% endblock %}
+
+{% block content %}
+
 	<head>
 		<meta charset="utf-8">
 		<title>Report Detail</title>
+	</head>
 		<h1>Report Detail for Report #{{report.id}}</h1>
 		{% if report %}
 			<p>Author = {{ report.author.user.username }} </p>
@@ -43,5 +46,5 @@
 		{% else %}
 			<p> shouldn't be here </p>
 		{% endif %}
-	</head>
-</html>
+
+{% endblock %}
