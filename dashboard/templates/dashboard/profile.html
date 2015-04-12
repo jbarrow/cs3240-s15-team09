@@ -10,6 +10,8 @@ You are {% if admin %} {% else %} not {% endif %} an admin.
     <div> <br><br>
 	{% for field in form %}
         {{ field.error }}
+		
+		
     {% endfor %}
 
     <form action="/dashboard/profile/" method="post">{% csrf_token %}
