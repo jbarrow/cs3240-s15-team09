@@ -1,6 +1,7 @@
 from report_form.models import Report, Tag
 from secure_witness.models import UserProfile
 from django.contrib.auth.models import User
+from datetime import date
 
 AUTHOR = '1'
 SHORT_DESC = '2'
@@ -93,3 +94,45 @@ def non_hierarchical_parsing(query):
 
 # right now, I only can do AND XOR OR searches, and then multicategory searches, but not more
 # still need to implement advanced searches
+
+def advanced_query(query_list): # this does an implicit intersection
+	collection = []
+	nonempty = []
+	author_set =[]
+	short_desc_set = []
+	location_set = []
+	detailed_set = []
+	kword_set = []
+	date_set = []
+	if query_list[0] != '': # author
+		author_set = simple_return(AUTHOR, query_list[0])
+	if query_list[1] != '': # short desc
+		short_desc_set = simple_return(SHORT_DESC, query_list[1])
+	if query_list[2] != '': # location
+		location_set = simple_return(LOCATION, query_list[2])
+	if query_list[3] != '': # detailed desc
+		detailed_set = simple_return(DETAILED_DESC, query_list[3])
+	if query_list[4] != '': # keyword
+		kword_set = simple_return(KEYWORD, query_list[4])
+	if query_list[5] != '0' and query_list[6] != '0' and query_list[7] != '0' : # date, could make this field searchable, but right now it is not
+		DOI = date(day= int(query_list[7]), month=int(query_list[6]), year=int(query_list[5]))
+		date_set = Report.objects.filter(date_of_incident=DOI)
+
+	collection.append(author_set)
+	collection.append(short_desc_set)
+	collection.append(location_set)
+	collection.append(detailed_set)
+	collection.append(kword_set)
+	collection.append(date_set)
+
+	for simple in collection:
+		if len(simple) != 0:
+			nonempty.append(simple)
+
+	retSet = set()
+	if len(nonempty) > 0:
+		retSet = nonempty[0]
+		for x in nonempty:
+			retSet = set.intersection(set(retSet), set(x)) 
+
+	return retSet

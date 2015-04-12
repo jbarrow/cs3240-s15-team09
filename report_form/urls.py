@@ -10,4 +10,5 @@ url(r'^view-report/(?P<report_id>[0-9]+)/$', views.detail, name='detail'),
 url(r'^edit-report/(?P<report_id>[0-9]+)/$', views.edit, name='edit'),
 url(r'^download/(?P<file_id>[0-9]+)/$', views.download, name='download'),
 url(r'^simple-search/$', views.simple_search, name='simple_search'),
+url(r'^advanced-search/$', views.advanced_search, name='advanced_search'),
 )

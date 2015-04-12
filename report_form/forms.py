@@ -41,10 +41,10 @@ class single_search_query(forms.Form):
     category = forms.ChoiceField(label ="Search Category", choices = SEARCH_CHOICES)
 
 class multi_field_multi_cat_search(forms.Form):
-    s_author = forms.CharField(label="Username ")
-    s_short_desc = forms.CharField(label="Short Description ")
-    s_location = forms.CharField(label="Location ")
-    s_detailed_desc = forms.CharField(label="Detailed Description ")
-    s_keyword = forms.CharField(label="Keyword ")
-    s_date = forms.DateTimeField(label= "Date of Incident ", widget=SelectDateWidget)
+    s_author = forms.CharField(label="Username ", required=False)
+    s_short_desc = forms.CharField(label="Short Description ", required=False)
+    s_location = forms.CharField(label="Location ", required=False)
+    s_detailed_desc = forms.CharField(label="Detailed Description ", required=False)
+    s_keyword = forms.CharField(label="Keyword ", required=False)
+    s_date = forms.DateTimeField(label= "Date of Incident ", widget=SelectDateWidget, required=False)
 

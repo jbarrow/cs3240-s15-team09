@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
 
 from report_form.models import Report, File, ReportForm, Folder, TagForm, Tag
-from report_form.forms import report_input_form, multi_cat_search_query, single_search_query
+from report_form.forms import report_input_form, multi_cat_search_query, single_search_query, multi_field_multi_cat_search
 from secure_witness.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -13,7 +13,7 @@ from datetime import date
 from django.utils import timezone
 from django.core.servers.basehttp import FileWrapper
 import os
-from report_form.search_helper import simple_return, multi_cat_return, string_parse
+from report_form.search_helper import simple_return, multi_cat_return, string_parse, advanced_query
 
 def incomplete_landing(request):
 	return HttpResponse("Report form not yet available.")
@@ -160,11 +160,34 @@ def simple_search(request):
 		if s.is_valid():
 			query = request.POST['search_input']
 			results = multi_cat_return(request.POST.getlist("category"), query)
-			public_only = True
 			return render(request, 'report_form/search_form.html', {'search_form' : s, 'results': results, 'public_only': public_only,
-			 'query_string': query, 'empty': False})
+			 'query_string': query, 'empty': False, 'link' : 'simple_search'})
 	else:
 		s = multi_cat_search_query()
 
 	return render(request, 'report_form/search_form.html', {'search_form' : s, 'results': results, 'public_only': public_only,
-		'query_string': "", 'empty' : True})
+		'query_string': "", 'empty' : True,  'link' : 'simple_search'})
+
+@login_required
+def advanced_search(request):
+	results = []
+	public_only = True
+	if request.method == 'POST':
+		s = multi_field_multi_cat_search(request.POST)
+		if s.is_valid():
+			search_queries = []
+			search_queries.append(request.POST['s_author'])
+			search_queries.append(request.POST['s_short_desc'])
+			search_queries.append(request.POST['s_location'])
+			search_queries.append(request.POST['s_detailed_desc'])
+			search_queries.append(request.POST['s_keyword'])
+			search_queries.append(request.POST['s_date_year'])
+			search_queries.append(request.POST['s_date_month'])
+			search_queries.append(request.POST['s_date_day'])
+			results = advanced_query(search_queries)
+			return render(request, 'report_form/search_form.html', {'search_form' : s, 'results': results, 'public_only': public_only,
+			 'query_string': "Advanced Search", 'empty': False, 'link' : 'advanced_search'})
+	else:
+		s = multi_field_multi_cat_search()
+	return render(request, 'report_form/search_form.html', {'search_form' : s, 'results': results, 'public_only': public_only,
+		'query_string': "", 'empty' : True,  'link' : 'advanced_search'})

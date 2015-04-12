@@ -11,7 +11,6 @@
 		<form class="form"  action = "{% url 'edit' report.id %}" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
 			{{ input_report_form.as_p }}
-			<!--{{ date_input.as_p }} -->
 			{% if files %}
 			<p><b>Uploaded Files: </b></p>
 				<ul>
