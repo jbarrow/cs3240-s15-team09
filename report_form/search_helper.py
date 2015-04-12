@@ -136,3 +136,11 @@ def advanced_query(query_list): # this does an implicit intersection
 			retSet = set.intersection(set(retSet), set(x)) 
 
 	return retSet
+
+def multi_cat_return_OR(categories, search_strings):
+	retSet = []
+	print(search_strings)
+	for cat in categories:
+		for query in search_strings:
+			retSet = set.union(set(retSet), set(simple_return(cat, query)))
+	return retSet

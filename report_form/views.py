@@ -13,7 +13,7 @@ from datetime import date
 from django.utils import timezone
 from django.core.servers.basehttp import FileWrapper
 import os
-from report_form.search_helper import simple_return, multi_cat_return, string_parse, advanced_query
+from report_form.search_helper import simple_return, multi_cat_return, string_parse, advanced_query, multi_cat_return_OR
 
 def incomplete_landing(request):
 	return HttpResponse("Report form not yet available.")
@@ -190,3 +190,26 @@ def advanced_search(request):
 		s = multi_field_multi_cat_search()
 	return render(request, 'report_form/search_form.html', {'search_form' : s, 'results': results, 'public_only': public_only,
 		'query_string': "", 'empty' : True,  'link' : 'advanced_search'})
+
+@login_required
+def search_with_OR(request):
+	results = []
+	public_only = True
+	if request.method == 'POST':
+		s = multi_cat_search_query(request.POST)
+		if s.is_valid():
+			query = request.POST['search_input']
+			print(query)
+			query_set_or = string_parse( " OR ", query)
+			print(query_set_or)
+			if len(query_set_or) > 0:
+				results = multi_cat_return_OR(request.POST.getlist("category"), query_set_or)
+			else:
+				results = multi_cat_return(request.POST.getlist("category"), query)
+			return render(request, 'report_form/search_form.html', {'search_form' : s, 'results': results, 'public_only': public_only,
+			 'query_string': query, 'empty': False, 'link' : 'search_with_OR'})
+	else:
+		s = multi_cat_search_query()
+
+	return render(request, 'report_form/search_form.html', {'search_form' : s, 'results': results, 'public_only': public_only,
+		'query_string': "", 'empty' : True,  'link' : 'search_with_OR'})
