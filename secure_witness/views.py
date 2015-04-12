@@ -11,6 +11,11 @@ def profile(request):
     profile = request.user.profile
     return render_to_response('profile.html', {'admin': request.user.is_swadmin, 'name': profile.name})
 
+
+def base(request):
+    profile = request.user.profile
+    return render_to_response('base.html', {'admin': request.user.is_swadmin, 'name': profile.name})
+
 def register(request):
     context = RequestContext(request)
 

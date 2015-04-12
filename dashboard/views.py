@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.core.context_processors import csrf
 from dashboard.forms import user_profile_form
 from django.contrib.auth.decorators import login_required
+from django.conf.urls import url
 
 @login_required
 def user_profile(request):
