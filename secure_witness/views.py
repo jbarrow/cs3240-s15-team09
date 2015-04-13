@@ -9,12 +9,13 @@ from report_form.models import Folder
 @login_required
 def profile(request):
     profile = request.user.profile
-    return render_to_response('profile.html', {'admin': request.user.is_swadmin, 'name': profile.name})
-
+    user = request.user
+    return render_to_response('profile.html', {'admin': request.user.is_swadmin, 'name': profile.name, 'user': user})
 
 def base(request):
     profile = request.user.profile
-    return render_to_response('base.html', {'admin': request.user.is_swadmin, 'name': profile.name})
+    user = request.user
+    return render_to_response('base.html', {'admin': request.user.is_swadmin, 'name': profile.name, 'user': user})
 
 def register(request):
     context = RequestContext(request)
@@ -42,8 +43,8 @@ def register(request):
 
             registered = True
 
-            #f = Folder(name = "unsorted", userprofile = profile)
-            #f.save()
+            f = Folder(name = "unsorted", userprofile = profile)
+            f.save()
         else:
             print(user_form.errors, profile_form.errors)
     else:

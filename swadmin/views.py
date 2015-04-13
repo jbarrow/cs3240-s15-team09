@@ -8,7 +8,8 @@ from django.http import HttpResponseRedirect
 @user_passes_test(is_swadmin)
 def view_users(request):
     users = User.objects.all()
-    return render(request, 'users.html', {'users': users})
+    user = request.user
+    return render(request, 'users.html', {'users': users, 'user': request.user})
 
 @login_required
 @user_passes_test(is_swadmin)
