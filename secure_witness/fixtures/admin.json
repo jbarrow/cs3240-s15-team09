@@ -10,5 +10,7 @@
   "model": "secure_witness.userprofile",
   "pk": 1,
   "fields": {
-    "name": "Secure Witness"  }
+    "name": "Secure Witness",
+    "admin": "true"
+  }
 }]
