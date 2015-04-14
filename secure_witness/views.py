@@ -2,6 +2,7 @@ from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
+
 from secure_witness.forms import UserForm, UserProfileForm
 from secure_witness.models import UserProfile, is_swadmin
 from report_form.models import Folder

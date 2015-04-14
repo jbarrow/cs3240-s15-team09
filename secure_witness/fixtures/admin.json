@@ -11,6 +11,6 @@
   "pk": 1,
   "fields": {
     "name": "Secure Witness",
-    "admin": "true"
+    "admin": "True"
   }
 }]

@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'secure_witness',
     'dashboard',
     'swadmin',
+    'api',
 )
 
 MIDDLEWARE_CLASSES = (
