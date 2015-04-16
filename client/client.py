@@ -3,6 +3,7 @@ from optparse import OptionParser
 import requests, sys
 
 url = "http://localhost:8000/"
+commands = ["quit", "list", "get", "download", "help"]
 
 def authenticate(username, password):
     auth_url = url + "api/authenticate/"
@@ -34,6 +35,20 @@ def format_report(json_report):
 
     return report
 
+def list(username, token):
+    reports = get_reports(username, token)
+
+    for i, report in enumerate(reports):
+        print("Report", i+1)
+        print(format_report(report['fields']))
+
+def help():
+    print("The commands are:")
+    print("\thelp - prints this page")
+    print("\tlist - lists all of your reports")
+    print("\tget - gets the information for a specific report")
+    print("\tdownload - downloads one of your files")
+
 if __name__ == '__main__':
     parser = OptionParser()
     parser.add_option("-u", "--user", dest="username", help="Enter your SecureWitness username")
@@ -52,9 +67,13 @@ if __name__ == '__main__':
     command = ""
     while command != "quit":
         command = input("> ")
-
-    reports = get_reports(username, token)
-
-    for i, report in enumerate(reports):
-        print("Report", i+1)
-        print(format_report(report['fields']))
+        command = command.split()
+        if command[0] in commands:
+            if(command[0] == "list"):
+                list(username, token)
+            elif(command[0] == "help"):
+                help()
+            elif(command[0] == "quit"):
+                sys.exit()
+        else:
+            print("Please enter a valid command. Type 'help' for a list of commands")
