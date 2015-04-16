@@ -8,11 +8,11 @@ class Folder(models.Model):
     name = models.CharField(max_length=128, unique=True)
     userprofile = models.ForeignKey(UserProfile)
 
+
     def __str__(self):
         return self.name
 
 class Report(models.Model):
-
     author = models.ForeignKey(UserProfile)
     short_description = models.CharField(max_length=750)
     location = models.CharField(max_length=500, blank=True)

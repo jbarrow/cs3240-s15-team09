@@ -1,10 +1,12 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
+from django.template.context_processors import csrf
 
 from report_form.models import Report, File, ReportForm, Folder, TagForm, Tag
 from report_form.forms import report_input_form, multi_cat_search_query, single_search_query, multi_field_multi_cat_search
+from report_form.forms import new_folder_form
 from secure_witness.models import UserProfile
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -213,3 +215,30 @@ def search_with_OR(request):
 
 	return render(request, 'report_form/search_form.html', {'search_form' : s, 'results': results, 'public_only': public_only,
 		'query_string': "", 'empty' : True,  'link' : 'search_with_OR'})
+
+
+@login_required
+def new_folder(request):
+    form = new_folder_form()
+    if request.method == 'POST':
+        form = new_folder_form(request.POST)
+        if form.is_valid():
+            print("good")
+            form.save()
+            return HttpResponseRedirect('report_form.views.my_reports')
+        else:
+            print("else")
+            user = request.user
+            profile = user.profile
+            form = new_folder_form()
+
+    print(request.method)
+    args = {}
+    args.update(csrf(request))
+    args['form'] = form
+
+    return render_to_response('report_form.views.my_reports', args)
+
+@login_required
+def folder_detail(request):
+    return render(request, 'report_form/folder_detail.html')
