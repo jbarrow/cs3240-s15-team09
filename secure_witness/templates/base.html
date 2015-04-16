@@ -8,29 +8,73 @@
 
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+	  
+<style type="text/css">
+
+/*        | CSS Code (c)  Elizabeth Kukla                	 */
+/*        |   												 */
+/*    	  |													 */
+/*   	  |							                   	 */
+/*        | Index Internal CSS Style Sheet             		 */
+
+#nav-right {
+	float: right;
+	text-align: right;
+	
+	}
+
+
+</style>
 
 
   </head>
   <body>
-
+<!--NAVIGATION BAR-->
     <nav class="navbar-inverse">
       <div class="collapse navbar-collapse">
+	<!--LEFT SIDE NAV-->
         <ul class="nav navbar-nav">
-          <li><a href="{% url 'report_form.views.submission' %}">File Report </a></li>
-      {% if user == "AnonymousUser" or user.id == None %}
-      <li><a href={% url 'django.contrib.auth.views.login' %}>Sign In </a></li>
-      <li><a href="{% url 'secure_witness.views.register' %}">Sign Up </a></li>
-			{% else %}
-      <li><a href="{% url 'report_form.views.my_reports' user.id %}">View My Reports </a></li>
-      <li><a href="{% url 'django.contrib.auth.views.logout' %}">Log Out </a></li>
-		<li><a href="{% url 'secure_witness.views.profile' %}">My Home</a></li>
+          		<li><a href="{% url 'report_form.views.submission' %}">File Report </a></li>
+      		{% if user == "AnonymousUser" or user.id == None %}
+      			<li><a href={% url 'django.contrib.auth.views.login' %}>Sign In </a></li>
+      			<li><a href="{% url 'secure_witness.views.register' %}">Sign Up </a></li>
+	  		{% else %}
+      			<li><a href="{% url 'report_form.views.my_reports' user.id %}">View My Reports </a></li>
 			{% endif %}
-		{% if admin %}
-			<li><a href="{% url 'swadmin.views.view_users' %}">Manage Users</a></li>			
-		{% endif %}
-      <li><a href="{% url 'report_form.views.search_with_OR' %}">Simple Search </a></li>
-      <li><a href="{% url 'report_form.views.advanced_search' %}">Advanced Search </a></li>
-        </ul>
+			{% if admin %}
+				<li><a href="{% url 'swadmin.views.view_users' %}">Manage Users</a></li>			
+	  		{% endif %}
+      			
+		</ul>
+		  
+		<!--RIGHT SIDE NAV-->	
+		<ul class="nav navbar-nav navbar-right">
+		<!--DROPDOWN SEARCH MENU-->
+			<!--	<li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Search <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+          </ul>
+			</li>	-->
+				<li><a href="{% url 'report_form.views.search_with_OR' %}">Simple Search </a></li>
+      			<li><a href="{% url 'report_form.views.advanced_search' %}">Advanced Search </a></li>
+			{% if user == "AnonymousUser" or user.id == None %}
+				<li><a href={% url 'django.contrib.auth.views.login' %}>Sign In </a></li>
+				<li><a href="{% url 'secure_witness.views.register' %}">Sign Up </a></li>
+			{% else %}
+				<li><a class="nav-right" href="{% url 'secure_witness.views.profile' %}">My Home</a></li>
+				<li><a class="nav-right" href="{% url 'django.contrib.auth.views.logout' %}">Log Out </a></li>
+
+			{% endif %}
+        	
+        
+		  </ul>
+			
+        
       </div>
     </nav><br />
 
@@ -40,6 +84,11 @@
     </div>
 
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <script src="js/bootstrap.js"></script>
+<!--	<script src="js/jquery.js"></script>        
+	<script src="js/bootstrap.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>-->
+
+   
   </body>
 </html>
