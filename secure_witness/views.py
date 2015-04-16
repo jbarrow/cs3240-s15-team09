@@ -6,10 +6,11 @@ from django.core.context_processors import csrf
 from secure_witness.forms import UserForm, UserProfileForm
 from secure_witness.models import UserProfile, is_swadmin
 from report_form.models import Folder
+from dashboard.forms import user_profile_form
 
 @login_required
 def profile(request):
-	form = UserProfileForm()
+	form = user_profile_form()
 	if request.method == 'POST':
 		form = user_profile_form(request.POST, instance=request.user.profile)
 		if form.is_valid():
@@ -23,12 +24,18 @@ def profile(request):
 			form = user_profile_form(instance=profile)
 
 	print(request.method)
-
-
 	profile = request.user.profile
 	user = request.user
+	
+	args = {}
+	args.update(csrf(request))
+	args['form'] = form
+	args['admin'] = request.user.is_swadmin
+	args['name'] = profile.name
+	args['user'] = user
+	#{'admin': request.user.is_swadmin, 'name': profile.name, 'user': user, 'form':form}
     
-	return render_to_response('profile.html', {'admin': request.user.is_swadmin, 'name': profile.name, 'user': user, 'form':form})
+	return render_to_response('profile.html', args)
 
 def base(request):
     profile = request.user.profile
