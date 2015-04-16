@@ -2,15 +2,33 @@ from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
+from django.core.context_processors import csrf
 from secure_witness.forms import UserForm, UserProfileForm
 from secure_witness.models import UserProfile, is_swadmin
 from report_form.models import Folder
 
 @login_required
 def profile(request):
-    profile = request.user.profile
-    user = request.user
-    return render_to_response('profile.html', {'admin': request.user.is_swadmin, 'name': profile.name, 'user': user})
+	form = UserProfileForm()
+	if request.method == 'POST':
+		form = user_profile_form(request.POST, instance=request.user.profile)
+		if form.is_valid():
+			print("good")
+			form.save()
+			return HttpResponseRedirect('/accounts/profile')
+		else:
+			print("else")
+			user = request.user
+			profile = user.profile
+			form = user_profile_form(instance=profile)
+
+	print(request.method)
+
+
+	profile = request.user.profile
+	user = request.user
+    
+	return render_to_response('profile.html', {'admin': request.user.is_swadmin, 'name': profile.name, 'user': user, 'form':form})
 
 def base(request):
     profile = request.user.profile

@@ -23,7 +23,11 @@
 			{% else %}
       <li><a href="{% url 'report_form.views.my_reports' user.id %}">View My Reports </a></li>
       <li><a href="{% url 'django.contrib.auth.views.logout' %}">Log Out </a></li>
+		<li><a href="{% url 'secure_witness.views.profile' %}">My Home</a></li>
 			{% endif %}
+		{% if admin %}
+			<li><a href="{% url 'swadmin.views.view_users' %}">Manage Users</a></li>			
+		{% endif %}
       <li><a href="{% url 'report_form.views.search_with_OR' %}">Simple Search </a></li>
       <li><a href="{% url 'report_form.views.advanced_search' %}">Advanced Search </a></li>
         </ul>

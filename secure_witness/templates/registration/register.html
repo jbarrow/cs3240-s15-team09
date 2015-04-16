@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-
+<div class="body">
 {% if registered %}
   <a href="/accounts/login">Sign in to SecureWitness.</a><br />
 {% else %}
@@ -13,5 +13,6 @@
       <input type="submit" name="submit" value="Register" />
   </form>
 {% endif %}
+</div>
 
 {% endblock %}
