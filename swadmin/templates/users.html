@@ -10,6 +10,7 @@
         <th>Username</th>
         <th>Name</th>
         <th>Admin?</th>
+        <th>Active?</th>
         <th>Make Admin</th>
         <th>Suspend</th>
       </tr>
@@ -21,6 +22,7 @@
           <td>{{ user }}</td>
           <td>{{ user.profile.name }}</td>
           <td>{{ user.profile.admin }}</td>
+          <td>{{ user.is_active }}</td>
           <td>
             {% if user.profile.admin %}
               Is Admin
@@ -31,8 +33,10 @@
           <td>
             {% if user.profile.admin %}
               Can't Suspend
-            {% else %}
+            {% elif user.is_active %}
               <a href="/swadmin/users/suspend/{{ user.id }}">Suspend</a>
+            {% else %}
+            <a href="/swadmin/users/unsuspend/{{ user.id }}">Unsuspend</a>
             {% endif %}
           </td>
         </tr>
@@ -43,9 +47,9 @@
 </div>
 <div class="col-md-4">
   <ul class="nav nav-pills nav-stacked">
-    <li class="active"><a href="#">Users</a></li>
-    <li><a href="#">Groups</a></li>
-    <li><a href="#" style="color: red;">+ New User</a></li>
+    <li class="active"><a href="/swadmin/users">Users</a></li>
+    <li><a href="/swadmin/groups">Groups</a></li>
+    <li><a href="#" style="color: red;">+ New Group</a></li>
   </ul>
 </div>
 
