@@ -44,3 +44,24 @@ def view_groups(request):
     groups = Group.objects.all()
     user = request.user
     return render(request, 'groups.html', {'groups': groups, 'user': request.user})
+
+@login_required
+@user_passes_test(is_swadmin)
+def create_group(request):
+    current = request.user
+    if request.method == "POST":
+        name = request.POST["group_name"]
+        users = request.POST["initial_users"]
+        users = users.split(",")
+
+        g = Group(name=name)
+        g.save()
+
+        for user in users:
+            user = user.strip()
+            u = User.objects.get(username=user)
+            g.users.add(u)
+
+        return HttpResponseRedirect('/swadmin/groups')
+    else:
+        return render(request, 'create_group.html', {'user': current})

@@ -27,7 +27,7 @@ def add_user(request):
                 user1 = User.objects.filter(username = form_username)
                 userprofile1 = UserProfile.objects.filter(user = user1)
                 g1 = Group.objects.filter(name = form_group)
-                userprofile1.groups.add(g1);
+                userprofile1.groups.add(g1)
                 return HttpResponseRedirect(reverse('group_form.views.add_user'))
             else:
                 return HttpResponseRedirect(reverse('group_form.views.add_user'))
