@@ -3,7 +3,7 @@ from optparse import OptionParser
 import requests, sys
 
 url = "http://localhost:8000/"
-commands = ["quit", "list", "get", "download", "help"]
+commands = ["quit", "list", "get", "help"]
 
 def authenticate(username, password):
     auth_url = url + "api/authenticate/"
@@ -31,7 +31,7 @@ def get_reports(username, token):
 def format_report(json_report):
     report = "Description: " + json_report['short_description'] + "\n"
     report += "Details: " + json_report['detailed_description'] + "\n"
-    report += "Location: " + json_report['location'] + "\n"
+    report += "Location: " + json_report['location']
 
     return report
 
@@ -39,19 +39,38 @@ def list(username, token):
     reports = get_reports(username, token)
 
     for i, report in enumerate(reports):
-        print("Report", i+1)
-        print(format_report(report['fields']))
+        print("Report ID:", report['pk'], "(" + report['fields']['short_description'] + ")")
 
 def help():
     print("The commands are:")
     print("\thelp - prints this page")
     print("\tlist - lists all of your reports")
-    print("\tget - gets the information for a specific report")
+    print("\tget {report_id} - gets the information for a specific report")
     print("\tdownload - downloads one of your files")
+
+def get(username, token, report):
+    user = {'username': username, 'token': token}
+    r = requests.post(url + "api/report/" + report + "/", data=user)
+
+    if r.status_code == 200:
+        report = r.json()
+
+        download = ""
+        while download != "y" and download != "n":
+            download = input("Would you like to download the files (y/n): ")
+
+        if download == 'y':
+            download_files(username, token, report)
+
+        print(format_report(report[0]["fields"]))
+    else:
+        print(r.status_code)
+
 
 if __name__ == '__main__':
     parser = OptionParser()
-    parser.add_option("-u", "--user", dest="username", help="Enter your SecureWitness username")
+    parser.add_option("-u", "--user", dest="username",
+        help="Enter your SecureWitness username")
 
     (options, args) = parser.parse_args()
 
@@ -59,7 +78,7 @@ if __name__ == '__main__':
     if options.username != None:
         username = options.username
     else:
-        input("Enter SecureWitness username: ")
+        username = input("Enter SecureWitness username: ")
 
     password = getpass("Enter SecureWitness password: ")
     token = authenticate(username, password)
@@ -75,5 +94,8 @@ if __name__ == '__main__':
                 help()
             elif(command[0] == "quit"):
                 sys.exit()
+            elif(command[0] == "get"):
+                get(username, token, command[1])
         else:
-            print("Please enter a valid command. Type 'help' for a list of commands")
+            print("Please enter a valid command. \
+                Type 'help' for a list of commands")

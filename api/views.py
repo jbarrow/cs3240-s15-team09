@@ -54,3 +54,18 @@ def get_reports(request):
 
     data = serializers.serialize("json", reports)
     return HttpResponse(data)
+
+@csrf_exempt
+def get_report(request, report_id):
+    username = request.POST.get("username")
+    token = request.POST.get("token")
+    user = authenticate_with_token(username, token)
+
+    if user is None:
+        data = { "error": "User does not exist" }
+        return HttpResponse(data)
+
+    report = Report.objects.filter(author=user.profile, id=report_id)
+
+    data = serializers.serialize("json", report)
+    return HttpResponse(data)
