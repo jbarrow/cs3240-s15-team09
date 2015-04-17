@@ -1,9 +1,14 @@
 from getpass import getpass
 from optparse import OptionParser
-import requests, sys
+import requests, sys, urllib
 
 url = "http://localhost:8000/"
 commands = ["quit", "list", "get", "help"]
+
+def log_error(error):
+    f = open('error.html', 'w')
+    f.write(error)
+    f.close()
 
 def authenticate(username, password):
     auth_url = url + "api/authenticate/"
@@ -48,6 +53,18 @@ def help():
     print("\tget {report_id} - gets the information for a specific report")
     print("\tdownload - downloads one of your files")
 
+def download_files(username, token, report):
+    user = {'username': username, 'token': token}
+    r = requests.post(url + "api/files/" + str(report) + "/", data=user)
+
+    if r.status_code == 200:
+        for file in r.json():
+            urllib.request.urlretrieve(url + "api/download/" + str(file["pk"]), file["fields"]["title"])
+            print("Downloaded " + file["fields"]["title"])
+    else:
+        log_error(r.text)
+
+
 def get(username, token, report):
     user = {'username': username, 'token': token}
     r = requests.post(url + "api/report/" + report + "/", data=user)
@@ -60,11 +77,11 @@ def get(username, token, report):
             download = input("Would you like to download the files (y/n): ")
 
         if download == 'y':
-            download_files(username, token, report)
+            download_files(username, token, report[0]["pk"])
 
         print(format_report(report[0]["fields"]))
     else:
-        print(r.status_code)
+        log_error(r.text)
 
 
 if __name__ == '__main__':
