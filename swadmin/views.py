@@ -65,3 +65,10 @@ def create_group(request):
         return HttpResponseRedirect('/swadmin/groups')
     else:
         return render(request, 'create_group.html', {'user': current})
+
+@login_required
+@user_passes_test(is_swadmin)
+def delete_group(request, group_id):
+    group = Group.objects.get(pk=group_id)
+    group.delete()
+    return HttpResponseRedirect('/swadmin/groups')

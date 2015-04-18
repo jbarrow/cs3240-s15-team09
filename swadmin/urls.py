@@ -8,4 +8,5 @@ urlpatterns = patterns('',
     url(r'^users/unsuspend/(?P<user_id>[0-9]+)$', views.unsuspend, name='users'),
     url(r'^groups/$', views.view_groups, name='groups'),
     url(r'^groups/create/$', views.create_group, name='create_group'),
+    url(r'^groups/delete/(?P<group_id>[0-9]+)$', views.delete_group, name='delete_group'),
 )
