@@ -25,15 +25,42 @@ def my_reports(request, user_id):
 	my_reports = Report.objects.filter(author=profile[0])
 	if request.method == 'POST':
 		for indiv in my_reports:
-			if request.POST.get(str(indiv.id)):
+			output = str(indiv.id)
+			copy = output+"_copy"
+			if request.POST.get(output):
 				report_files = File.objects.filter(report=indiv)
 				for indiv_file in report_files:
 					indiv_file.delete()
 				indiv.delete()
 				# want to delete only one at a time
 				return HttpResponseRedirect(reverse('report_form.views.my_reports', args=(profile[0].user.id,)))
+			elif request.POST.get(copy):
+				copy_report(indiv.id, profile)
+				return HttpResponseRedirect(reverse('report_form.views.my_reports', args=(profile[0].user.id,)))		
 	return render(request, 'report_form/display_list_reports.html', {'my_reports' : my_reports, 'profile': profile[0]})
 
+def copy_report(indiv_id, profile):
+	report = get_object_or_404(Report, pk=indiv_id)
+	files = File.objects.filter(report=report)
+	tags = Tag.objects.filter(associated_report=report)
+	r = Report()
+	r.author = report.author
+	r.short_description = report.short_description
+	r.location = report.location
+	r.detailed_description = report.detailed_description
+	r.private = report.private
+	unsorted_folder = Folder.objects.get(userprofile=profile, name='unsorted')
+	r.folder = unsorted_folder
+	r.save()
+	for element in tags:
+		t = Tag(associated_report=r)
+		t.keyword = element.keyword
+		t.save()
+	for x in files:
+		f = File(report= r)
+		f.file = x.file
+		f.title = x.title
+		f.save()
 
 @login_required
 def detail(request, report_id):
@@ -124,7 +151,8 @@ def submission(request):
 			if input_tag_form.is_valid():
 				newTag = Tag(associated_report=report_input)
 				newTag.keyword = request.POST['keyword']
-				newTag.save()
+				if newTag.keyword != '':
+					newTag.save()
 			else:
 				print("invalid keyword")
 

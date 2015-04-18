@@ -20,6 +20,7 @@
 			<a href= "{% url 'edit' indiv.id  %}">
 			<button type="button">edit report</button></a>
 			<input type="submit" name={{ indiv.id }} value="delete report"/>
+			<input type="submit" name={{ indiv.id }}_copy value="copy report"/>
 			{% endfor %}
 		{% else %}
 			<p> no reports yet submitted </p>
