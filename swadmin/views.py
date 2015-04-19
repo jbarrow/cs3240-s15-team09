@@ -82,13 +82,12 @@ def view_all_reports(request):
     if request.method == 'POST':
         for indiv in all_reports:
             output = str(indiv.id)
-            copy = output+"_copy"
             if request.POST.get(output):
                 report_files = File.objects.filter(report=indiv)
                 for indiv_file in report_files:
                     indiv_file.delete()
                 indiv.delete()
                 # want to delete only one at a time
-                return HttpResponseRedirect(reverse('swadmin.views.view_all_reports'))
+                return HttpResponseRedirect('/swadmin/reports')
         
     return render(request, 'list_reports.html', {'my_reports' : all_reports})  
