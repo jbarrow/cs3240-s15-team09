@@ -1,10 +1,32 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
+{% extends "base_reports.html" %}
 
-</body>
-</html>
+{% block title %}{{folder.name}}{% endblock %}
+
+{% block content %}
+	<head>
+		<meta charset="utf-8">
+		<title>{{folder.name}}</title>
+	</head>
+	<body class="body">
+	  <div class="div">
+		<form class="form"  action = "{% url 'report_form:folder_detail' folder.id %}" method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		<h1>Reports In Folder "{{folder.name}}"</h1>
+		{% if my_reports %}
+			{% for indiv in reports_in_folder %}
+			<p>Description= {{ indiv.short_description }}</p>
+			<a href= "{% url 'detail' indiv.id  %}">
+			<button type="button">view submitted report</button></a>
+			<a href= "{% url 'edit' indiv.id  %}">
+			<button type="button">edit report</button></a>
+			<input type="submit" name={{ indiv.id }} value="delete report"/>
+			<input type="submit" name={{ indiv.id }}_copy value="copy report"/>
+			{% endfor %}
+		{% else %}
+			<p> no reports yet in folder "{{folder.name}}" </p>
+		{% endif %}
+		</form>
+		</div>
+	</body>
+
+{% endblock %}

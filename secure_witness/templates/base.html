@@ -34,15 +34,9 @@
       <div class="collapse navbar-collapse">
 	<!--LEFT SIDE NAV-->
         <ul class="nav navbar-nav">
-
-          <li><a href="{% url 'report_form.views.submission' %}">File Report </a></li>
-            {% if user == "AnonymousUser" or user.id == None %}
-                <li><a href="{% url 'django.contrib.auth.views.login' %}">Sign In </a></li>
-                <li><a href="{% url 'secure_witness.views.register' %}">Sign Up </a></li>
-            {% else %}
-                <li><a href="{% url 'report_form.views.my_reports' user.id %}">View My Reports </a></li>
-                <li><a href="{% url 'django.contrib.auth.views.logout' %}">Log Out </a></li>
-		        <li><a href="{% url 'secure_witness.views.profile' %}">My Home</a></li>
+            <li><a href="{% url 'report_form:submission' %}">File Report </a></li>
+            {% if user != "AnonymousUser" and user.id != None %}
+                <li><a href="{% url 'report_form:my_reports' user.id %}">View My Reports </a></li>
             {% endif %}
 			{% if admin %}
 				<li><a href="{% url 'swadmin.views.view_users' %}">Manage Users</a></li>			
@@ -63,16 +57,15 @@
             <li><a href="#">Separated link</a></li>
           </ul>
 			</li>	-->
-				<li><a href="{% url 'report_form.views.search_with_OR' %}">Simple Search </a></li>
-      			<li><a href="{% url 'report_form.views.advanced_search' %}">Advanced Search </a></li>
+				<li><a href="{% url 'report_form:search_with_OR' %}">Simple Search </a></li>
+      			<li><a href="{% url 'report_form:advanced_search' %}">Advanced Search </a></li>
 			{% if user == "AnonymousUser" or user.id == None %}
-				<li><a href={% url 'django.contrib.auth.views.login' %}>Sign In </a></li>
+				<li><a href="{% url 'django.contrib.auth.views.login' %}">Sign In </a></li>
 				<li><a href="{% url 'secure_witness.views.register' %}">Sign Up </a></li>
 			{% else %}
 				<li><a class="nav-right" href="{% url 'secure_witness.views.profile' %}">My Home</a></li>
 				<li><a class="nav-right" href="{% url 'django.contrib.auth.views.logout' %}">Log Out </a></li>
 
->>>>>>> 4d979c7542db730b73026664933cdc294cc0cfe6
 			{% endif %}
         	
         

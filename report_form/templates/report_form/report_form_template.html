@@ -10,7 +10,7 @@
 	</head>
 	<body class="body">
 	  <div class="div">
-		<form class="form"  action = "{% url "submission" %}" method="post" enctype="multipart/form-data">
+		<form class="form"  action = "{% url 'report_form:submission' %}" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
 			<h1>Submit A Report</h1>
 			{{ input_report_form.as_p }}
