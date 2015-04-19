@@ -216,9 +216,9 @@ def search_with_OR(request):
 	return render(request, 'report_form/search_form.html', {'search_form' : s, 'results': results, 'public_only': public_only,
 		'query_string': "", 'empty' : True,  'link' : 'search_with_OR'})
 
-
 @login_required
 def new_folder(request):
+
     form = new_folder_form()
     if request.method == 'POST':
         form = new_folder_form(request.POST)
