@@ -31,6 +31,9 @@ def my_reports(request, user_id):
 				report_files = File.objects.filter(report=indiv)
 				for indiv_file in report_files:
 					indiv_file.delete()
+				report_tags = Tag.objects.filter(associated_report=indiv)
+				for indiv_tag in report_tags:
+					indiv_tag.delete()
 				indiv.delete()
 				# want to delete only one at a time
 				return HttpResponseRedirect(reverse('report_form.views.my_reports', args=(profile[0].user.id,)))
