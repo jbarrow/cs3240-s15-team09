@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="col-md-8">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Group Name</th>
+        <th>Users</th>
+        <th>Delete?</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for group in groups %}
+      <tr>
+        <td>{{ group.id }}</td>
+        <td><a href="#">{{ group.name }}</a></td>
+        <td>
+          {% for user in group.users.all %}
+          {{ user }}<br />
+          {% endfor %}
+        </td>
+        <td><a href="/swadmin/groups/delete/{{ group.id }}">Delete</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+<div class="col-md-4">
+  <ul class="nav nav-pills nav-stacked">
+    <li><a href="/swadmin/users">Users</a></li>
+    <li class="active"><a href="/swadmin/groups">Groups</a></li>
+    <li><a href="/swadmin/groups/create" style="color: red;">+ New Group</a></li>
+  </ul>
+</div>
+
+
+{% endblock %}
