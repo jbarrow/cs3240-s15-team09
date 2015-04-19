@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 
 from django.contrib.auth.models import User
 from group_form.models import Group
+from report_form.models import Report, Tag, File
 
 @login_required
 @user_passes_test(is_swadmin)
@@ -72,3 +73,22 @@ def delete_group(request, group_id):
     group = Group.objects.get(pk=group_id)
     group.delete()
     return HttpResponseRedirect('/swadmin/groups')
+
+@login_required
+@user_passes_test(is_swadmin)
+def view_all_reports(request):
+    all_reports = Report.objects.all()
+    # need to redirect to details
+    if request.method == 'POST':
+        for indiv in all_reports:
+            output = str(indiv.id)
+            copy = output+"_copy"
+            if request.POST.get(output):
+                report_files = File.objects.filter(report=indiv)
+                for indiv_file in report_files:
+                    indiv_file.delete()
+                indiv.delete()
+                # want to delete only one at a time
+                return HttpResponseRedirect(reverse('swadmin.views.view_all_reports'))
+        
+    return render(request, 'list_reports.html', {'my_reports' : all_reports})  

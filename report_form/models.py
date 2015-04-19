@@ -5,7 +5,7 @@ from Crypto.PublicKey import RSA
 from django.forms.extras.widgets import SelectDateWidget
 
 class Folder(models.Model):
-    name = models.CharField(max_length=128, unique=True)
+    name = models.CharField(max_length=128)
     userprofile = models.ForeignKey(UserProfile)
 
     def __str__(self):
