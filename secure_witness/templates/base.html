@@ -17,10 +17,10 @@
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
           <li><a href="{% url 'report_form.views.submission' %}">File Report </a></li>
-      {% if user == "AnonymousUser" or user.id == None %}
-      <li><a href={% url 'django.contrib.auth.views.login' %}>Sign In </a></li>
-      <li><a href="{% url 'secure_witness.views.register' %}">Sign Up </a></li>
-			{% else %}
+            {% if user == "AnonymousUser" or user.id == None %}
+                <li><a href="{% url 'django.contrib.auth.views.login' %}">Sign In </a></li>
+                <li><a href="{% url 'secure_witness.views.register' %}">Sign Up </a></li>
+            {% else %}
       <li><a href="{% url 'report_form.views.my_reports' user.id %}">View My Reports </a></li>
       <li><a href="{% url 'django.contrib.auth.views.logout' %}">Log Out </a></li>
 		<li><a href="{% url 'secure_witness.views.profile' %}">My Home</a></li>
