@@ -13,4 +13,12 @@
     "name": "Secure Witness",
     "admin": "True"
   }
+},
+{
+  "model": "report_form.folder",
+  "pk": 1,
+  "fields": {
+    "name": "unsorted",
+    "userprofile": 1
+  }
 }]
