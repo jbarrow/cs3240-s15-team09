@@ -1,16 +1,15 @@
 {% extends "base_reports.html" %}
 
-{% block title %}Create Folder{% endblock %}
+{% block title %}Edit Folder: "{{folder.name}}"{% endblock %}
 
 {% block report_content %}
 
 
 <div class="col-md-8">
-  <form method="POST" action="/report_form/folder/create/">
+  <form method="POST" action="{% url 'report_form:edit_folder' folder.id %}">
       {% csrf_token %}
-      <h1>New Folder {{ request.path }} {{ request.user.profile }} {% url 'report_form:folder_detail' 7 %} </h1>
-
-      <label>Folder Name:</label><br />
+      <h1>Edit Folder: "{{folder.name}}"</h1>
+      <label>New Folder Name:</label><br />
       <input type="text" name="folder_name" /><br /><br />
       <label>Select which Reports to add:</label><br />
       {% if not reports %}
@@ -24,7 +23,7 @@
 
       {% endfor %}
 
-    <input type="submit" value="Create Folder" />
+    <input type="submit" value="Update Folder" />
   </form>
 </div>
 

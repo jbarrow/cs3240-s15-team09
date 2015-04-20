@@ -13,5 +13,7 @@ url(r'^simple-search/$', views.simple_search, name='simple_search'),
 url(r'^advanced-search/$', views.advanced_search, name='advanced_search'),
 url(r'^search-with-OR/$', views.search_with_OR, name='search_with_OR'),
 url(r'^folder/(?P<folder_id>[0-9]+)/$', views.folder_detail, name='folder_detail'),
+url(r'^folder/edit/(?P<folder_id>[0-9]+)/$', views.edit_folder, name='edit_folder'),
+url(r'^folder/delete/(?P<folder_id>[0-9]+)/$', views.delete_folder, name='delete_folder'),
 url(r'^folder/create/$', views.new_folder, name='new_folder'),
 )

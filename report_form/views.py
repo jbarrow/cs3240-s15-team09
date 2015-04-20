@@ -41,10 +41,10 @@ def my_reports(request, user_id):
                     indiv_file.delete()
                 indiv.delete()
                 # want to delete only one at a time
-                return HttpResponseRedirect(reverse('report_form.views.my_reports', args=(profile[0].user.id,)))
+                return HttpResponseRedirect(reverse('report_form:my_reports', args=(profile[0].user.id,)))
             elif request.POST.get(copy):
                 copy_report(indiv.id, profile)
-                return HttpResponseRedirect(reverse('report_form.views.my_reports', args=(profile[0].user.id,)))
+                return HttpResponseRedirect(reverse('report_form:my_reports', args=(profile[0].user.id,)))
     return render(request, 'report_form/display_list_reports.html', {'my_reports': my_reports, 'profile': profile[0]})
 
 
@@ -233,12 +233,12 @@ def advanced_search(request):
             results = advanced_query(search_queries)
             return render(request, 'report_form/search_form.html',
                           {'search_form': s, 'results': results, 'public_only': public_only,
-                           'query_string': "Advanced Search", 'empty': False, 'link': 'advanced_search'})
+                           'query_string': "Advanced Search", 'empty': False, 'link': 'report_form:advanced_search'})
     else:
         s = multi_field_multi_cat_search()
     return render(request, 'report_form/search_form.html',
                   {'search_form': s, 'results': results, 'public_only': public_only,
-                   'query_string': "", 'empty': True, 'link': 'advanced_search'})
+                   'query_string': "", 'empty': True, 'link': 'report_form:advanced_search'})
 
 
 @login_required
@@ -258,13 +258,13 @@ def search_with_OR(request):
                 results = multi_cat_return(request.POST.getlist("category"), query)
             return render(request, 'report_form/search_form.html',
                           {'search_form': s, 'results': results, 'public_only': public_only,
-                           'query_string': query, 'empty': False, 'link': 'search_with_OR'})
+                           'query_string': query, 'empty': False, 'link': 'report_form:search_with_OR'})
     else:
         s = multi_cat_search_query()
 
     return render(request, 'report_form/search_form.html',
                   {'search_form': s, 'results': results, 'public_only': public_only,
-                   'query_string': "", 'empty': True, 'link': 'search_with_OR'})
+                   'query_string': "", 'empty': True, 'link': 'report_form:search_with_OR'})
 
 
 @login_required
@@ -280,8 +280,10 @@ def new_folder(request):
         f.save()
         print(selected_reports)
         for report_id in selected_reports:
-            report = Report.objects.get(username=current_userprofile, pk=report_id)
+            report = Report.objects.get(author=current_userprofile, pk=report_id)
             report.folder = Folder.objects.get(userprofile=current_userprofile, name=folder_name)
+
+            report.save()
 
         return HttpResponseRedirect(reverse('report_form:folder_detail', args=(f.id,)))
     else:
@@ -298,28 +300,58 @@ def delete_folder(request, folder_id):
 
     for report in reports_in_folder:
         report.folder = Folder.objects.get(userprofile=current_userprofile, name = "unsorted")
+        report.save()
     folder.delete()
-    return HttpResponseRedirect(reverse('report_form.views.my_reports', args=(current_userprofile.user.id,)))
+    return HttpResponseRedirect(reverse('report_form:my_reports', args=(current_userprofile.user.id,)))
 
 @login_required
 def folder_detail(request, folder_id,):
     folder = get_object_or_404(Folder, pk=folder_id)
     current_user = request.user
+
     profile = current_user.profile
-    my_reports = Report.objects.filter(author=profile, folder=folder)
+    reports_in_folder = Report.objects.filter(author=profile, folder=folder)
+    all_folders = Folder.objects.filter(userprofile=profile,)
+
     if request.method == 'POST':
-        for indiv in my_reports:
+        for indiv in reports_in_folder:
             output = str(indiv.id)
             copy = output + "_copy"
+            folder_input = output + "_folder"
             if request.POST.get(output):
                 report_files = File.objects.filter(report=indiv)
                 for indiv_file in report_files:
                     indiv_file.delete()
                 indiv.delete()
                 # want to delete only one at a time
-                return HttpResponseRedirect(reverse('report_form.views.my_reports', args=(current_user.id,)))
-            elif request.POST.get(copy):
-                copy_report(indiv.id, profile)
-                return HttpResponseRedirect(reverse('report_form.views.my_reports', args=(current_user.id,)))
-    return render(request, 'report_form/folder_detail.html', {'my_reports': my_reports, 'profile': profile
-        , 'folder':folder})
+                return HttpResponseRedirect(reverse('report_form:folder_detail', args = (folder.id,),))
+
+            elif request.POST.get(folder_input):
+                unsorted_folder = Folder.objects.get(userprofile=profile, name = "unsorted")
+                indiv.folder = unsorted_folder
+                indiv.save()
+                return HttpResponseRedirect(reverse('report_form:folder_detail', args = (folder.id,),))
+    return render(request, 'report_form/folder_detail.html', {'reports_in_folder': reports_in_folder, 'profile': profile, 'folder': folder,},)
+
+@login_required
+def edit_folder(request, folder_id):
+    current_userprofile = request.user.profile
+    unsorted_folder = Folder.objects.get(userprofile=current_userprofile, name = "unsorted")
+    unsorted_reports = Report.objects.filter(folder=unsorted_folder)
+    current_folder = Folder.objects.get(userprofile=current_userprofile, pk = folder_id)
+    if request.method == "POST":
+        folder_name = request.POST["folder_name"]
+        selected_reports = request.POST.getlist('selected_reports') #list containing all report ids
+        if folder_name != "":
+            current_folder.name = folder_name
+            current_folder.save()
+        for report_id in selected_reports:
+            report = Report.objects.get(author=current_userprofile, pk=report_id)
+            report.folder = current_folder
+
+            report.save()
+
+        return HttpResponseRedirect(reverse('report_form:folder_detail', args=(current_folder.id,)))
+    else:
+        return render(request, 'report_form/edit_folder.html', {'user': current_userprofile,
+                                                                  'reports': unsorted_reports, 'folder': current_folder})

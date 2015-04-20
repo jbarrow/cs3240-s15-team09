@@ -8,7 +8,7 @@
 	</head>
 	<body class="body">
 	  <div class="div">
-		<form class="form"  action = "{% url 'simple_search' %}" method="post" enctype="multipart/form-data">
+		<form class="form"  action = "{% url 'report_form:simple_search' %}" method="post" enctype="multipart/form-data">
 		{% csrf_token %}
 		<h1>Search Query Results</h1>
 		{% if results %}

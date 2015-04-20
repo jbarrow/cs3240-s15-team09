@@ -37,8 +37,10 @@
             <li><a href="{% url 'report_form:submission' %}">File Report </a></li>
             {% if user != "AnonymousUser" and user.id != None %}
                 <li><a href="{% url 'report_form:my_reports' user.id %}">View My Reports </a></li>
+                <li><a href="{% url 'groups:add_user' %}"> Add User To Group </a></li>
+
             {% endif %}
-			{% if admin %}
+			{% if request.user.is_swadmin %}
 				<li><a href="{% url 'swadmin.views.view_users' %}">Manage Users</a></li>			
 	  		{% endif %}
       			

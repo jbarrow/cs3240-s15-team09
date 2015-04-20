@@ -4,10 +4,13 @@
 <div class="body">
 <h1>Welcome to Secure Witness!</h1><br>
 	
-You are {% if admin %} {% else %} not {% endif %} an admin.
+    <ul>You are {% if request.user.is_swadmin %} {% else %} not {% endif %} an admin.</ul>
 
-    Your name is {{ name }}
-	
+    <ul>Your name is {{ request.user.profile.name }}.</ul>
+    <ul>You are in the following groups: </ul>
+    {% for group in groups %}
+    <ul>{{group.name}}</ul>
+	{% endfor %}
 
 	<div> 
 		<br>
