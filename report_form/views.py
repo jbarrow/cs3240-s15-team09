@@ -102,15 +102,15 @@ def edit(request, report_id):
                 new_tag.keyword = request.POST['keyword']
                 new_tag.save()
             if request.POST.get("submission"):
-                return HttpResponseRedirect(reverse('report_form.views.detail', args=(report.id,)))
+                return HttpResponseRedirect(reverse('report_form:detail', args=(report.id,)))
             else:
-                return HttpResponseRedirect(reverse('report_form.views.edit', args=(report.id,)))
+                return HttpResponseRedirect(reverse('report_form:edit', args=(report.id,)))
         elif request.POST.get("delete"):
             for inputfile in files:
                 # delete here
                 if request.POST.get(str(inputfile.id)):
                     inputfile.delete()
-                    return HttpResponseRedirect(reverse('report_form.views.edit', args=(report.id,)))
+                    return HttpResponseRedirect(reverse('report_form:edit', args=(report.id,)))
 
             return HttpResponse("Report form not yet available.")
         else:
@@ -175,7 +175,7 @@ def submission(request):
             if (request.POST.get("submission")):
                 return HttpResponseRedirect(reverse('report_form:detail', args=(report_input.id,)))
             elif (request.POST.get("add_kword")):
-                return HttpResponseRedirect(reverse('report_form.views.edit', args=(report_input.id,)))
+                return HttpResponseRedirect(reverse('report_form:edit', args=(report_input.id,)))
     else:
         input_report_form = ReportForm()
         input_tag_form = TagForm()
