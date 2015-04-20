@@ -1,6 +1,7 @@
 from django.db import models
 from django.forms import ModelForm
 from secure_witness.models import UserProfile
+from group_form.models import Group
 from Crypto.PublicKey import RSA
 from django.forms.extras.widgets import SelectDateWidget
 
@@ -23,6 +24,9 @@ class Report(models.Model):
     time_created = models.TimeField(auto_now_add = True);
     time_last_modified = models.DateTimeField(auto_now = True);
     folder = models.ForeignKey(Folder, blank=True, null=True);
+    #groups = models.ForeignKey(Group, blank=True, null=True); # may be questionable because we may want a many to many relationship
+    # or they could use the copy functionality in order to create lots of copies to share with other groups
+    # how to make a report belong to multiple users?
     # don't actually allow this to be null, but we handle this on submission anyway
 
     def __str__(self):
