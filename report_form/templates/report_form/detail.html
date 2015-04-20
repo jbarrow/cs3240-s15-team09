@@ -21,7 +21,7 @@
 			{% if files %}
 				<ul>
 				{% for inputfile in files %}
-					<li><a href= "{% url 'download' inputfile.id %}">{{ inputfile.title }}</a></li>
+					<li><a href= "{% url 'report_form:download' inputfile.id %}">{{ inputfile.title }}</a></li>
 					<!--<li><a href= "/report_form/download?f={{ inputfile.file.url }}&n={{inputfile.title}}">{{ inputfile.title }}</a></li>
 					<li><a href= "{{ inputfile.file.url }}">{{ inputfile.title }}</a></li> -->
 				{% endfor %}
@@ -41,8 +41,7 @@
 			{% endif %}
 			<p>Time Created = {{report.time_created}}</p>
 			<p>Time Modified= {{report.time_last_modified}} </p>
-			<!--<a href= "{% url 'my_reports' report.author.user.id  %}">
-		<button type="button">view my reports</button></a> -->
+
 		{% else %}
 			<p> shouldn't be here </p>
 		{% endif %}

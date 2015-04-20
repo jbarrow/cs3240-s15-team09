@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load folder_retrieval %}
 {% block content %}
 
 <div class="col-md-8">
@@ -8,10 +8,28 @@
 </div>
 <div class="col-md-4">
   <ul class="nav nav-pills nav-stacked">
-    <li class="active"><a href="#">Unsorted</a></li>
-    <li><a href="#">Diplomatic Cables</a></li>
-    <li><a href="#">NSA Files</a></li>
-    <li><a href="#" style="color: red;">+ New Folder</a></li>
+      {% url 'report_form:my_reports' request.user.id as all_url %}
+      {% if request.path == all_url %}
+            <li class="active"><a href="{% url 'report_form:my_reports' request.user.id %}">All Reports</a></li>
+        {% else %}
+            <li><a href="{% url 'report_form:my_reports' request.user.id %}">All Reports</a></li>
+        {% endif %}
+
+      {% url 'report_form:folder_detail' 1 as unsorted_url %}
+      {% if request.path == unsorted_url %}
+            <li class="active"><a href="{% url 'report_form:folder_detail' 1 %}">Unsorted Reports</a></li>
+        {% else %}
+            <li><a href="{% url 'report_form:folder_detail' 1 %}">Unsorted Reports</a></li>
+        {% endif %}
+      {% for folder in request.user.profile|retrieve_folders|dictsort:"name" %}
+        {% url 'report_form:folder_detail' folder.id as the_url %}
+        {% if request.path == the_url %}
+            <li class="active"><a href="{% url 'report_form:folder_detail' folder.id %}">{{folder.name}}</a></li>
+        {% else %}
+            <li><a href="{% url 'report_form:folder_detail' folder.id %}">{{folder.name}}</a></li>
+        {% endif %}
+      {% endfor %}
+    <li><a href="{% url 'report_form:new_folder' %}" style="color: red;">+ New Folder</a></li>
   </ul>
 </div>
 

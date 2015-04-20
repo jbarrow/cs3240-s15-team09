@@ -1,8 +1,8 @@
-{% extends 'base.html' %}
+{% extends 'base_reports.html' %}
 
-{% block content %}
+{% block report_content %}
 	<div class="body">
-		<form class="form"  action = "{% url 'edit' report.id %}" method="post" enctype="multipart/form-data">
+		<form class="form"  action = "{% url 'report_form:edit' report.id %}" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
 			{{ input_report_form.as_p }}
 			{% if files %}
