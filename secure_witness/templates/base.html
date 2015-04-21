@@ -41,7 +41,8 @@
 
             {% endif %}
 			{% if request.user.is_swadmin %}
-				<li><a href="{% url 'swadmin.views.view_users' %}">Manage Users</a></li>			
+				<li><a href="{% url 'swadmin.views.view_users' %}">Manage Users</a></li>		
+				<li><a href="{% url 'swadmin.views.view_all_reports' %}">Manage Reports</a></li>	
 	  		{% endif %}
       			
 		</ul>

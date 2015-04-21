@@ -15,7 +15,7 @@
 		{% if my_reports %}
 			{% for indiv in my_reports %}
 			<p>Description= {{ indiv.short_description }}</p>
-			<a href= "{% url 'detail' indiv.id  %}">
+			<a href= "{% url 'report_form:detail' indiv.id  %}">
 			<button type="button">view submitted report</button></a>
 			<input type="submit" name={{ indiv.id }} value="delete report"/>
 			{% endfor %}
