@@ -1,4 +1,5 @@
 {% extends "base_reports.html" %}
+{% load filter_by_permissions %}
 
 {% block title %}Search{% endblock %}
 
@@ -21,8 +22,8 @@
 
 		{% if not empty %}
 				<h1>Query Results for "{{query_string}}" </h1>
-		{% if results %}
-			{% for indiv in results %}
+		{% if results|filter_by_permissions %}
+			{% for indiv in results|filter_by_permissions %}
 				{% if public_only %}
 					{% if not indiv.private %}
 						<p>Description= {{ indiv.short_description }}

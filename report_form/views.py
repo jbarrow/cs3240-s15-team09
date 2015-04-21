@@ -226,6 +226,7 @@ def submission(request):
             else:
                 print("invalid keyword")
 
+            # a permissions object is created for every report regardless of anything really
             permission_object = Permission(report=report_input)
             permission_object.save()
             viewers = request.POST["viewers"]
@@ -275,13 +276,14 @@ def download(request, file_id):
 
 
 @login_required
+#  not really used anymore
 def simple_search(request):
     results = []
     public_only = True
     if request.method == 'POST':
         s = multi_cat_search_query(request.POST)
         if s.is_valid():
-            query = request.POST['search_input']
+            query = request.POST['search_input'].strip()
             results = multi_cat_return(request.POST.getlist("category"), query)
             return render(request, 'report_form/search_form.html',
                           {'search_form': s, 'results': results, 'public_only': public_only,
@@ -296,21 +298,24 @@ def simple_search(request):
 
 @login_required
 def advanced_search(request):
+    current_user = request.user
     results = []
-    public_only = True
+    public_only = False
     if request.method == 'POST':
         s = multi_field_multi_cat_search(request.POST)
         if s.is_valid():
             search_queries = []
-            search_queries.append(request.POST['s_author'])
-            search_queries.append(request.POST['s_short_desc'])
-            search_queries.append(request.POST['s_location'])
-            search_queries.append(request.POST['s_detailed_desc'])
-            search_queries.append(request.POST['s_keyword'])
-            search_queries.append(request.POST['s_date_year'])
-            search_queries.append(request.POST['s_date_month'])
-            search_queries.append(request.POST['s_date_day'])
+            search_queries.append(request.POST['s_author'].strip())
+            search_queries.append(request.POST['s_short_desc'].strip())
+            search_queries.append(request.POST['s_location'].strip())
+            search_queries.append(request.POST['s_detailed_desc'].strip())
+            search_queries.append(request.POST['s_keyword'].strip())
+            search_queries.append(request.POST['s_date_year'].strip())
+            search_queries.append(request.POST['s_date_month'].strip())
+            search_queries.append(request.POST['s_date_day'].strip())
             results = advanced_query(search_queries)
+            results = list(results)
+            results.append(current_user)
             return render(request, 'report_form/search_form.html',
                           {'search_form': s, 'results': results, 'public_only': public_only,
                            'query_string': "Advanced Search", 'empty': False, 'link': 'report_form:advanced_search'})
@@ -323,12 +328,13 @@ def advanced_search(request):
 
 @login_required
 def search_with_OR(request):
+    current_user = request.user
     results = []
-    public_only = True
+    public_only = False
     if request.method == 'POST':
         s = multi_cat_search_query(request.POST)
         if s.is_valid():
-            query = request.POST['search_input']
+            query = request.POST['search_input'].strip()
             print(query)
             query_set_or = string_parse(" OR ", query)
             print(query_set_or)
@@ -336,6 +342,9 @@ def search_with_OR(request):
                 results = multi_cat_return_OR(request.POST.getlist("category"), query_set_or)
             else:
                 results = multi_cat_return(request.POST.getlist("category"), query)
+            results = list(results)
+            results.append(current_user)
+            print(results)
             return render(request, 'report_form/search_form.html',
                           {'search_form': s, 'results': results, 'public_only': public_only,
                            'query_string': query, 'empty': False, 'link': 'report_form:search_with_OR'})
