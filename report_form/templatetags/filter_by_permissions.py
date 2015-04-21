@@ -18,7 +18,7 @@ def filter_by_permissions(results):
 	profile = results.pop() # will remove and return the last item in the list
 	retSet = set()
 	for report in results:
-		if not report.private:
+		if not report.private or profile.profile.admin:
 			retSet.add(report)
 		else:
 			p = get_object_or_404(Permission, report=report)
