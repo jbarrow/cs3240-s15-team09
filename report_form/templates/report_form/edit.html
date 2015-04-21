@@ -6,15 +6,15 @@
 			{% csrf_token %}
 			{{ input_report_form.as_p }}
 			<p><b>Current Permissions</b></p>
-			{% if p.groups.all and p.profiles.all %}
+			{% if p.groups.all or p.profiles.all %}
 			<ul>
 			{% for g in p.groups.all %}
-				<li>{{g.name}}</li>
+				<li>{{g.name}} <input type="submit" name = "{{ g.id }}_group" value="delete permission" /></li>
 			{% endfor %}
 			</ul>
 			<ul>
 				{% for v in p.profiles.all %}
-				<li>{{v.user.username}}</li>
+				<li>{{v.user.username}} <input type="submit" name = "{{ v.user.id }}_profile" value="delete permission" /></li>
 				{% endfor %}
 			</ul>
 			{% else %}
@@ -23,7 +23,9 @@
 			<label>Add group visibility</label> <br />
 			{% if groups %}
 				{% for group in groups %}
+				{% if group not in p.groups.all %}
 				<input type="checkbox" value= {{group.id}} name="group_names"/> {{group.name}} <br />
+				{% endif %}
 				{% endfor %}
 			{% else %}
 			<p>You aren't a member of any group</p>
@@ -42,8 +44,9 @@
 				<p> No files yet uploaded </p>
 			{% endif %}
 			<input type="file" name="file" multiple />
-			{% if tags %}
+			<br />
 			<p><b>Keywords: </b></p>
+			{% if tags %}
 				<ul>
 				{% for input_tag in tags %}
 					<li>{{ input_tag.keyword }}</li>
@@ -52,6 +55,7 @@
 			{% else %}
 				<p> no keywords associated with this report </p>
 			{% endif %}
+			<br />
 			{{ input_tag_form.as_p }}
 			<p> <input type="submit" name= "add_kword" value="Add another keyword" /></p>
 			<p> <input type="submit" name= "submission" value="Submit Report" /></p>

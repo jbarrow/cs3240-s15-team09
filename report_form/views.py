@@ -149,6 +149,23 @@ def edit(request, report_id):
             return HttpResponse("Report form not yet available.")
         elif request.POST.get("add_kword"):
             return HttpResponseRedirect(reverse('report_form:edit', args=(report.id,)))
+        print(request.POST)
+        for k in perm.groups.all():
+            key = str(k.id)
+            key += "_group"
+            print(key)
+            if request.POST.get(key):
+                perm.groups.remove(k)
+                perm.save()
+                return HttpResponseRedirect(reverse('report_form:edit', args=(report.id,)))
+        for m in perm.profiles.all():
+            key = str(m.user.id)
+            key += "_profile"
+            print(key)
+            if request.POST.get(key):
+                perm.profiles.remove(m)
+                perm.save()
+                return HttpResponseRedirect(reverse('report_form:edit', args=(report.id,)))
         else:
             return HttpResponse("unexpected input widget")   
     else:
