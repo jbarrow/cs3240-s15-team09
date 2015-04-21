@@ -26,12 +26,12 @@
 				{% if public_only %}
 					{% if not indiv.private %}
 						<p>Description= {{ indiv.short_description }}
-						<a href= "{% url 'detail' indiv.id  %}">
+						<a href= "{% url 'report_form:detail' indiv.id  %}">
 						<button type="button">view report</button></a> </p>
 					{% endif %}
 				{% else %}
 					<p>Description= {{ indiv.short_description }}
-					<a href= "{% url 'detail' indiv.id  %}">
+					<a href= "{% url 'report_form:detail' indiv.id  %}">
 					<button type="button">view report</button></a></p>
 				{% endif %}
 			{% endfor %}

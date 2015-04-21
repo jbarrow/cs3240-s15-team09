@@ -8,7 +8,7 @@
 <div class="col-md-8">
   <form method="POST" action="/report_form/folder/create/">
       {% csrf_token %}
-      <h1>New Folder {{ request.path }} {{ request.user.profile }} {% url 'report_form:folder_detail' 7 %} </h1>
+      <h1>New Folder</h1>
 
       <label>Folder Name:</label><br />
       <input type="text" name="folder_name" /><br /><br />

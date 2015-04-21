@@ -377,7 +377,7 @@ def folder_detail(request, folder_id, ):
     all_folders = Folder.objects.filter(userprofile=profile, )
 
     if request.method == 'POST':
-         for indiv in my_reports:
+         for indiv in reports_in_folder:
             output = str(indiv.id)
             copy = output + "_copy"
             folder_input = output + "_folder"

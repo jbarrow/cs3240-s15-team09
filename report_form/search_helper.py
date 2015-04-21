@@ -13,7 +13,7 @@ def simple_return(category, search_string):
 	# only for public reports
 	retSet = []
 	if category == AUTHOR:
-		users = User.objects.filter(username=search_string)
+		users = User.objects.filter(username__iexact=search_string)
 		if len(users) > 0:
 			profile = UserProfile.objects.filter(user=users[0])
 			if len(profile) > 0:
@@ -23,13 +23,13 @@ def simple_return(category, search_string):
 		else:
 			return retSet
 	elif category == SHORT_DESC:
-		return Report.objects.filter(short_description=search_string)
+		return Report.objects.filter(short_description__icontains=search_string)
 	elif category == LOCATION:
-		return Report.objects.filter(location=search_string)
+		return Report.objects.filter(location__icontains=search_string)
 	elif category == DETAILED_DESC:
-		return Report.objects.filter(detailed_description=search_string)
+		return Report.objects.filter(detailed_description__icontains=search_string)
 	elif category == KEYWORD:
-		all_keywords = Tag.objects.filter(keyword=search_string)
+		all_keywords = Tag.objects.filter(keyword__icontains=search_string)
 		for kword in all_keywords:
 			retSet.append(kword.associated_report)
 		return retSet
