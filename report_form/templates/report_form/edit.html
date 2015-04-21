@@ -5,6 +5,7 @@
 		<form class="form"  action = "{% url 'report_form:edit' report.id %}" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
 			{{ input_report_form.as_p }}
+			<p><i>You don't need to add permissions if your report is public!</i></p>
 			<p><b>Current Permissions</b></p>
 			{% if p.groups.all or p.profiles.all %}
 			<ul>

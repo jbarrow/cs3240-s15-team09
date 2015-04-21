@@ -14,6 +14,7 @@
 			{% csrf_token %}
 			<h1>Submit A Report</h1>
 			{{ input_report_form.as_p }}
+			<p><i>You don't need to add permissions if your report is public!</i></p>
 			<label>Add group visibility</label> <br />
 			{% if groups %}
 				{% for group in groups %}
