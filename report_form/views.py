@@ -7,7 +7,7 @@ from django.shortcuts import render_to_response
 
 from django.core.context_processors import csrf
 
-from report_form.models import Report, File, ReportForm, Folder, TagForm, Tag
+from report_form.models import Report, File, ReportForm, Folder, TagForm, Tag, Permission
 from report_form.forms import report_input_form, multi_cat_search_query, single_search_query, \
     multi_field_multi_cat_search, new_folder_form
 from secure_witness.models import UserProfile
@@ -17,6 +17,7 @@ from django.utils.encoding import smart_str
 from datetime import date
 from django.utils import timezone
 from django.core.servers.basehttp import FileWrapper
+from group_form.models import Group
 
 import os
 from report_form.search_helper import simple_return, multi_cat_return, string_parse, advanced_query, multi_cat_return_OR
@@ -52,9 +53,12 @@ def my_reports(request, user_id):
 
 
 def copy_report(indiv_id, profile):
+    print("copy report")
     report = get_object_or_404(Report, pk=indiv_id)
     files = File.objects.filter(report=report)
     tags = Tag.objects.filter(associated_report=report)
+    perm = Permission.objects.get(report=report)
+    print(perm)
     r = Report()
     r.author = report.author
     r.short_description = report.short_description
@@ -73,6 +77,14 @@ def copy_report(indiv_id, profile):
         f.file = x.file
         f.title = x.title
         f.save()
+    p = Permission(report=r)
+    print(p)
+    p.save()
+    for g in perm.groups.all():
+        p.groups.add(g)
+    for v in perm.profiles.all():
+        p.profiles.add(v)
+    p.save()
 
 
 @login_required
@@ -80,7 +92,8 @@ def detail(request, report_id):
     report = get_object_or_404(Report, pk=report_id)
     files = File.objects.filter(report=report)
     tags = Tag.objects.filter(associated_report=report)
-    return render(request, 'report_form/detail.html', {'report': report, 'files': files, 'tags': tags})
+    p = Permission.objects.filter(report=report)
+    return render(request, 'report_form/detail.html', {'report': report, 'files': files, 'tags': tags, 'p':p[0]})
 
 
 @login_required
@@ -88,6 +101,10 @@ def edit(request, report_id):
     report = get_object_or_404(Report, pk=report_id)
     files = File.objects.filter(report=report)
     tags = Tag.objects.filter(associated_report=report)
+    perm = get_object_or_404(Permission, report=report)
+    current_user = request.user
+    profile = UserProfile.objects.filter(user=current_user)
+    groups = Group.objects.filter(users=profile[0])
     if request.method == 'POST':
         f = ReportForm(request.POST, instance=report)
         if f.is_valid():
@@ -95,16 +112,33 @@ def edit(request, report_id):
             for upfile in request.FILES.getlist("file"):
                 newfile = File(title=upfile.name, file=upfile, report=report)
                 newfile.save()
-        t = TagForm()
-        if t.is_valid:
-            if request.POST['keyword'] != '':
-                new_tag = Tag(associated_report=report)
-                new_tag.keyword = request.POST['keyword']
-                new_tag.save()
-            if request.POST.get("submission"):
-                return HttpResponseRedirect(reverse('report_form:detail', args=(report.id,)))
-            else:
-                return HttpResponseRedirect(reverse('report_form:edit', args=(report.id,)))
+            t = TagForm()
+            if t.is_valid:
+                if request.POST['keyword'] != '':
+                    new_tag = Tag(associated_report=report)
+                    new_tag.keyword = request.POST['keyword']
+                    new_tag.save()
+        # need to alter so that you can add AND DELETE
+            viewers = request.POST["viewers"]
+            viewers = viewers.split(",")
+            g = request.POST.getlist("group_names")
+            print(g)
+            print(viewers)
+            for y in viewers:
+                y = y.strip()
+                if y != '':
+                    u = User.objects.get(username=y)
+                    p = UserProfile.objects.get(user=u)
+                    perm.profiles.add(p)
+            #issues with addition and deletion is unimplemented
+            for x in g:
+                x = x.strip()
+                gr = Group.objects.get(pk=x)
+                perm.groups.add(gr)
+            perm.save()
+            
+        if request.POST.get("submission"):
+            return HttpResponseRedirect(reverse('report_form:detail', args=(report.id,)))
         elif request.POST.get("delete"):
             for inputfile in files:
                 # delete here
@@ -113,15 +147,17 @@ def edit(request, report_id):
                     return HttpResponseRedirect(reverse('report_form:edit', args=(report.id,)))
 
             return HttpResponse("Report form not yet available.")
+        elif request.POST.get("add_kword"):
+            return HttpResponseRedirect(reverse('report_form:edit', args=(report.id,)))
         else:
-            return HttpResponse("abnormal.")
-
+            return HttpResponse("unexpected input widget")   
     else:
         print(request.method)
         f = ReportForm(instance=report)
         t = TagForm()
+
     return render(request, 'report_form/edit.html',
-                  {'input_report_form': f, 'report': report, 'files': files, 'input_tag_form': t, 'tags': tags})
+                  {'input_report_form': f, 'report': report, 'files': files, 'input_tag_form': t, 'tags': tags, 'groups': groups, 'p':perm})
 
 
 def submitted(request):
@@ -141,6 +177,7 @@ def submission(request):
             current_user = request.user
             profile = UserProfile.objects.filter(user=current_user)
             unsorted_folder = Folder.objects.get(userprofile=profile, name='unsorted')
+            groups = Group.objects.filter(users=profile[0])
             report_input = Report()
             report_input.author = profile[0]
             report_input.short_description = request.POST['short_description']
@@ -172,6 +209,26 @@ def submission(request):
             else:
                 print("invalid keyword")
 
+            permission_object = Permission(report=report_input)
+            permission_object.save()
+            viewers = request.POST["viewers"]
+            viewers = viewers.split(",")
+            g = request.POST.getlist("group_names")
+            print(viewers)
+            print(g)
+
+            for y in viewers:
+                y = y.strip()
+                if y != '':
+               		u = User.objects.get(username=y)
+                	p = UserProfile.objects.get(user=u)
+                	permission_object.profiles.add(p)
+            for x in g:
+                x = x.strip()
+                gr = Group.objects.get(pk=x)
+                permission_object.groups.add(gr)
+            permission_object.save()
+
             if (request.POST.get("submission")):
                 return HttpResponseRedirect(reverse('report_form:detail', args=(report_input.id,)))
             elif (request.POST.get("add_kword")):
@@ -179,9 +236,12 @@ def submission(request):
     else:
         input_report_form = ReportForm()
         input_tag_form = TagForm()
+        current_user = request.user
+        profile = UserProfile.objects.filter(user=current_user)
+        groups = Group.objects.filter(users=profile[0])
 
     return render(request, 'report_form/report_form_template.html',
-                  {'input_report_form': input_report_form, 'input_tag_form': input_tag_form})
+                  {'input_report_form': input_report_form, 'input_tag_form': input_tag_form, 'groups': groups})
 
 
 @login_required

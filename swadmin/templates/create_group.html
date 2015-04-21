@@ -9,7 +9,7 @@
     <input type="text" name="group_name" /><br /><br />
     <label>Select Users to Add to the Group</label><br />
     {% for user in users %}
-      <input type="checkbox" value="{{user.id}}" name="users" /> {{ user.username }}<br />
+      <input type="checkbox" value="{{user.user.id}}" name="users" /> {{ user.user.username }}<br />
     {% endfor %}
 
     <br /><br />

@@ -44,6 +44,17 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
+class Permission(models.Model):
+    groups = models.ManyToManyField('group_form.Group')
+    profiles = models.ManyToManyField('secure_witness.UserProfile')
+    report = models.ForeignKey(Report)
+
+    def __str__(self):
+        output = self.report.short_description
+        output += " "
+        output += str(self.report.id)
+        return output
+
 class ReportForm(ModelForm):
     class Meta:
         model = Report
@@ -60,3 +71,8 @@ class TagForm(ModelForm):
     class Meta:
         model = Tag
         fields = ['keyword']
+
+class PermissionForm(ModelForm):
+    class Meta: 
+        model = Permission
+        fields = ['groups', 'profiles']

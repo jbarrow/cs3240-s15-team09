@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from group_form.models import Group
 from report_form.models import Report, Tag, File
+from secure_witness.models import UserProfile
 
 @login_required
 @user_passes_test(is_swadmin)
@@ -50,7 +51,7 @@ def view_groups(request):
 @user_passes_test(is_swadmin)
 def create_group(request):
     current = request.user
-    users = User.objects.all()
+    users = UserProfile.objects.all()
     if request.method == "POST":
         name = request.POST["group_name"]
         users = request.POST.getlist("users")
@@ -60,7 +61,7 @@ def create_group(request):
 
         for user in users:
             user = user.strip()
-            u = User.objects.get(pk=user)
+            u = UserProfile.objects.get(pk=user)
             g.users.add(u)
 
         return HttpResponseRedirect('/swadmin/groups')

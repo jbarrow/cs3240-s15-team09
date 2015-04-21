@@ -48,3 +48,5 @@ class multi_field_multi_cat_search(forms.Form):
     s_keyword = forms.CharField(label="Keyword ", required=False)
     s_date = forms.DateTimeField(label= "Date of Incident ", widget=SelectDateWidget, required=False)
 
+
+

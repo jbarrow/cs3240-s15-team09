@@ -1,8 +1,8 @@
 from django.db import models
 from django.forms import ModelForm
 from django.contrib.auth.models import User
-from group_form.models import Group
-
+#from group_form.models import Group
+#from report_form.models import Permission
 import uuid
 
 class UserProfile(models.Model):
@@ -11,6 +11,7 @@ class UserProfile(models.Model):
     session_token = models.CharField(max_length=255, null=True)
     groups = models.ManyToManyField('group_form.Group')
     admin = models.BooleanField(default=False)
+    permissions = models.ManyToManyField('report_form.Permission')
 
     def generate_token(self):
         return uuid.uuid1().hex

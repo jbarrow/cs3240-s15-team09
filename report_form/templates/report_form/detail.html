@@ -17,6 +17,21 @@
 			<p>Date of Incident = {{report.date_of_incident}} </p>
 			<p>Folder = {{report.folder.name }} </p>
 			<p>This report is {% if report.private %} private{% else %} public{% endif %}. </p>
+			<p><b>Permissions</b></p>
+			{% if p.groups.all and p.profiles.all %}
+			<ul>
+			{% for g in p.groups.all %}
+				<li>{{g.name}}</li>
+			{% endfor %}
+			</ul>
+			<ul>
+				{% for v in p.profiles.all %}
+				<li>{{v.user.username}}</li>
+				{% endfor %}
+			</ul>
+			{% else %}
+			<p>No permissions to show</p>
+			{% endif %}
 			<p><b>Files </b></p>
 			{% if files %}
 				<ul>

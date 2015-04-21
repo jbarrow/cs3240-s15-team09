@@ -5,6 +5,32 @@
 		<form class="form"  action = "{% url 'report_form:edit' report.id %}" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
 			{{ input_report_form.as_p }}
+			<p><b>Current Permissions</b></p>
+			{% if p.groups.all and p.profiles.all %}
+			<ul>
+			{% for g in p.groups.all %}
+				<li>{{g.name}}</li>
+			{% endfor %}
+			</ul>
+			<ul>
+				{% for v in p.profiles.all %}
+				<li>{{v.user.username}}</li>
+				{% endfor %}
+			</ul>
+			{% else %}
+			<p>No permissions to show</p>
+			{% endif %}
+			<label>Add group visibility</label> <br />
+			{% if groups %}
+				{% for group in groups %}
+				<input type="checkbox" value= {{group.id}} name="group_names"/> {{group.name}} <br />
+				{% endfor %}
+			{% else %}
+			<p>You aren't a member of any group</p>
+			{% endif %}	
+			<br />
+			<label>Add users</label><br />
+			<input type="text" name="viewers" /><br /><br />
 			{% if files %}
 			<p><b>Uploaded Files: </b></p>
 				<ul>

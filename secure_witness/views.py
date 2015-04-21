@@ -12,7 +12,9 @@ from group_form.models import Group
 @login_required
 def profile(request):
     form = user_profile_form()
-    groups = Group.objects.filter(users=request.user)
+    # this could be an issue here because of the 
+    profile = UserProfile.objects.filter(user=request.user)
+    groups = Group.objects.filter(users=profile[0])
     if request.method == 'POST':
         form = user_profile_form(request.POST, instance=request.user.profile)
         if form.is_valid():
