@@ -58,7 +58,7 @@ class Permission(models.Model):
 class ReportForm(ModelForm):
     class Meta:
         model = Report
-        fields = ['short_description', 'detailed_description', 'location', 'date_of_incident', 'private', 'folder']
+        fields = ['short_description', 'detailed_description', 'location', 'date_of_incident', 'private']
         widgets = {
         'date_of_incident' : SelectDateWidget,
         }

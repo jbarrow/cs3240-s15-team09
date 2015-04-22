@@ -187,14 +187,14 @@ def submitted(request):
 
 @login_required
 def submission(request):
+    current_user = request.user
+    profile = UserProfile.objects.filter(user=current_user)
+    groups = Group.objects.filter(users=profile[0])
     if request.method == 'POST':
         input_report_form = ReportForm(request.POST)
         input_tag_form = TagForm(request.POST)
         if input_report_form.is_valid():
-            current_user = request.user
-            profile = UserProfile.objects.filter(user=current_user)
             unsorted_folder = Folder.objects.get(userprofile=profile, name='unsorted')
-            groups = Group.objects.filter(users=profile[0])
             report_input = Report()
             report_input.author = profile[0]
             report_input.short_description = request.POST['short_description']
@@ -254,9 +254,6 @@ def submission(request):
     else:
         input_report_form = ReportForm()
         input_tag_form = TagForm()
-        current_user = request.user
-        profile = UserProfile.objects.filter(user=current_user)
-        groups = Group.objects.filter(users=profile[0])
 
     return render(request, 'report_form/report_form_template.html',
                   {'input_report_form': input_report_form, 'input_tag_form': input_tag_form, 'groups': groups})

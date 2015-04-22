@@ -1,10 +1,24 @@
 {% extends 'base_reports.html' %}
+{% load folder_retrieval %}
 
 {% block report_content %}
 	<div class="body">
 		<form class="form"  action = "{% url 'report_form:edit' report.id %}" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
 			{{ input_report_form.as_p }}
+			<p><b>Folder</b></p>
+			{% if request.user.profile|retrieve_folders %}
+			{% for f in request.user.profile|retrieve_folders %}
+				<select id="folder" name="folder">
+				<option  value= {{f.id}} > {{f.name}} </option>
+			{% endfor %}
+				<option  value= {{f.id}} > None </option>
+				</select>
+				<br />
+			{% else %}
+			<p>No folders to show</p> 
+			{% endif %}
+			<br/ >
 			<p><i>You don't need to add permissions if your report is public!</i></p>
 			<p><b>Current Permissions</b></p>
 			{% if p.groups.all or p.profiles.all %}
