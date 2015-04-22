@@ -12,8 +12,27 @@
 	  <div class="div">
 		<form class="form"  action = "{% url 'groups:add_user' %}" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
-			{{ add_user_group_form.as_p }}
+			<!--{{ add_user_group_form.as_p }}-->
+			{% if not groups %}
+			<h1>You aren't a member of any groups!</h1>
+			{% endif %}
+
+			<h2>Choose A Group</h2>
+			<select id= 'group' name='group'>
+			{% if groups %}
+			{% for g in groups %}
+				<option  value= {{g.id}} > {{g.name}} </option>
+			{% endfor %}
+			{% else %}
+			<option  value="" > **Not a part of any groups!** </option>
+			{% endif %}
+		</select>
+			<br />
+			<h2>Add Members</h2>
+			<p>comma-separated list of users</p>
+			<input type="text" name="new_members" /><br /><br />
 			<p> <input type="submit" value="Add User" /></p>
+			<p>{{status}}</p>
 		</form>
 		</div>
 	</body>
