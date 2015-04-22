@@ -18,8 +18,7 @@ def authenticate(username, password):
     if r.status_code == 200:
         return r.json()["session"]
 
-    print("Something went wrong while authenticating")
-    sys.exit()
+    return None
 
 def get_reports(username, token):
     user = {'username': username, 'token': token}
@@ -59,8 +58,12 @@ def download_files(username, token, report):
 
     if r.status_code == 200:
         for file in r.json():
-            urllib.request.urlretrieve(url + "api/download/" + str(file["pk"]), file["fields"]["title"])
-            print("Downloaded " + file["fields"]["title"])
+            try:
+                urllib.request.urlretrieve(url + "api/download/" + str(file["pk"]), file["fields"]["title"])
+                print("Downloaded " + file["fields"]["title"])
+            except urllib.error.HTTPError:
+                r = requests.post(url + "api/download/" + str(file["pk"]) + "/", data=user)
+                log_error(r.text)
     else:
         log_error(r.text)
 
@@ -99,6 +102,10 @@ if __name__ == '__main__':
 
     password = getpass("Enter SecureWitness password: ")
     token = authenticate(username, password)
+
+    if token == None:
+        print("Something went wrong while authenticating")
+        sys.exit()
 
     command = ""
     while command != "quit":
