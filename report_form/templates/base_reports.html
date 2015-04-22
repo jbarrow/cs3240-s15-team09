@@ -23,6 +23,13 @@
             <li><a href="{% url 'report_form:view_all_available' %}">Shared With Me</a></li>
         {% endif %}
 
+        {% url 'report_form:latest_5' as latest_url %}
+      {% if request.path == latest_url %}
+            <li class="active"><a href="{% url 'report_form:latest_5' %}">Most Recent</a></li>
+        {% else %}
+            <li><a href="{% url 'report_form:latest_5' %}">Most Recent</a></li>
+        {% endif %}
+
       {% url 'report_form:folder_detail' request.user.profile|get_unsorted_id as unsorted_url %}
       {% if request.path == unsorted_url %}
             <li class="active"><a href="{% url 'report_form:folder_detail' request.user.profile|get_unsorted_id %}">Unsorted Reports</a></li>

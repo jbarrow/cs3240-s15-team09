@@ -18,6 +18,7 @@ from datetime import date
 from django.utils import timezone
 from django.core.servers.basehttp import FileWrapper
 from group_form.models import Group
+from report_form.filter_helper import filter_by_permissions, get_shared_reports, get_5_latest
 
 import os
 from report_form.search_helper import simple_return, multi_cat_return, string_parse, advanced_query, multi_cat_return_OR
@@ -451,6 +452,18 @@ def edit_folder(request, folder_id):
 def view_all_available(request):
     current_user = request.user
     reports = Report.objects.all()
-    reports = list(reports)
-    reports.append(current_user)
-    return render(request, 'report_form/view_all.html', {'list_reports': reports, 'user': current_user})
+    reports = get_shared_reports(reports, current_user)
+    #reports = list(reports)
+    #reports.append(current_user)
+    #return render(request, 'report_form/view_all.html', {'list_reports': reports, 'user': current_user})
+    return render(request, 'report_form/view_shared_latest.html', {'list_reports': reports, 'filter': 'shared'})
+
+@login_required
+def latest_5(request):
+    current_user = request.user
+    reports = Report.objects.all()
+    reports = get_5_latest(reports, current_user)
+    #reports = list(reports)
+    #reports.append(current_user)
+    #return render(request, 'report_form/view_all.html', {'list_reports': reports, 'user': current_user})
+    return render(request, 'report_form/view_shared_latest.html', {'list_reports': reports, 'filter': 'latest'})

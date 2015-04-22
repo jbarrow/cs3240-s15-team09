@@ -17,4 +17,5 @@ url(r'^folder/edit/(?P<folder_id>[0-9]+)/$', views.edit_folder, name='edit_folde
 url(r'^folder/delete/(?P<folder_id>[0-9]+)/$', views.delete_folder, name='delete_folder'),
 url(r'^folder/create/$', views.new_folder, name='new_folder'),
 url(r'^reports-index/$', views.view_all_available, name='view_all_available'),
+url(r'^latest/$', views.latest_5, name= 'latest_5'),
 )

@@ -1,8 +1,8 @@
 from django.db import models
 from django.forms import ModelForm
 from django.contrib.auth.models import User
-#from group_form.models import Group
-#from report_form.models import Permission
+from group_form.models import Group
+from report_form.models import Permission
 import uuid
 
 class UserProfile(models.Model):
