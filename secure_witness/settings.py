@@ -111,17 +111,17 @@ MEDIA_URL = '/media/'
 
 AUTH_PROFILE_MODULE = 'secure_witness.UserProfile'
 
-# Parse database configuration from $DATABASE_URL
+## Parse database configuration from $DATABASE_URL
 #import dj_database_url
 #DATABASES['default'] =  dj_database_url.config()
 
-# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+## Honor the 'X-Forwarded-Proto' header for request.is_secure()
 #SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Allow all host headers
+## Allow all host headers
 #ALLOWED_HOSTS = ['*']
 
-# Static asset configuration
+## Static asset configuration
 #import os
 #BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 #STATIC_ROOT = 'staticfiles'

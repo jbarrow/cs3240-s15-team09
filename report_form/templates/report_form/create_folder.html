@@ -21,7 +21,6 @@
 
       {% for report in reports %}
         <input type="checkbox" value="{{report.id}}" name="selected_reports" /> {{ report.short_description }}<br />
-
       {% endfor %}
 
     <input type="submit" value="Create Folder" />
