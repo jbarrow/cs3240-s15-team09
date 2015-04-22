@@ -16,18 +16,14 @@
 			<h1>Submit A Report</h1>
 			{{ input_report_form.as_p }}
 			<p><b>Folder</b></p>
-			{% if request.user.profile|retrieve_folders %}
+			<select id="folder" name="folder">
 			{% for f in request.user.profile|retrieve_folders %}
-				<select id="folder" name="folder">
 				<option  value= {{f.id}} > {{f.name}} </option>
 			{% endfor %}
-				<option  value= {{f.id}} > None </option>
+				<option  value= {{f.id}} > None </option> <!-- this will be blank, I assume and that is the point-->
 				</select>
 				<br />
-			{% else %}
-			<p>No folders to show</p> 
-			{% endif %}
-			<br/ >
+				<br/ >
 			<p><i>You don't need to add permissions if your report is public!</i></p>
 			<label>Add group visibility</label> <br />
 			{% if groups %}

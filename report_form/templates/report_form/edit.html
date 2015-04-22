@@ -7,17 +7,12 @@
 			{% csrf_token %}
 			{{ input_report_form.as_p }}
 			<p><b>Folder</b></p>
-			{% if request.user.profile|retrieve_folders %}
-			{% for f in request.user.profile|retrieve_folders %}
 				<select id="folder" name="folder">
+			{% for f in request.user.profile|retrieve_folders %}
 				<option  value= {{f.id}} > {{f.name}} </option>
 			{% endfor %}
 				<option  value= {{f.id}} > None </option>
 				</select>
-				<br />
-			{% else %}
-			<p>No folders to show</p> 
-			{% endif %}
 			<br/ >
 			<p><i>You don't need to add permissions if your report is public!</i></p>
 			<p><b>Current Permissions</b></p>

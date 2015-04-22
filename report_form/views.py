@@ -446,3 +446,11 @@ def edit_folder(request, folder_id):
     else:
         return render(request, 'report_form/edit_folder.html', {'user': current_userprofile,
                                                                 'reports': unsorted_reports, 'folder': current_folder})
+
+@login_required
+def view_all_available(request):
+    current_user = request.user
+    reports = Report.objects.all()
+    reports = list(reports)
+    reports.append(current_user)
+    return render(request, 'report_form/view_all.html', {'list_reports': reports, 'user': current_user})

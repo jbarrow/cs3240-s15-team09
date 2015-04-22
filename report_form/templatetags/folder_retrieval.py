@@ -12,3 +12,10 @@ def retrieve_folders(value):
     unsorted_folder = Folder.objects.get(userprofile=userprofile, name = "unsorted")
     folders = folders.exclude(pk=unsorted_folder.pk)
     return folders
+
+
+@register.filter(name='get_unsorted_id')
+def get_unsorted_id(value):
+	profile = value
+	unsorted_folder = Folder.objects.get(userprofile=profile, name="unsorted")
+	return unsorted_folder.id
