@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from secure_witness.models import UserProfile
 from Crypto.PublicKey import RSA
 from django.forms.extras.widgets import SelectDateWidget
+from group_form.models import Group
 
 class Folder(models.Model):
     name = models.CharField(max_length=128)
@@ -38,6 +39,17 @@ class Tag(models.Model):
 
     def __str__(self):
         return self.name
+
+class Permission(models.Model):
+    report = models.ForeignKey(Report)
+    profiles = models.ManyToManyField(UserProfile)
+    groups = models.ManyToManyField(Group)
+
+    def __str__(self):
+        output = self.report.short_description
+        output += " "
+        output += str(self.report.id)
+        return output
 
 class ReportForm(ModelForm):
     class Meta:

@@ -7,8 +7,8 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('report_form', '0001_initial'),
         ('secure_witness', '0001_initial'),
+        ('report_form', '0001_initial'),
     ]
 
     operations = [
@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='report',
             name='folder',
-            field=models.ForeignKey(blank=True, null=True, to='report_form.Folder'),
+            field=models.ForeignKey(to='report_form.Folder', blank=True, null=True),
             preserve_default=True,
         ),
         migrations.AddField(

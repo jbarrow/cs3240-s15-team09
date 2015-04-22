@@ -7,8 +7,8 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('secure_witness', '0001_initial'),
         ('group_form', '0001_initial'),
+        ('secure_witness', '0001_initial'),
     ]
 
     operations = [

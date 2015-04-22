@@ -9,14 +9,14 @@ class Migration(migrations.Migration):
     dependencies = [
         ('group_form', '0002_group_users'),
         ('secure_witness', '0001_initial'),
-        ('report_form', '0002_auto_20150420_1539'),
+        ('report_form', '0002_auto_20150422_0928'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='Permission',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
                 ('groups', models.ManyToManyField(to='group_form.Group')),
                 ('profiles', models.ManyToManyField(to='secure_witness.UserProfile')),
                 ('report', models.ForeignKey(to='report_form.Report')),

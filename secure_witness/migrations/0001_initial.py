@@ -16,9 +16,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='UserProfile',
             fields=[
-                ('user', models.OneToOneField(serialize=False, to=settings.AUTH_USER_MODEL, primary_key=True)),
-                ('name', models.CharField(null=True, max_length=128)),
-                ('session_token', models.CharField(null=True, max_length=255)),
+                ('user', models.OneToOneField(to=settings.AUTH_USER_MODEL, serialize=False, primary_key=True)),
+                ('name', models.CharField(max_length=128, null=True)),
+                ('session_token', models.CharField(max_length=255, null=True)),
                 ('admin', models.BooleanField(default=False)),
                 ('groups', models.ManyToManyField(to='group_form.Group')),
             ],
