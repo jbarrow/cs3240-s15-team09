@@ -85,7 +85,7 @@ def get_file_list(request, report_id):
         data = { "error": "User does not exist" }
         return HttpResponse(data)
 
-    report = Report.objects.get(author=user.profile, pk=report_id)
+    report = Report.objects.get(pk=report_id)
     files = File.objects.filter(report=report)
 
     data = serializers.serialize("json", files)
