@@ -3,8 +3,9 @@ from tkinter import *
 import tkinter.messagebox as tm
 from client import authenticate, get_reports, download_files, get
 
-url = "http://secure-witness-9.herokuapp.com/"
-token = ""
+url = "http://localhost:8000/"
+token, username = "", ""
+reports = []
 
 class SecureWitnessGUI(Tk):
     def __init__(self, *args, **kwargs):
@@ -18,7 +19,7 @@ class SecureWitnessGUI(Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (LoginFrame, ReportsFrame):
+        for F in (LoginFrame, ReportsFrame, ReportFrame):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky="nsew")
@@ -28,6 +29,10 @@ class SecureWitnessGUI(Tk):
     def show_frame(self, c):
         frame = self.frames[c]
         frame.tkraise()
+
+    def render_reports(self, reports):
+        frame = self.frames[ReportsFrame]
+        frame._render_reports(reports)
 
 class LoginFrame(Frame):
     def __init__(self, master, controller):
@@ -52,23 +57,40 @@ class LoginFrame(Frame):
     def _login(self, controller):
         username = self.user_field.get()
         password = self.pass_field.get()
+        logged_in = False
 
         if username == "" or password == "":
             tm.showerror("Login Error", "You must enter a username and password.")
         else:
             try:
                 token = authenticate(username, password)
-                tm.showinfo("Congrats!", "Logged in!")
+                #tm.showinfo("Congrats!", "Logged in!")
+                logged_in = True
             except:
                 tm.showerror("Login Error", "Username and password don't match")
 
-        controller.show_frame(ReportsFrame)
+        if logged_in:
+            reports = get_reports(username, token)
+            controller.render_reports(reports)
+            controller.show_frame(ReportsFrame)
+
 
 class ReportsFrame(Frame):
     def __init__(self, master, controller):
         Frame.__init__(self, master)
+        self.list = Listbox(self, selectmode=EXTENDED)
+        self.list.grid(row=0, pady=10)
+
+        self.view = Button(self, text="View Selected Report", command = lambda: controller.show_frame(ReportsFrame))
+        self.view.grid(row=1)
+
+        self.current = None
 
         self.pack()
+
+    def _render_reports(self, reports):
+        for report in reports:
+            self.list.insert(END, report['fields']['short_description'])
 
 class ReportFrame(Frame):
     def __init__(self, master, controller):
