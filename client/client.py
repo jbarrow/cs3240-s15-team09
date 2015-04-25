@@ -2,7 +2,7 @@ from getpass import getpass
 from optparse import OptionParser
 import requests, sys, urllib
 
-url = "http://secure-witness-9.herokuapp.com/"
+url = "http://localhost:8000/"
 commands = ["quit", "list", "get", "help"]
 
 def log_error(error):
