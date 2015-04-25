@@ -11,6 +11,7 @@ def filter_by_permissions(results, user):
 		if not report.private or user.profile.admin:
 			retSet.add(report)
 		else:
+			# every report should have some sort of permission attached to it
 			p = get_object_or_404(Permission, report=report)
 			if user.profile in p.profiles.all() or user.profile == report.author:
 				retSet.add(report)

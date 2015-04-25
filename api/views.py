@@ -8,6 +8,7 @@ from django.utils.encoding import smart_str
 from django.contrib.auth.models import User
 from secure_witness.models import UserProfile
 from report_form.models import Report, File
+from report_form.filter_helper import filter_by_permissions, get_shared_reports, get_5_latest
 
 import json, os
 from django.core import serializers
