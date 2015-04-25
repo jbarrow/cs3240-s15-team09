@@ -59,7 +59,7 @@
 			{% if tags %}
 				<ul>
 				{% for input_tag in tags %}
-					<li>{{ input_tag.keyword }}</li>
+					<li>{{ input_tag.keyword }} <input type="submit" name = {{ input_tag.id }}_kword value="delete keyword" /></li>
 				{% endfor %}
 				</ul>
 			{% else %}

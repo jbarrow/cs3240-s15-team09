@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ObjectDoesNotExist
 
 from django.shortcuts import render_to_response
 
@@ -22,7 +23,7 @@ from report_form.filter_helper import filter_by_permissions, get_shared_reports,
 
 import os
 from report_form.search_helper import simple_return, multi_cat_return, string_parse, advanced_query, multi_cat_return_OR
-
+from report_form.validation_helper import permission_validation
 
 def incomplete_landing(request):
     return HttpResponse("Report form not yet available.")
@@ -58,8 +59,8 @@ def copy_report(indiv_id, profile):
     report = get_object_or_404(Report, pk=indiv_id)
     files = File.objects.filter(report=report)
     tags = Tag.objects.filter(associated_report=report)
-    perm = Permission.objects.get(report=report)
-    print(perm)
+    perm = get_object_or_404(Permission, report=report)
+   #print(perm)
     r = Report()
     r.author = report.author
     r.short_description = report.short_description
@@ -128,9 +129,9 @@ def edit(request, report_id):
             for y in viewers:
                 y = y.strip()
                 if y != '':
-                    u = User.objects.get(username=y)
-                    p = UserProfile.objects.get(user=u)
-                    perm.profiles.add(p)
+                    status = permission_validation(y, perm.id)
+                    print("From edit, status")
+                    print(status)
             #issues with addition and deletion is unimplemented
             for x in g:
                 x = x.strip()
@@ -167,7 +168,14 @@ def edit(request, report_id):
                 perm.profiles.remove(m)
                 perm.save()
                 return HttpResponseRedirect(reverse('report_form:edit', args=(report.id,)))
+        for t in Tag.objects.all():
+            key = str(t.id)
+            key += "_kword"
+            if request.POST.get(key):
+                t.delete()
+                return HttpResponseRedirect(reverse('report_form:edit', args=(report.id,)))
         else:
+            print(request.POST)
             return HttpResponse("unexpected input widget")   
     else:
         print(request.method)
@@ -239,9 +247,9 @@ def submission(request):
             for y in viewers:
                 y = y.strip()
                 if y != '':
-               		u = User.objects.get(username=y)
-                	p = UserProfile.objects.get(user=u)
-                	permission_object.profiles.add(p)
+                    print("status from submission")
+                    status = permission_validation(y, permission_object.id)
+                    print(status)
             for x in g:
                 x = x.strip()
                 gr = Group.objects.get(pk=x)

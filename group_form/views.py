@@ -63,10 +63,10 @@ def add_user(request):
                     p = UserProfile.objects.get(user=user)
                     if can_add:
                         g.users.add(p)
-                        status = user.username + " successfully added"
+                        status = "User \"" + user.username + "\" successfully added"
                     else:
                         status = "group chosen could not be located"
                 except ObjectDoesNotExist:
-                    status = "User could not be found"
+                    status = "User \""+ x + "\" could not be found"
 
     return render(request, 'group_form/add_user_template.html', {'groups' : groups, 'status': status})
