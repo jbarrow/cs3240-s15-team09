@@ -37,7 +37,9 @@
 			{% if files %}
 				<ul>
 				{% for inputfile in files %}
+					
 					<li><a href= "{% url 'report_form:download' inputfile.id %}">{{ inputfile.title }}</a></li>
+					
 				{% endfor %}
 				</ul>
 			{% else %}
