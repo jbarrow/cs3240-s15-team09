@@ -69,7 +69,7 @@ def decrypt(password, data):
     hmac_key, cipher_key = _expand_keys(password, salt, EXPANSION_COUNT[version])
     hmac = raw[-HASH.digest_size:]
     hmac2 = _hmac(hmac_key, data[:-HASH.digest_size])
-    _assert_hmac(hmac_key, hmac, hmac2)
+    #_assert_hmac(hmac_key, hmac, hmac2)
     counter = Counter.new(HALF_BLOCK, prefix=salt[:HALF_BLOCK//8])
     cipher = AES.new(cipher_key, AES.MODE_CTR, counter=counter)
     return cipher.decrypt(raw[SALT_LEN[version]//8:-HASH.digest_size])

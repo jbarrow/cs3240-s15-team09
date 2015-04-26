@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
                 ('title', models.CharField(max_length=128)),
-                ('file', models.FileField(upload_to='input/%Y/%m/%d')),
+                ('file', models.FileField(upload_to='')),
             ],
             options={
             },
@@ -32,16 +32,26 @@ class Migration(migrations.Migration):
             bases=(models.Model,),
         ),
         migrations.CreateModel(
+            name='Permission',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
+            ],
+            options={
+            },
+            bases=(models.Model,),
+        ),
+        migrations.CreateModel(
             name='Report',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
                 ('short_description', models.CharField(max_length=750)),
-                ('location', models.CharField(max_length=500, blank=True)),
+                ('location', models.CharField(blank=True, max_length=500)),
                 ('detailed_description', models.TextField()),
                 ('date_of_incident', models.DateField(null=True, blank=True)),
                 ('private', models.BooleanField(default=False)),
                 ('time_created', models.TimeField(auto_now_add=True)),
                 ('time_last_modified', models.DateTimeField(auto_now=True)),
+                ('AES_key', models.CharField(blank=True, max_length=500)),
             ],
             options={
             },
@@ -51,7 +61,7 @@ class Migration(migrations.Migration):
             name='Tag',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, primary_key=True, auto_created=True)),
-                ('keyword', models.CharField(max_length=128, null=True, blank=True)),
+                ('keyword', models.CharField(null=True, blank=True, max_length=128)),
                 ('associated_report', models.ForeignKey(to='report_form.Report')),
             ],
             options={

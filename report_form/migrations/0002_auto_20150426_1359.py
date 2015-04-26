@@ -8,6 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('secure_witness', '0001_initial'),
+        ('group_form', '0003_group_users'),
         ('report_form', '0001_initial'),
     ]
 
@@ -21,7 +22,25 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='report',
             name='folder',
-            field=models.ForeignKey(to='report_form.Folder', blank=True, null=True),
+            field=models.ForeignKey(null=True, blank=True, to='report_form.Folder'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='permission',
+            name='groups',
+            field=models.ManyToManyField(to='group_form.Group'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='permission',
+            name='profiles',
+            field=models.ManyToManyField(to='secure_witness.UserProfile'),
+            preserve_default=True,
+        ),
+        migrations.AddField(
+            model_name='permission',
+            name='report',
+            field=models.ForeignKey(to='report_form.Report'),
             preserve_default=True,
         ),
         migrations.AddField(
