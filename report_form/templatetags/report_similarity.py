@@ -20,13 +20,10 @@ def return_most_similar_reports(user, report_id):
     all_reports = Report.objects.all()
     for report2 in all_reports:
         if profile == report2.author:
-                 all_reports = all_reports.exclude(pk=report2.pk)
-        if profile.admin:
-            if profile == report2.author:
-                 all_reports = all_reports.exclude(pk=report2.pk)
-        elif report2.private:
+            all_reports = all_reports.exclude(pk=report2.pk)
+        if report2.private and not profile.admin:
             p = get_object_or_404(Permission, report=report2)
-            if profile not in p.profiles.all() or profile == report2.author:
+            if profile not in p.profiles.all():
                 all_reports = all_reports.exclude(pk=report2.pk)
             for g in p.groups.all():
                 if profile not in g.users.all():

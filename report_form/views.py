@@ -30,6 +30,7 @@ from simplecrypt import encrypt, decrypt
 from secure_witness.settings import MEDIA_ROOT
 from report_form.validation_helper import permission_validation
 
+
 def incomplete_landing(request):
     return HttpResponse("Report form not yet available.")
 
@@ -65,7 +66,7 @@ def copy_report(indiv_id, profile):
     files = File.objects.filter(report=report)
     tags = Tag.objects.filter(associated_report=report)
     perm = get_object_or_404(Permission, report=report)
-   #print(perm)
+    # print(perm)
     r = Report()
     r.author = report.author
     r.short_description = report.short_description
@@ -100,7 +101,7 @@ def detail(request, report_id):
     files = File.objects.filter(report=report)
     tags = Tag.objects.filter(associated_report=report)
     p = Permission.objects.filter(report=report)
-    return render(request, 'report_form/detail.html', {'report': report, 'files': files, 'tags': tags, 'p':p[0],})
+    return render(request, 'report_form/detail.html', {'report': report, 'files': files, 'tags': tags, 'p': p[0], })
 
 
 @login_required
@@ -125,7 +126,7 @@ def edit(request, report_id):
                     new_tag = Tag(associated_report=report)
                     new_tag.keyword = request.POST['keyword']
                     new_tag.save()
-        # need to alter so that you can add AND DELETE
+                    # need to alter so that you can add AND DELETE
             viewers = request.POST["viewers"]
             viewers = viewers.split(",")
             g = request.POST.getlist("group_names")
@@ -137,13 +138,13 @@ def edit(request, report_id):
                     status = permission_validation(y, perm.id)
                     print("From edit, status")
                     print(status)
-            #issues with addition and deletion is unimplemented
+            # issues with addition and deletion is unimplemented
             for x in g:
                 x = x.strip()
                 gr = Group.objects.get(pk=x)
                 perm.groups.add(gr)
             perm.save()
-            
+
         if request.POST.get("submission"):
             return HttpResponseRedirect(reverse('report_form:detail', args=(report.id,)))
         elif request.POST.get("delete"):
@@ -181,14 +182,15 @@ def edit(request, report_id):
                 return HttpResponseRedirect(reverse('report_form:edit', args=(report.id,)))
         else:
             print(request.POST)
-            return HttpResponse("unexpected input widget")   
+            return HttpResponse("unexpected input widget")
     else:
         print(request.method)
         f = ReportForm(instance=report)
         t = TagForm()
 
     return render(request, 'report_form/edit.html',
-                  {'input_report_form': f, 'report': report, 'files': files, 'input_tag_form': t, 'tags': tags, 'groups': groups, 'p':perm})
+                  {'input_report_form': f, 'report': report, 'files': files, 'input_tag_form': t, 'tags': tags,
+                   'groups': groups, 'p': perm})
 
 
 def submitted(request):
@@ -226,31 +228,33 @@ def submission(request):
                 folder_id = unsorted_folder.id
             report_input.private = request.POST.get('private', False)  # apply a value if it does not exist
             report_input.folder = Folder.objects.get(pk=folder_id)
-            #report_input.save()
+            # report_input.save()
 
             key = random_key = os.urandom(16)
             print(type(key))
             print(key)
-            stringkey= key.decode(encoding="iso-8859-1", errors="strict")
-            print(type(stringkey))
-            print(stringkey)
-            report_input.AES_key=stringkey
+            stringkey = key.decode(encoding="iso-8859-1", errors="strict")
+            #print(type(stringkey))
+            #print(stringkey)
+            report_input.AES_key = stringkey
             report_input.save()
-			
+
             if report_input.private:
-					#print("encrypt the file")
-                    for each in request.FILES.getlist("file"):
-                        stringkey = report_input.AES_key
-                        key= stringkey.encode(encoding="iso-8859-1", errors="strict")
-                        encrypt_file(each, key)
-                        newfile = File(title = each.name+".enc", file=each.name+".enc", report=report_input)
-					#newfile = File(title = each.name+".enc", file=each.name+".enc", report=report_input, AES_key=key)
+                #print("encrypt the file")
+                for each in request.FILES.getlist("file"):
+                    stringkey = report_input.AES_key
+                    key = stringkey.encode(encoding="iso-8859-1", errors="strict")
+                    encrypt_file(each, key)
+                    newfile = File(title=each.name + ".enc", file=each.name + ".enc", report=report_input)
+                    newfile.save()
+                #newfile = File(title = each.name+".enc", file=each.name+".enc", report=report_input, AES_key=key)
             else:
                 for upfile in request.FILES.getlist("file"):
-                    newfile = File(title = upfile.name, file=upfile, report=report_input)	
-					#newfile = File(title = upfile.name, file=upfile, report=report_input, AES_key=key)	
-				
-            newfile.save()
+                    newfile = File(title=upfile.name, file=upfile, report=report_input)
+                    newfile.save()
+                #newfile = File(title = upfile.name, file=upfile, report=report_input, AES_key=key)
+
+
 
             if input_tag_form.is_valid():
                 newTag = Tag(associated_report=report_input)
@@ -294,7 +298,7 @@ def submission(request):
 
 
 def encrypt_file(file_name, key):
-    #with open(file_name, 'rb') as fo:
+    # with open(file_name, 'rb') as fo:
     plaintext = file_name.read()
     #print("Text to encrypt: %s" % plaintext)
     print("about to encrypt")
@@ -302,42 +306,46 @@ def encrypt_file(file_name, key):
     enc = encrypt(key, plaintext)
     with open("media/" + file_name.name + ".enc", 'wb') as fo:
         fo.write(enc)
-		
+
+
 def decrypt_file(file_name, key):
     with open(file_name, 'rb') as fo:
         ciphertext = fo.read()
-    dec = decrypt(key, ciphertext)#.decode('iso-8859-1')
+    dec = decrypt(key, ciphertext)  # .decode('iso-8859-1')
     print("decrypted text: %s" % dec)
     with open(file_name[:-4], 'wb') as fo:
-        #fo.write(bytes(dec, 'utf8'))
+        # fo.write(bytes(dec, 'utf8'))
         fo.write(dec)
-    #print()
+    # print()
     return file_name[:-4]
+
 
 @login_required
 def download(request, file_id):
     downloadable = get_object_or_404(File, pk=file_id)
     stringkey = downloadable.report.AES_key
-    key= stringkey.encode(encoding="iso-8859-1", errors="strict")
-    print(stringkey)
+    key = stringkey.encode(encoding="iso-8859-1", errors="strict")
+    #print(stringkey)
     print("key is: ")
     print(key)
     path = downloadable.file.path
-    wrapper=FileWrapper(downloadable.file)
+    wrapper = FileWrapper(downloadable.file)
 
     if downloadable.report.private:
         print("about to decrypt")
         print(key)
         print(path)
         path = decrypt_file(path, key)
-        wrapper=FileWrapper(open(path))
+        wrapper = FileWrapper(open(path))
         print(path)
 
     response = HttpResponse(wrapper, content_type='application/force-download')
-    response['Content-Disposition']='attachment;filename=%s' % smart_str(os.path.basename(path))
+    response['Content-Disposition'] = 'attachment;filename=%s' % smart_str(os.path.basename(path))
     print(response['Content-Disposition'])
     return response
-#	for each in Report.objects.all():
+
+
+# for each in Report.objects.all():
 #		report_files=File.objects.filter(report=each)
 #		for a_file in report_files:
 #			if a_file.file_id==file_id:
@@ -359,13 +367,13 @@ def download(request, file_id):
 # 	print(key)
 #     path = downloadable.file.path
 # 	wrapper = FileWrapper(downloadable.file)
-	# if downloadable.report.private:
+# if downloadable.report.private:
 
- #         decrypt_file(path,key)
-	# response = HttpResponse(wrapper, content_type='application/force-download')
-	# response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(os.path.basename(path))
-	#print(response['Content-Disposition'])
-	# return response
+#         decrypt_file(path,key)
+# response = HttpResponse(wrapper, content_type='application/force-download')
+# response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(os.path.basename(path))
+#print(response['Content-Disposition'])
+# return response
 
 
 @login_required
@@ -496,7 +504,7 @@ def folder_detail(request, folder_id, ):
     all_folders = Folder.objects.filter(userprofile=profile, )
 
     if request.method == 'POST':
-         for indiv in reports_in_folder:
+        for indiv in reports_in_folder:
             output = str(indiv.id)
             copy = output + "_copy"
             folder_input = output + "_folder"
@@ -543,6 +551,7 @@ def edit_folder(request, folder_id):
         return render(request, 'report_form/edit_folder.html', {'user': current_userprofile,
                                                                 'reports': unsorted_reports, 'folder': current_folder})
 
+
 @login_required
 def view_all_available(request):
     current_user = request.user
@@ -552,6 +561,7 @@ def view_all_available(request):
     #reports.append(current_user)
     #return render(request, 'report_form/view_all.html', {'list_reports': reports, 'user': current_user})
     return render(request, 'report_form/view_shared_latest.html', {'list_reports': reports, 'filter': 'shared'})
+
 
 @login_required
 def latest_5(request):
@@ -571,10 +581,10 @@ def view_all_available_dynamic(request):
     all_reports = Report.objects.all()
     for report2 in all_reports:
         if profile == report2.author:
-             all_reports = all_reports.exclude(pk=report2.pk)
+            all_reports = all_reports.exclude(pk=report2.pk)
         if report2.private and not profile.admin:
             p = get_object_or_404(Permission, report=report2)
-            if profile not in p.profiles.all() or profile == report2.author:
+            if profile not in p.profiles.all():
                 all_reports = all_reports.exclude(pk=report2.pk)
             for g in p.groups.all():
                 if profile not in g.users.all():

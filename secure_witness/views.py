@@ -20,8 +20,7 @@ def profile(request):
     a = re.compile(r'^[\w.@+-]+$')
 
     if request.method == 'POST':
-        if check_password(request.POST['conf_password'], user.password) and len(request.POST['username']) <= 30\
-                and a.match(request.POST['username']):
+        if check_password(request.POST['conf_password'], user.password):
             form = user_profile_form(request.POST, instance=request.user.profile)
             form2 = UserForm(request.POST, instance=request.user)
             if request.POST['name'] != '':
@@ -33,12 +32,16 @@ def profile(request):
             if request.POST['email'] != '':
                 user.email = request.POST['email'].strip()
             if request.POST['username'] != '':
+                if len(request.POST['username']) > 30 or not a.match(request.POST['username']):
+                    status = "Invalid username."
+                    return render(request, 'profile.html',
+                  {'form':form, 'groups':groups, 'form2':form2, 'status':status})
                 user.username = request.POST['username'].strip()
             user.save()
             status = "Profile update successful."
             #return HttpResponseRedirect('/accounts/profile')
         else:
-            status = "Password invalid or invalid username."
+            status = "Password invalid."
 
 
 

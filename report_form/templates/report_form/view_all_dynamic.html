@@ -33,7 +33,7 @@
 		</form>
             </div>
 	  <div class="div">
-		{% if list_reports|filter_by_permissions %}
+		{% if list_reports %}
 			<h1>Reports Shared With Me</h1>
 			{% for indiv in list_reports %}
 			    {% if indiv.author != user.profile %}
