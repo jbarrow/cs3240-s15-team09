@@ -7,6 +7,7 @@
     <ul>You are {% if request.user.is_swadmin %} {% else %} not {% endif %} an admin.</ul>
 
     <ul>Your username is {{ request.user.username }}.</ul>
+    <ul>Your e-mail address is {{ request.user.email }}.</ul>
     {% if groups %}
     <ul>You are in the following groups: </ul>
         {% for group in groups %}
@@ -15,20 +16,23 @@
     {% else %}
         <ul>You are not in any groups :(</ul>
     {% endif %}
-
+        <h2>{{ status }}</h2>
 	<div> 
 		<br>
 		<br>
-	{% for field in form %}
-        {{ field.error }}
-		
-		
-    {% endfor %}
 
-    <form action="/dashboard/profile/" method="post">{% csrf_token %}
-    {{ form.as_ul }}
-
-    <input type="submit" value="Update" />
+        <form action="/accounts/profile/" method="post">{% csrf_token %}
+        <p><b>New name: </b>
+            <input type="text"  name="name" /> </p>
+            <p><b>New email: </b>
+            <input type="text"  name="email" /> </p>
+            <p><b>New username: </b>
+            <input type="text"  name="username" /> 30 characters or fewer. Letters, digits and @/./+/-/_ only.</p>
+            <p><b>New password: </b>
+            <input type="password"  name="password" /> </p>
+        <p><b>Confirm your current password: </b>
+            <input type="password"  name="conf_password" /> </p>
+        <input type="submit" value="Update" />
 	</div>
 		
 		

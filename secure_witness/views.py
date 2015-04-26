@@ -3,31 +3,47 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
 from django.core.context_processors import csrf
-from secure_witness.forms import UserForm, UserProfileForm
+from secure_witness.forms import UserForm, UserProfileForm, user_profile_form
 from secure_witness.models import UserProfile, is_swadmin
 from report_form.models import Folder
-from dashboard.forms import user_profile_form
 from group_form.models import Group
-
+from  django.contrib.auth.hashers import check_password
+import re
 @login_required
 def profile(request):
     form = user_profile_form()
-    # this could be an issue here because of the 
-    profile = UserProfile.objects.filter(user=request.user)
-    groups = Group.objects.filter(users=profile[0])
+    form2 = UserForm()
+    status = "Edit profile below:"
+    user = request.user
+    profile = request.user.profile
+    groups = Group.objects.filter(users=profile)
+    a = re.compile(r'^[\w.@+-]+$')
+
     if request.method == 'POST':
-        form = user_profile_form(request.POST, instance=request.user.profile)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/accounts/profile')
+        if check_password(request.POST['conf_password'], user.password) and len(request.POST['username']) <= 30\
+                and a.match(request.POST['username']):
+            form = user_profile_form(request.POST, instance=request.user.profile)
+            form2 = UserForm(request.POST, instance=request.user)
+            if request.POST['name'] != '':
+                profile.name = request.POST['name'].strip()
+            profile.save()
+            if request.POST['password'] != '':
+                user.password = request.POST['password']
+                user.set_password(user.password)
+            if request.POST['email'] != '':
+                user.email = request.POST['email'].strip()
+            if request.POST['username'] != '':
+                user.username = request.POST['username'].strip()
+            user.save()
+            status = "Profile update successful."
+            #return HttpResponseRedirect('/accounts/profile')
         else:
-            user = request.user
-            profile = user.profile
-            form = user_profile_form(instance=profile)
+            status = "Password invalid or invalid username."
+
 
 
     return render(request, 'profile.html',
-                  {'form':form, 'groups':groups})
+                  {'form':form, 'groups':groups, 'form2':form2, 'status':status})
 
 
 def base(request):
