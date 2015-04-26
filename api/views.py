@@ -13,6 +13,8 @@ from report_form.filter_helper import filter_by_permissions
 
 import json, os
 from django.core import serializers
+from simplecrypt import encrypt, decrypt
+from report_form.views import decrypt_file
 
 def authenticate_with_token(username, token):
     user = User.objects.get(username=username)
@@ -95,8 +97,14 @@ def get_file_list(request, report_id):
 @csrf_exempt
 def get_file(request, file_id):
     downloadable = get_object_or_404(File, pk=file_id)
+    stringkey = downloadable.report.AES_key
+    key=stringkey.encode(encoding="iso-8859-1", errors="strict")
     path = downloadable.file.path
     wrapper = FileWrapper(downloadable.file)
+    #if private decrypt file
+    if downloadable.report.private:
+        path = decrypt_file(path, key)
+        wrapper=FileWrapper(open(path))
     response = HttpResponse(wrapper, content_type='application/force-download')
     response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(os.path.basename(path))
 
