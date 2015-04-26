@@ -1,0 +1,31 @@
+{% extends "base_reports.html" %}
+
+{% block title %}Create Folder{% endblock %}
+
+{% block report_content %}
+
+
+<div class="col-md-8">
+  <form method="POST" action="/report_form/folder/create/">
+      {% csrf_token %}
+      <h1>New Folder</h1>
+
+      <label>Folder Name:</label><br />
+      <input type="text" name="folder_name" /><br /><br />
+      <label>Select which Reports to add:</label><br />
+      {% if not reports %}
+        <p>
+            No unsorted reports.<br />
+        </p>
+      {% endif %}
+
+      {% for report in reports %}
+        <input type="checkbox" value="{{report.id}}" name="selected_reports" /> {{ report.short_description }}<br />
+      {% endfor %}
+
+    <input type="submit" value="Create Folder" />
+  </form>
+</div>
+
+
+{% endblock %}

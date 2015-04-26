@@ -1,11 +1,12 @@
 {% extends "base_reports.html" %}
+{% load filter_by_permissions %}
 
 {% block title %}Search{% endblock %}
 
-{% block content %}
+{% block report_content %}
 		<head>
 		<meta charset="utf-8">
-		<title>{% if link == 'simple_search' %}Simple Search{% elif link == 'advanced_search' %}Advanced Search{% else %}Search Reports{% endif %}</title>
+		<title>{% if link == 'report_form:simple_search' %}Simple Search{% elif link == 'report_form:advanced_search' %}Advanced Search{% else %}Search Reports{% endif %}</title>
 	</head>
 
 		<body class="body">
@@ -21,17 +22,17 @@
 
 		{% if not empty %}
 				<h1>Query Results for "{{query_string}}" </h1>
-		{% if results %}
-			{% for indiv in results %}
+		{% if results|filter_by_permissions %}
+			{% for indiv in results|filter_by_permissions %}
 				{% if public_only %}
 					{% if not indiv.private %}
 						<p>Description= {{ indiv.short_description }}
-						<a href= "{% url 'detail' indiv.id  %}">
+						<a href= "{% url 'report_form:detail' indiv.id  %}">
 						<button type="button">view report</button></a> </p>
 					{% endif %}
 				{% else %}
 					<p>Description= {{ indiv.short_description }}
-					<a href= "{% url 'detail' indiv.id  %}">
+					<a href= "{% url 'report_form:detail' indiv.id  %}">
 					<button type="button">view report</button></a></p>
 				{% endif %}
 			{% endfor %}

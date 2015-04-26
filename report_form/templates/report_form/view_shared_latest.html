@@ -1,0 +1,26 @@
+{% extends "base_reports.html" %}
+
+{% block title %}Reports Index{% endblock %}
+
+{% block report_content %}
+
+	<head>
+		<meta charset="utf-8">
+		<title>Reports Index</title>
+	</head>
+		<body class="body">
+	  <div class="div">
+		{% if list_reports %}
+			<h1>{% if filter == 'shared' %} Reports Shared With Me {% else %} Most Recent 5 Reports {% endif %}</h1>
+			{% for indiv in list_reports %}
+			<p>Description= {{ indiv.short_description }}</p>   
+			<a href= "{% url 'report_form:detail' indiv.id  %}">
+			<button type="button">view submitted report</button></a>
+			{% endfor %}
+		{% else %}
+			<p> no reports to view </p>
+		{% endif %}
+
+		</div>
+	</body>
+{% endblock %}

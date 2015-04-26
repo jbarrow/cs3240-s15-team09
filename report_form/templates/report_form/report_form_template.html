@@ -1,8 +1,9 @@
 {% extends "base_reports.html" %}
+{% load folder_retrieval %}
 
 {% block title %}Create Report{% endblock %}
 
-{% block content %}
+{% block report_content %}
 
 	<head>
 		<meta charset="utf-8">
@@ -10,11 +11,31 @@
 	</head>
 	<body class="body">
 	  <div class="div">
-		<form class="form"  action = "{% url "submission" %}" method="post" enctype="multipart/form-data">
+		<form class="form"  action = "{% url 'report_form:submission' %}" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
 			<h1>Submit A Report</h1>
 			{{ input_report_form.as_p }}
-			<!--{{ date_input.as_p }} -->
+			<p><b>Folder</b></p>
+			<select id="folder" name="folder">
+			{% for f in request.user.profile|retrieve_folders %}
+				<option  value= {{f.id}} > {{f.name}} </option>
+			{% endfor %}
+				<option  value= {{f.id}} > None </option> <!-- this will be blank, I assume and that is the point-->
+				</select>
+				<br />
+				<br/ >
+			<p><i>You don't need to add permissions if your report is public!</i></p>
+			<label>Add group visibility</label> <br />
+			{% if groups %}
+				{% for group in groups %}
+				<input type="checkbox" value= {{group.id}} name="group_names"/> {{group.name}} <br />
+				{% endfor %}
+			{% else %}
+			<p>You aren't a member of any group</p>
+			{% endif %}	
+			<br />
+			<label>Add users</label><br />
+			<input type="text" name="viewers" /><br /><br />
 			<input type="file" name="file" multiple />
 			{{ input_tag_form.as_p }}
 			<p> <input type="submit" name= "add_kword" value="Add another keyword" /></p>

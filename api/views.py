@@ -9,6 +9,8 @@ from django.contrib.auth.models import User
 from secure_witness.models import UserProfile
 from report_form.models import Report, File
 
+from report_form.filter_helper import filter_by_permissions
+
 import json, os
 from django.core import serializers
 
@@ -51,7 +53,7 @@ def get_reports(request):
         data = { "error": "User does not exist" }
         return HttpResponse(data)
 
-    reports = Report.objects.filter(author=user.profile)
+    reports = filter_by_permissions(Report.objects.all(), user)
 
     data = serializers.serialize("json", reports)
     return HttpResponse(data)
@@ -84,7 +86,7 @@ def get_file_list(request, report_id):
         data = { "error": "User does not exist" }
         return HttpResponse(data)
 
-    report = Report.objects.get(author=user.profile, pk=report_id)
+    report = Report.objects.get(pk=report_id)
     files = File.objects.filter(report=report)
 
     data = serializers.serialize("json", files)

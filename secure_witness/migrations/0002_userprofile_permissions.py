@@ -7,15 +7,15 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('group_form', '0001_initial'),
+        ('report_form', '0003_permission'),
         ('secure_witness', '0001_initial'),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='group',
-            name='users',
-            field=models.ManyToManyField(to='secure_witness.UserProfile'),
+            model_name='userprofile',
+            name='permissions',
+            field=models.ManyToManyField(to='report_form.Permission'),
             preserve_default=True,
         ),
     ]

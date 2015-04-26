@@ -3,16 +3,16 @@ from django.forms import ModelForm
 from secure_witness.models import UserProfile
 from Crypto.PublicKey import RSA
 from django.forms.extras.widgets import SelectDateWidget
+from group_form.models import Group
 
 class Folder(models.Model):
-    name = models.CharField(max_length=128, unique=True)
+    name = models.CharField(max_length=128)
     userprofile = models.ForeignKey(UserProfile)
 
     def __str__(self):
         return self.name
 
 class Report(models.Model):
-
     author = models.ForeignKey(UserProfile)
     short_description = models.CharField(max_length=750)
     location = models.CharField(max_length=500, blank=True)
@@ -40,12 +40,23 @@ class Tag(models.Model):
     associated_report = models.ForeignKey(Report)
 
     def __str__(self):
-        return self.name
+        return self.keyword
+
+class Permission(models.Model):
+    report = models.ForeignKey(Report)
+    profiles = models.ManyToManyField(UserProfile)
+    groups = models.ManyToManyField(Group)
+
+    def __str__(self):
+        output = self.report.short_description
+        output += " "
+        output += str(self.report.id)
+        return output
 
 class ReportForm(ModelForm):
     class Meta:
         model = Report
-        fields = ['short_description', 'detailed_description', 'location', 'date_of_incident', 'private', 'folder']
+        fields = ['short_description', 'detailed_description', 'location', 'date_of_incident', 'private']
         widgets = {
         'date_of_incident' : SelectDateWidget,
         }

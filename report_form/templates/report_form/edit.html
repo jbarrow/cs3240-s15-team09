@@ -1,10 +1,48 @@
-{% extends 'base.html' %}
+{% extends 'base_reports.html' %}
+{% load folder_retrieval %}
 
-{% block content %}
+{% block report_content %}
 	<div class="body">
-		<form class="form"  action = "{% url 'edit' report.id %}" method="post" enctype="multipart/form-data">
+		<form class="form"  action = "{% url 'report_form:edit' report.id %}" method="post" enctype="multipart/form-data">
 			{% csrf_token %}
 			{{ input_report_form.as_p }}
+			<p><b>Folder</b></p>
+				<select id="folder" name="folder">
+			{% for f in request.user.profile|retrieve_folders %}
+				<option  value= {{f.id}} > {{f.name}} </option>
+			{% endfor %}
+				<option  value= {{f.id}} > None </option>
+				</select>
+			<br/ >
+			<p><i>You don't need to add permissions if your report is public!</i></p>
+			<p><b>Current Permissions</b></p>
+			{% if p.groups.all or p.profiles.all %}
+			<ul>
+			{% for g in p.groups.all %}
+				<li>{{g.name}} <input type="submit" name = "{{ g.id }}_group" value="delete permission" /></li>
+			{% endfor %}
+			</ul>
+			<ul>
+				{% for v in p.profiles.all %}
+				<li>{{v.user.username}} <input type="submit" name = "{{ v.user.id }}_profile" value="delete permission" /></li>
+				{% endfor %}
+			</ul>
+			{% else %}
+			<p>No permissions to show</p>
+			{% endif %}
+			<label>Add group visibility</label> <br />
+			{% if groups %}
+				{% for group in groups %}
+				{% if group not in p.groups.all %}
+				<input type="checkbox" value= {{group.id}} name="group_names"/> {{group.name}} <br />
+				{% endif %}
+				{% endfor %}
+			{% else %}
+			<p>You aren't a member of any group</p>
+			{% endif %}	
+			<br />
+			<label>Add users</label><br />
+			<input type="text" name="viewers" /><br /><br />
 			{% if files %}
 			<p><b>Uploaded Files: </b></p>
 				<ul>
@@ -16,16 +54,18 @@
 				<p> No files yet uploaded </p>
 			{% endif %}
 			<input type="file" name="file" multiple />
-			{% if tags %}
+			<br />
 			<p><b>Keywords: </b></p>
+			{% if tags %}
 				<ul>
 				{% for input_tag in tags %}
-					<li>{{ input_tag.keyword }}</li>
+					<li>{{ input_tag.keyword }} <input type="submit" name = {{ input_tag.id }}_kword value="delete keyword" /></li>
 				{% endfor %}
 				</ul>
 			{% else %}
 				<p> no keywords associated with this report </p>
 			{% endif %}
+			<br />
 			{{ input_tag_form.as_p }}
 			<p> <input type="submit" name= "add_kword" value="Add another keyword" /></p>
 			<p> <input type="submit" name= "submission" value="Submit Report" /></p>

@@ -8,7 +8,7 @@
 	</head>
 	<body class="body">
 	  <div class="div">
-		<form class="form"  action = "{% url 'simple_search' %}" method="post" enctype="multipart/form-data">
+		<form class="form"  action = "{% url 'report_form:simple_search' %}" method="post" enctype="multipart/form-data">
 		{% csrf_token %}
 		<h1>Search Query Results</h1>
 		{% if results %}
@@ -16,12 +16,12 @@
 				{% if public_only %}
 					{% if not indiv.private %}
 						<p>Description= {{ indiv.short_description }}</p>
-						<a href= "{% url 'detail' indiv.id  %}">
+						<a href= "{% url 'report_form:detail' indiv.id  %}">
 						<button type="button">view report</button></a>
 					{% endif %}
 				{% else %}
 					<p>Description= {{ indiv.short_description }}</p>
-					<a href= "{% url 'detail' indiv.id  %}">
+					<a href= "{% url 'report_form:detail' indiv.id  %}">
 					<button type="button">view report</button></a>
 				{% endif %}
 			{% endfor %}

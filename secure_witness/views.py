@@ -1,4 +1,4 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import RequestContext
@@ -7,40 +7,34 @@ from secure_witness.forms import UserForm, UserProfileForm
 from secure_witness.models import UserProfile, is_swadmin
 from report_form.models import Folder
 from dashboard.forms import user_profile_form
+from group_form.models import Group
 
 @login_required
 def profile(request):
-	form = user_profile_form()
-	if request.method == 'POST':
-		form = user_profile_form(request.POST, instance=request.user.profile)
-		if form.is_valid():
-			print("good")
-			form.save()
-			return HttpResponseRedirect('/accounts/profile')
-		else:
-			print("else")
-			user = request.user
-			profile = user.profile
-			form = user_profile_form(instance=profile)
+    form = user_profile_form()
+    # this could be an issue here because of the 
+    profile = UserProfile.objects.filter(user=request.user)
+    groups = Group.objects.filter(users=profile[0])
+    if request.method == 'POST':
+        form = user_profile_form(request.POST, instance=request.user.profile)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/accounts/profile')
+        else:
+            user = request.user
+            profile = user.profile
+            form = user_profile_form(instance=profile)
 
-	print(request.method)
-	profile = request.user.profile
-	user = request.user
-	
-	args = {}
-	args.update(csrf(request))
-	args['form'] = form
-	args['admin'] = request.user.is_swadmin
-	args['name'] = profile.name
-	args['user'] = user
-	#{'admin': request.user.is_swadmin, 'name': profile.name, 'user': user, 'form':form}
-    
-	return render_to_response('profile.html', args)
+
+    return render(request, 'profile.html',
+                  {'form':form, 'groups':groups})
+
 
 def base(request):
     profile = request.user.profile
     user = request.user
     return render_to_response('base.html', {'admin': request.user.is_swadmin, 'name': profile.name, 'user': user})
+
 
 def register(request):
     context = RequestContext(request)
@@ -68,7 +62,7 @@ def register(request):
 
             registered = True
 
-            f = Folder(name = "unsorted", userprofile = profile)
+            f = Folder(name="unsorted", userprofile=profile)
             f.save()
         else:
             print(user_form.errors, profile_form.errors)
@@ -77,8 +71,9 @@ def register(request):
         profile_form = UserProfileForm()
 
     return render_to_response('registration/register.html',
-        {'user_form': user_form, 'profile_form': profile_form, 'registered': registered},
-        context)
+                              {'user_form': user_form, 'profile_form': profile_form, 'registered': registered},
+                              context)
+
 
 @login_required
 @user_passes_test(is_swadmin)
