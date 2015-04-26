@@ -14,6 +14,11 @@ from django.utils import timezone
 from django.core.servers.basehttp import FileWrapper
 import os
 from report_form.search_helper import simple_return, multi_cat_return, string_parse, advanced_query, multi_cat_return_OR
+from Crypto.Cipher import AES
+from Crypto import Random
+import os
+from simplecrypt import encrypt, decrypt
+from secure_witness.settings import MEDIA_ROOT
 
 def incomplete_landing(request):
 	return HttpResponse("Report form not yet available.")
@@ -143,10 +148,57 @@ def submission(request):
 			report_input.private = request.POST.get('private', False) #apply a value if it does not exist
 			report_input.folder = Folder.objects.get(pk=folder_id)
 			report_input.save()
+			#assign encryption key for report
+			key=random_key = os.urandom(16)
+			report_input.AESkey =key
+			
+			
+			if report_input.private:
+					#print("encrypt the file")
+					for each in request.FILES.getlist("file"):
+						encrypt_file(each, report_input.AESkey)
+					#newfile = File(title = each.name+".enc", file=each.name+".enc", report=report_input, AES_key=key)
+					newfile = File(title = each.name+".enc", file=each.name+".enc", report=report_input)
+			else:
+				for upfile in request.FILES.getlist("file"):
+					newfile = File(title = upfile.name, file=upfile, report=report_input)	
 
-			for upfile in request.FILES.getlist("file"):
-				newfile = File(title = upfile.name, file=upfile, report=report_input)
-				newfile.save()
+					#newfile = File(title = upfile.name, file=upfile, report=report_input, AES_key=key)	
+
+				#encrypt here if report is private
+#				if report_input.private:
+#					chunksize=64*1024
+#					IV = 16 * '\x00'           # Initialization vector
+#					mode = AES.MODE_CBC
+#					encryptor = AES.new(report_input.AESkey, mode, IV=IV)
+#					#f = upfile.read()
+#					#f=request.FILES[upfile].open('rb')
+#					#f = open(upfile.name, 'r')#open upfile for reading
+#					string=upfile.name
+#					outfile=open(string, 'wb')#new file to write encrypted version to
+#					count=0;
+#					while True:
+#						chunk = upfile.read(chunksize)
+#						if len(chunk)==0 or count==1000:
+#							break
+#						elif len(chunk) % 16 != 0:
+#							chunk += " ".encode('ascii') * (16 - len(chunk) % 16)
+#							outfile.write(encryptor.encrypt(chunk))
+#						count +=1
+##					for line in f:
+##						#encrypt line-by-line and write back to file
+##						cypher_line= encryptor.encrypt(line)
+##						outfile.write(cypher_line + '\n')
+##					#close files ince encryption is done
+#					outfile.close()
+#					#f.close()
+#					newfile = File(title = upfile.name, file=outfile, report=report_input)
+#				else:
+	
+				#encrypt file once already on the server
+			newfile.save()
+				
+			
 
 			if input_tag_form.is_valid():
 				newTag = Tag(associated_report=report_input)
@@ -166,13 +218,45 @@ def submission(request):
 
 	return render(request, 'report_form/report_form_template.html', {'input_report_form' : input_report_form, 'input_tag_form' : input_tag_form})
 
+def encrypt_file(file_name, key):
+    #with open(file_name, 'rb') as fo:
+    plaintext = file_name.read()
+    #print("Text to encrypt: %s" % plaintext)
+    enc = encrypt(key, plaintext)
+    with open("media/" + file_name.name + ".enc", 'wb') as fo:
+        fo.write(enc)
+		
+def decrypt_file(file_name, key):
+    with open(file_name, 'rb') as fo:
+        ciphertext = fo.read()
+    dec = decrypt(key, ciphertext).decode('utf8')
+    print("decrypted text: %s" % dec)
+    with open(file_name[:-4], 'wb') as fo:
+        fo.write(dec)
+
 @login_required
 def download(request, file_id):
-	# TODO: Verify that the user is only downloading allowed files (i.e. not
+#	for each in Report.objects.all():
+#		report_files=File.objects.filter(report=each)
+#		for a_file in report_files:
+#			if a_file.file_id==file_id:
+#				key=each.AESkey
+#				break
+#	
+#	# TODO: Verify that the user is only downloading allowed files (i.e. not
 	# server source files, etc.)
 	downloadable = get_object_or_404(File, pk=file_id)
+#	for each in Report.objects.all():
+#		report_files=File.objects.filter(report=each)
+#		for a_file in report_files:
+#			if a_file.file_id==file_id:
+#				key=each.AESkey
+#				break
+	key= downloadable.report.AES_key #key doesn't actually load WTF why not\?
 	path = downloadable.file.path
 	wrapper = FileWrapper(downloadable.file)
+	if downloadable.report.private:
+		decrypt_file(path, key)
 	response = HttpResponse(wrapper, content_type='application/force-download')
 	response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(os.path.basename(path))
 	#print(response['Content-Disposition'])
