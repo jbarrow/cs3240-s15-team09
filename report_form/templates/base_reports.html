@@ -16,11 +16,11 @@
             <li><a href="{% url 'report_form:my_reports' request.user.id %}">My Reports</a></li>
         {% endif %}
 
-       {% url 'report_form:view_all_available' as shared_url %}
+       {% url 'report_form:view_all_dynamic' as shared_url %}
       {% if request.path == shared_url %}
-            <li class="active"><a href="{% url 'report_form:view_all_available' %}">Shared With Me</a></li>
+            <li class="active"><a href="{% url 'report_form:view_all_dynamic' %}">Shared With Me</a></li>
         {% else %}
-            <li><a href="{% url 'report_form:view_all_available' %}">Shared With Me</a></li>
+            <li><a href="{% url 'report_form:view_all_dynamic' %}">Shared With Me</a></li>
         {% endif %}
 
         {% url 'report_form:latest_5' as latest_url %}

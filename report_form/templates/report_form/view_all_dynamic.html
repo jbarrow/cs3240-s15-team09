@@ -1,0 +1,54 @@
+{% extends "base_reports.html" %}
+{% load filter_by_permissions %}
+
+{% block title %}Reports Index{% endblock %}
+
+{% block report_content %}
+
+	<head>
+		<meta charset="utf-8">
+		<title>Reports Index</title>
+	</head>
+		<body class="body">
+        <div class="div">
+        <form class="form"  action = "{% url 'report_form:view_all_dynamic' %}" method="post" enctype="multipart/form-data">
+			{% csrf_token %}
+			<h2>Sort by</h2>
+			<select id= 'sort' name='sort'>
+                <option  value= "Default" > Default </option>
+                <option  value= "location_az" > Location: A to Z </option>
+                <option  value= "location_za" > Location: Z to A </option>
+                <option  value= "author_az" > Author: A to Z </option>
+                <option  value= "author_za" > Author: Z to A </option>
+                <option  value= "shortdes_az" > Short Des.: A to Z </option>
+                <option  value= "shortdes_za" > Short Des.: Z to A </option>
+                <option  value= "created_new" > Date Created: New to Old </option>
+                <option  value= "created_old" > Date Created: Old to New </option>
+                <option  value= "date_of_incident_new" > Date of Incident: New to Old </option>
+                <option  value= "date_of_incident_old" > Date of Incident: Old to New </option>
+		    </select>
+
+			<p> <input type="submit" value="Sort" /></p>
+
+		</form>
+            </div>
+	  <div class="div">
+		{% if list_reports|filter_by_permissions %}
+			<h1>Reports Shared With Me</h1>
+			{% for indiv in list_reports %}
+			    {% if indiv.author != user.profile %}
+                    <a href= "{% url 'report_form:detail' indiv.id  %}"><span style="font-size:18px;"><strong>
+			        {{ indiv.short_description }}</strong></span></a> - {{ indiv.author }}
+                    {% if indiv.date_of_incident %}
+                        - {{ indiv.date_of_incident }}
+                    {% endif %}
+                    <p>{{ indiv.detailed_description|slice:":200" }} ... </p>
+			    {% endif %}
+			{% endfor %}
+		{% else %}
+			<p> no reports to view </p>
+		{% endif %}
+
+		</div>
+	</body>
+{% endblock %}

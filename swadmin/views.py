@@ -70,6 +70,35 @@ def create_group(request):
 
 @login_required
 @user_passes_test(is_swadmin)
+def edit_group(request, group_id):
+    current = request.user
+    g = Group.objects.get(pk=group_id)
+    users_in_group = g.users.all()
+    other_users = UserProfile.objects.all()
+    for cur_user in users_in_group:
+        other_users = other_users.exclude(pk = cur_user.pk)
+
+    if request.method == "POST":
+        users_to_delete = request.POST.getlist("users_to_delete")
+        users_to_add = request.POST.getlist("users_to_add")
+
+        for user in users_to_delete:
+            user = user.strip()
+            u = UserProfile.objects.get(pk=user)
+            g.users.remove(u)
+
+        for user in users_to_add:
+            user = user.strip()
+            u = UserProfile.objects.get(pk=user)
+            g.users.add(u)
+
+        return HttpResponseRedirect('/swadmin/groups')
+    else:
+        return render(request, 'edit_group.html', {'user': current, 'users_in_group': users_in_group
+            , 'other_users': other_users, 'group': g,})
+
+@login_required
+@user_passes_test(is_swadmin)
 def delete_group(request, group_id):
     group = Group.objects.get(pk=group_id)
     group.delete()

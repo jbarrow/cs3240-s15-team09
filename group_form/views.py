@@ -40,7 +40,11 @@ def add_user_with_form(request):
 
 def add_user(request):
     current_user = request.user.profile
-    groups = Group.objects.filter(users=current_user)
+    if not current_user.admin:
+        groups = Group.objects.filter(users=current_user)
+    else:
+        groups = Group.objects.all()
+
     status = ''
     can_add = False
 

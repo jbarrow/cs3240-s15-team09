@@ -19,8 +19,9 @@ def return_most_similar_reports(user, report_id):
     profile = user.profile
     all_reports = Report.objects.all()
     for report2 in all_reports:
+        if profile == report2.author:
+                 all_reports = all_reports.exclude(pk=report2.pk)
         if profile.admin:
-            print("don't exclude any if admin")
             if profile == report2.author:
                  all_reports = all_reports.exclude(pk=report2.pk)
         elif report2.private:

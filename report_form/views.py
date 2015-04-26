@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.http import HttpResponseRedirect, HttpResponse
 from django.core.urlresolvers import reverse
@@ -95,7 +95,7 @@ def detail(request, report_id):
     files = File.objects.filter(report=report)
     tags = Tag.objects.filter(associated_report=report)
     p = Permission.objects.filter(report=report)
-    return render(request, 'report_form/detail.html', {'report': report, 'files': files, 'tags': tags, 'p':p[0]})
+    return render(request, 'report_form/detail.html', {'report': report, 'files': files, 'tags': tags, 'p':p[0],})
 
 
 @login_required
@@ -475,3 +475,45 @@ def latest_5(request):
     #reports.append(current_user)
     #return render(request, 'report_form/view_all.html', {'list_reports': reports, 'user': current_user})
     return render(request, 'report_form/view_shared_latest.html', {'list_reports': reports, 'filter': 'latest'})
+
+@login_required
+def view_all_available_dynamic(request):
+    current_user = request.user
+    profile = current_user.profile
+    all_reports = Report.objects.all()
+    for report2 in all_reports:
+        if profile == report2.author:
+             all_reports = all_reports.exclude(pk=report2.pk)
+        if report2.private and not profile.admin:
+            p = get_object_or_404(Permission, report=report2)
+            if profile not in p.profiles.all() or profile == report2.author:
+                all_reports = all_reports.exclude(pk=report2.pk)
+            for g in p.groups.all():
+                if profile not in g.users.all():
+                    all_reports = all_reports.exclude(pk=report2.pk)
+    if request.method == 'POST':
+        sort_request = request.POST['sort']
+        if sort_request == "Default":
+            all_reports = all_reports
+        elif sort_request == "location_az":
+
+            all_reports = all_reports.order_by('location', 'short_description')
+        elif sort_request == "location_za":
+            all_reports = all_reports.order_by('-location', 'short_description')
+        elif sort_request == "author_az":
+            all_reports = all_reports.order_by('author', 'short_description')
+        elif sort_request == "author_za":
+            all_reports = all_reports.order_by('-author', 'short_description')
+        elif sort_request == "shortdes_az":
+            all_reports = all_reports.order_by('short_description', '-time_created')
+        elif sort_request == "shortdes_za":
+            all_reports = all_reports.order_by('-short_description', '-time_created')
+        elif sort_request == "created_new":
+            all_reports = all_reports.order_by('-time_created', 'short_description')
+        elif sort_request == "created_old":
+            all_reports = all_reports.order_by('time_created', 'short_description')
+        elif sort_request == "date_of_incident_new":
+            all_reports = all_reports.order_by('-date_of_incident', 'short_description')
+        elif sort_request == "date_of_incident_old":
+            all_reports = all_reports.order_by('date_of_incident', 'short_description')
+    return render(request, 'report_form/view_all_dynamic.html', {'list_reports': all_reports, 'filter': 'shared'})

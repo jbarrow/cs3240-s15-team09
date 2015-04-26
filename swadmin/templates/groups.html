@@ -16,7 +16,7 @@
     {% for group in groups %}
       <tr>
         <td>{{ group.id }}</td>
-        <td><a href="#">{{ group.name }}</a></td>
+        <td><a href="/swadmin/groups/edit/{{ group.id }}">{{ group.name }}</a></td>
         <td>
           {% for user in group.users.all %}
           {{ user }}<br />

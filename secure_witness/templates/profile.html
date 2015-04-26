@@ -2,15 +2,19 @@
 
 {% block report_content %}
 <div class="body">
-<h1>Welcome to Secure Witness!</h1><br>
+<h1>Welcome to Secure Witness, {{ request.user.profile.name }}!</h1><br>
 	
     <ul>You are {% if request.user.is_swadmin %} {% else %} not {% endif %} an admin.</ul>
 
-    <ul>Your name is {{ request.user.profile.name }}.</ul>
+    <ul>Your username is {{ request.user.username }}.</ul>
+    {% if groups %}
     <ul>You are in the following groups: </ul>
-    {% for group in groups %}
-    <ul>{{group.name}}</ul>
-	{% endfor %}
+        {% for group in groups %}
+        <ul>{{group.name}}</ul>
+        {% endfor %}
+    {% else %}
+        <ul>You are not in any groups :(</ul>
+    {% endif %}
 
 	<div> 
 		<br>

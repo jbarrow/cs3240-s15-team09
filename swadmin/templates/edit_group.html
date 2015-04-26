@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="col-md-8">
+  <form method="POST" action="/swadmin/groups/edit/{{ group.id }}">
+    {% csrf_token %}
+    <h1>Edit Group "{{ group.name }}"</h1><br />
+    <label>Select Users to Add to the Group:</label><br />
+      {% if other_users %}
+        {% for user in other_users %}
+          <input type="checkbox" value="{{user.user.id}}" name="users_to_add" /> {{ user.user.username }}<br />
+        {% endfor %}
+      {% else %}
+        <p>All users are already in this group.</p>
+      {% endif %}
+      <label>Select Users to Delete from the Group:</label><br />
+      {% if users_in_group %}
+        {% for user in users_in_group %}
+            <input type="checkbox" value="{{user.user.id}}" name="users_to_delete" /> {{ user.user.username }}<br />
+        {% endfor %}
+      {% else %}
+        <p>No users are currently in this group.</p>
+      {% endif %}
+
+
+    <br /><br />
+
+    <input type="submit" value="Edit Group" />
+  </form>
+</div>
+
+<div class="col-md-4">
+  <ul class="nav nav-pills nav-stacked">
+    <li><a href="/swadmin/users">Users</a></li>
+    <li class="active"><a href="/swadmin/groups">Groups</a></li>
+    <li><a href="/swadmin/groups/create" style="color: red;">+ New Group</a></li>
+  </ul>
+</div>
+
+
+{% endblock %}
