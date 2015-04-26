@@ -1,10 +1,11 @@
 {% extends "base_reports.html" %}
+{% load filter_by_permissions %}
+{% load report_similarity %}
 
 {% block title %}Report Detail{% endblock %}
 
 {% block report_content %}
-
-	<head>
+    <head>
 		<meta charset="utf-8">
 		<title>Report Detail</title>
 	</head>
@@ -57,6 +58,25 @@
 
 		{% else %}
 			<p> shouldn't be here </p>
+		{% endif %}
+
+
+        <h2>Similar Reports</h2>
+        {% if request.user|similar_reports:report.id%}
+			{% for indiv in request.user|similar_reports:report.id %}
+                {% if indiv != report and request.user.profile != report.author %}
+
+			        <a href= "{% url 'report_form:detail' indiv.id  %}"><span style="font-size:18px;"><strong>
+			        {{ indiv.short_description }}</strong></span></a> - {{ indiv.author }}
+                    {% if indiv.date_of_incident %}
+                        - {{ indiv.date_of_incident }}
+                    {% endif %}
+                    <p>{{ indiv.detailed_description|slice:":200" }} ... </p>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <p> no similar reports to show </p>
+
 		{% endif %}
 
 {% endblock %}

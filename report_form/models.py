@@ -38,7 +38,7 @@ class Tag(models.Model):
     associated_report = models.ForeignKey(Report)
 
     def __str__(self):
-        return self.name
+        return self.keyword
 
 class Permission(models.Model):
     report = models.ForeignKey(Report)
