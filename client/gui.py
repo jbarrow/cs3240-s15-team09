@@ -95,7 +95,7 @@ class ReportsFrame(Frame):
 
         self.current = None
 
-        self.pack()
+        #self.pack()
 
     def _render_reports(self, reports):
         self.reports = reports
