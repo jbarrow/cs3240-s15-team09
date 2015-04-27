@@ -47,7 +47,7 @@
 			<p><b>Uploaded Files: </b></p>
 				<ul>
 				{% for inputfile in files %}
-					<li><a href= "{{ inputfile.file.url }}">{{ inputfile.title }}</a> <input type="submit" name = {{ inputfile.id }} value="delete" /></li>
+					<li><a href= "{{ inputfile.file.url }}">{{ inputfile.title }}</a> <input type="submit" name = {{ inputfile.id }}_delete value="delete" /></li>
 				{% endfor %}
 				</ul>
 			{% else %}

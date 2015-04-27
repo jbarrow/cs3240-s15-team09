@@ -200,6 +200,13 @@ def edit(request, report_id):
             if request.POST.get(key):
                 t.delete()
                 return HttpResponseRedirect(reverse('report_form:edit', args=(report.id,)))
+        for fi in File.objects.all():
+            key = str(fi.id)
+            key += "_delete"
+            if request.POST.get(key):
+                fi.delete()
+                return HttpResponseRedirect(reverse('report_form:edit', args=(report.id,)))
+
         else:
             print(request.POST)
             return HttpResponse("unexpected input widget")
