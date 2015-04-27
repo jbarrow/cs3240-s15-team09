@@ -247,21 +247,26 @@ def submission(request):
             report_input.AES_key = stringkey
             report_input.save()
 
+            encrypt_error = False
+
             if report_input.private:
                 #print("encrypt the file")
-                for each in request.FILES.getlist("file"):
-                    stringkey = report_input.AES_key
-                    key = stringkey.encode(encoding="iso-8859-1", errors="strict")
-                    encrypt_file(each, key)
-                    newfile = File(title=each.name + ".enc", file=each.name + ".enc", report=report_input)
-                    newfile.save()
-                    path = newfile.file.path
-                    hash_code = get_file_checksum(path)
-                    newfile.hash_code = hash_code
-                    newfile.save()
-                    print("from encrypted submit: " + newfile.hash_code + "*****")
+                try:
+                    for each in request.FILES.getlist("file"):
+                        stringkey = report_input.AES_key
+                        key = stringkey.encode(encoding="iso-8859-1", errors="strict")
+                        encrypt_file(each, key)
+                        newfile = File(title=each.name + ".enc", file=each.name + ".enc", report=report_input)
+                        newfile.save()
+                        path = newfile.file.path
+                        hash_code = get_file_checksum(path)
+                        newfile.hash_code = hash_code
+                        newfile.save()
+                        print("from encrypted submit: " + newfile.hash_code + "*****")
                 #newfile = File(title = each.name+".enc", file=each.name+".enc", report=report_input, AES_key=key)
-            else:
+                except UnicodeDecodeError:
+                    encrypt_error = True
+            if not report_input.private or encrypt_error:
                 for upfile in request.FILES.getlist("file"):
                     newfile = File(title=upfile.name, file=upfile, report=report_input)
                     newfile.save()
@@ -323,8 +328,8 @@ def submission(request):
 def encrypt_file(file_name, key):
     # with open(file_name, 'rb') as fo:
     plaintext = file_name.read()
-    print(plaintext)
-    #print("Text to encrypt: %s" % plaintext)
+    #print(plaintext)
+    print("Text to encrypt: %s" % plaintext)
     print("about to encrypt")
     print(key)
     enc = encrypt(key, plaintext)
@@ -348,6 +353,7 @@ def decrypt_file(file_name, key):
 def download(request, file_id):
     downloadable = get_object_or_404(File, pk=file_id)
     stringkey = downloadable.report.AES_key
+    error_decrypt = False
     key = stringkey.encode(encoding="iso-8859-1", errors="strict")
     #print(stringkey)
     print("key is: ")
@@ -368,10 +374,15 @@ def download(request, file_id):
     print("in downloads: check hash")
     print(check_against == check_sum_hash)
 
-    response = HttpResponse(wrapper, content_type='application/force-download')
-    response['Content-Disposition'] = 'attachment;filename=%s' % smart_str(os.path.basename(path))
+    try:
+        response = HttpResponse(wrapper, content_type='application/force-download')
+        response['Content-Disposition'] = 'attachment;filename=%s' % smart_str(os.path.basename(path))
+    except UnicodeDecodeError:
+        error_decrypt = True
 
-    if(check_sum_hash != check_against):
+    if error_decrypt:
+        response = HttpResponse("error in decryption - file could not be processed")
+    elif(check_sum_hash != check_against):
         response = HttpResponse("Stored Hash: \"" + check_sum_hash + "\" does not match generated Hash: \"" + check_against +"\"")
     
     return response
