@@ -104,7 +104,7 @@ def get_file(request, file_id):
     #if private decrypt file
     if downloadable.report.private:
         path = decrypt_file(path, key)
-        wrapper=FileWrapper(open(path))
+        wrapper=FileWrapper(open(path, 'rb'))
     response = HttpResponse(wrapper, content_type='application/force-download')
     response['Content-Disposition'] = 'attachment; filename=%s' % smart_str(os.path.basename(path))
 
