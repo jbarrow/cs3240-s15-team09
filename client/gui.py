@@ -3,7 +3,7 @@ from tkinter import *
 import tkinter.messagebox as tm
 from client import authenticate, get_reports, download_files, get
 
-url = "http://localhost:8000/"
+url = "https://secure-witness-9.herokuapp.com"
 token, username = "", ""
 reports = []
 

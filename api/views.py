@@ -66,6 +66,8 @@ def get_report(request, report_id):
     token = request.POST.get("token")
     user = authenticate_with_token(username, token)
 
+    print(username, token)
+    
     if user is None:
         data = { "error": "User does not exist" }
         return HttpResponse(data)
