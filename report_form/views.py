@@ -366,7 +366,7 @@ def download(request, file_id):
         print(key)
         print(path)
         path = decrypt_file(path, key)
-        wrapper = FileWrapper(open(path))
+        wrapper = FileWrapper(open(path, 'rb'))
         print(path)
 
     check_sum_hash = downloadable.hash_code
@@ -382,7 +382,7 @@ def download(request, file_id):
 
     if error_decrypt:
         response = HttpResponse("error in decryption - file could not be processed")
-    elif(check_sum_hash != check_against):
+    elif check_sum_hash != check_against and not downloadable.report.private:
         response = HttpResponse("Stored Hash: \"" + check_sum_hash + "\" does not match generated Hash: \"" + check_against +"\"")
     
     return response
