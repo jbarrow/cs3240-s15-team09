@@ -29,6 +29,7 @@ import os
 from simplecrypt import encrypt, decrypt
 from secure_witness.settings import MEDIA_ROOT
 from report_form.validation_helper import permission_validation
+from report_form.cryptohelper import get_file_checksum
 
 
 def incomplete_landing(request):
@@ -84,6 +85,7 @@ def copy_report(indiv_id, profile):
         f = File(report=r)
         f.file = x.file
         f.title = x.title
+        f.hash_code = x.hash_code
         f.save()
     p = Permission(report=r)
     print(p)
@@ -120,6 +122,12 @@ def edit(request, report_id):
             for upfile in request.FILES.getlist("file"):
                 newfile = File(title=upfile.name, file=upfile, report=report)
                 newfile.save()
+                path = newfile.file.path
+                hash_code = get_file_checksum(path)
+                newfile.hash_code = hash_code
+                newfile.save()
+                print("from edit " + newfile.hash_code + "****")
+
             t = TagForm()
             if t.is_valid:
                 if request.POST['keyword'] != '':
@@ -234,7 +242,7 @@ def submission(request):
             print(type(key))
             print(key)
             stringkey = key.decode(encoding="iso-8859-1", errors="strict")
-            #print(type(stringkey))
+            print(type(stringkey))
             #print(stringkey)
             report_input.AES_key = stringkey
             report_input.save()
@@ -247,11 +255,26 @@ def submission(request):
                     encrypt_file(each, key)
                     newfile = File(title=each.name + ".enc", file=each.name + ".enc", report=report_input)
                     newfile.save()
+                    path = newfile.file.path
+                    hash_code = get_file_checksum(path)
+                    newfile.hash_code = hash_code
+                    newfile.save()
+                    print("from encrypted submit: " + newfile.hash_code + "*****")
                 #newfile = File(title = each.name+".enc", file=each.name+".enc", report=report_input, AES_key=key)
             else:
                 for upfile in request.FILES.getlist("file"):
                     newfile = File(title=upfile.name, file=upfile, report=report_input)
                     newfile.save()
+                    path = newfile.file.path
+                    #print("path:")
+                    #print(path)
+                    #print(os.path.basename(path))
+                    hash_code = get_file_checksum(path)
+                    newfile.hash_code = hash_code
+                    newfile.save()
+                    print("from submit: " + newfile.hash_code + "*****")
+                    #print("******************************")
+                    #print(get_file_checksum(upfile))
                 #newfile = File(title = upfile.name, file=upfile, report=report_input, AES_key=key)
 
 
@@ -300,6 +323,7 @@ def submission(request):
 def encrypt_file(file_name, key):
     # with open(file_name, 'rb') as fo:
     plaintext = file_name.read()
+    print(plaintext)
     #print("Text to encrypt: %s" % plaintext)
     print("about to encrypt")
     print(key)
@@ -339,9 +363,17 @@ def download(request, file_id):
         wrapper = FileWrapper(open(path))
         print(path)
 
+    check_sum_hash = downloadable.hash_code
+    check_against = get_file_checksum(path)
+    print("in downloads: check hash")
+    print(check_against == check_sum_hash)
+
     response = HttpResponse(wrapper, content_type='application/force-download')
     response['Content-Disposition'] = 'attachment;filename=%s' % smart_str(os.path.basename(path))
-    print(response['Content-Disposition'])
+
+    if(check_sum_hash != check_against):
+        response = HttpResponse("Stored Hash: \"" + check_sum_hash + "\" does not match generated Hash: \"" + check_against +"\"")
+    
     return response
 
 

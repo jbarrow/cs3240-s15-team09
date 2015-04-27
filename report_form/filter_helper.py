@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from report_form.models import Permission, Report, Tag, File
 from django.shortcuts import render, get_object_or_404
 from group_form.models import Group
-from django.core.exceptions import ObjectDoesNotExist
+
 
 def filter_by_permissions(results, user):
 	retSet = set()
@@ -40,15 +40,3 @@ def get_5_latest(results, user):
 		retSet = retSet[:5]
 		return retSet
 
-def permission_validation(user_name, perm_id):
-	# input is a string that should be a user name
-	# return is a status string that indicates if the user is not found
-	status = "currently validating"
-	try:
-		user = User.objects.get(username=user_name)
-		p = UserProfile.objects.get(user=user)
-		perm = Permission.objects.get(id=perm_id)
-		perm.profiles.add(p)
-		status = "User \"" + user.username + "\" successfully added"
-	except ObjectDoesNotExist:
-		status = "User \""+ user_name + "\" could not be found"

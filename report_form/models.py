@@ -33,6 +33,7 @@ class File(models.Model):
     title = models.CharField(max_length=128) #used to be unique = true... but I was having some errors
     file = models.FileField(upload_to='')#input/%Y/%m/%d
     report = models.ForeignKey(Report)
+    hash_code = models.CharField(max_length=500, blank=True, null=True)
     #AES_key= models.CharField(max_length=500)
 
 class Tag(models.Model):
