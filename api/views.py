@@ -66,14 +66,12 @@ def get_report(request, report_id):
     token = request.POST.get("token")
     user = authenticate_with_token(username, token)
 
-    print(username, token)
-    
     if user is None:
         data = { "error": "User does not exist" }
         return HttpResponse(data)
 
-    report = Report.objects.get(pk=report_id)
-    if report == None or report.private == True and report.author != user.id:
+    report = filter_by_permissions(Report.objects.filter(pk=report_id), user)
+    if report == None:
         data = { "error": "User does not have privilege" }
         return HttpResponse(data)
 
