@@ -109,6 +109,7 @@ def detail(request, report_id):
 @login_required
 def edit(request, report_id):
     report = get_object_or_404(Report, pk=report_id)
+    is_private = report.private
     files = File.objects.filter(report=report)
     tags = Tag.objects.filter(associated_report=report)
     perm = get_object_or_404(Permission, report=report)
@@ -116,17 +117,28 @@ def edit(request, report_id):
     profile = UserProfile.objects.filter(user=current_user)
     groups = Group.objects.filter(users=profile[0])
     if request.method == 'POST':
+        request.POST['private'] = is_private
         f = ReportForm(request.POST, instance=report)
         if f.is_valid():
             f.save()
-            for upfile in request.FILES.getlist("file"):
-                newfile = File(title=upfile.name, file=upfile, report=report)
-                newfile.save()
-                path = newfile.file.path
-                hash_code = get_file_checksum(path)
-                newfile.hash_code = hash_code
-                newfile.save()
-                print("from edit " + newfile.hash_code + "****")
+            if report.private:
+                #print("encrypt the file")
+                for each in request.FILES.getlist("file"):
+                    stringkey = report.AES_key
+                    key = stringkey.encode(encoding="iso-8859-1", errors="strict")
+                    encrypt_file(each, key)
+                    newfile = File(title=each.name + ".enc", file=each.name + ".enc", report=report)
+                    newfile.save()
+                    #newfile = File(title = each.name+".enc", file=each.name+".enc", report=report_input, AES_key=key)
+            else:
+                for upfile in request.FILES.getlist("file"):
+                    newfile = File(title=upfile.name, file=upfile, report=report)
+                    newfile.save()
+                    path = newfile.file.path
+                    hash_code = get_file_checksum(path)
+                    newfile.hash_code = hash_code
+                    newfile.save()
+                    print("from edit " + newfile.hash_code + "****")
 
             t = TagForm()
             if t.is_valid:
