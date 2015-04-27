@@ -135,7 +135,7 @@ class ReportFrame(Frame):
 
         self.download = Button(self, text="Download All Files")
         self.download.grid(row=3, column=1)
-        self.pack()
+        #self.pack()
 
     def _render_report(self, report, username, token):
         self.title_var.set(report['fields']['short_description'])
