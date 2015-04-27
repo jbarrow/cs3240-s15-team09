@@ -29,3 +29,6 @@ Windows: C:\xampp\mysql\bin
 ```ALTER TABLE secure_witness.report_form_report MODIFY COLUMN AES_key VARCHAR(500) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;```
 
 and that appeared to help me to be able to submit encrypted reports and decrypt the results.
+
+##Starting the GUI standalone app for decryption and file downloads:
+run  ```python client/gui.py``` in the terminal
