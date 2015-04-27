@@ -32,3 +32,6 @@ and that appeared to help me to be able to submit encrypted reports and decrypt 
 
 ##Starting the GUI standalone app for decryption and file downloads:
 run  ```python client/gui.py``` in the terminal
+
+##Setting up the database
+```python manage.py loaddata admin``` to get the initial admin user
