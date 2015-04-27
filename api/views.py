@@ -75,7 +75,7 @@ def get_report(request, report_id):
         data = { "error": "User does not have privilege" }
         return HttpResponse(data)
 
-    data = serializers.serialize("json", [report])
+    data = serializers.serialize("json", [report[0]])
     return HttpResponse(data)
 
 @csrf_exempt
